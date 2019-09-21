@@ -52,7 +52,7 @@ void settings_init(void){
     }
     #endif
 
-    #ifdef debug
+    #ifdef serial_debug
         serial_debug.println("lorawan_load_settings()");
     #endif
 }
@@ -107,7 +107,7 @@ void settings_from_downlink(void)
  * 
  */
 boolean settings_send(void){
-    #ifdef debug
+    #ifdef serial_debug
         serial_debug.println("settings_send()");
     #endif
     return lorawan_send(settings_packet_port, &settings_packet.bytes[0], sizeof(settingsData_t));

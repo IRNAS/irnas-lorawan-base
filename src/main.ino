@@ -1,50 +1,21 @@
 #include <STM32L0.h> 
 #include <TimerMillis.h>
 #include "board.h"
-#include "command.h"
 #include "lorawan.h"
-#include "gps_tracker.h"
-#include "settings.h"
-#include "status.h"
 #include "project_utils.h"
-#include "rf_testing.h"
 
-#define debug
 #define serial_debug  Serial
-
-// Initialize timer for periodic callback
-// TimerMillis periodic;
-GNSSLocation gps_location;
-GNSSSatellites gps_satellites;
-
-/**
- * @brief called upon pin change
- * 
- */
-void accelerometer_callback(void){
-  /*#ifdef debug
-    serial_debug.print("gps_accelerometer_callback(");
-    serial_debug.println(")");
-  #endif*/
-  gps_accelerometer_interrupt();
-}
-
-// Variable to track the reed switch status
-bool reed_switch = false;
 
 enum state_e{
   INIT,
   LORAWAN_INIT,
   LORAWAN_JOIN_START,
-  LORAWAN_JOIN,
-  GENERAL_INIT,
+  LORAWAN_JOIN_DONE,
+  MODULE_INIT,
+  APPLY_SETTINGS,
   IDLE,
   SETTINGS_SEND,
-  STATUS_SEND,
-  RF_SEND,
-  GPS_START,
-  GPS_READ,
-  GPS_SEND,
+  MODULE_SEND,
   LORAWAN_TRANSMIT,
   HIBERNATION
 };
@@ -65,34 +36,6 @@ void state_transition(state_e next);
 bool state_check_timeout(void);
 
 /**
- * @brief Check reed switch status
- * 
- */
-void checkReed(void){
-  pinMode(PIN_REED,INPUT_PULLUP);
-  // debounce
-  int counter_high = 0;
-  int counter_low = 0;
-  for(int i=0;i<10;i++){
-    if(digitalRead(PIN_REED)==false){
-      counter_low++;
-    }
-    else{
-      counter_high++;
-    }
-    delay(1);
-  }
-  if(counter_low>=9){
-    reed_switch = true;
-  }
-  else if(counter_high>=9){
-    reed_switch = false;
-  }
-  // Reed switch
-  pinMode(PIN_REED,INPUT_PULLDOWN);
-}
-
-/**
  * @brief Callback ocurring periodically for triggering events and wdt
  * 
  */
@@ -100,19 +43,14 @@ boolean callbackPeriodic(void){
   //periodic.start(callbackPeriodic, 5000);
   STM32L0.wdtReset();
   
-  /*#ifdef debug
+  /*#ifdef serial_debug
     serial_debug.print("wdt(): ");
     serial_debug.println(millis());
   #endif*/
 
   // determine which events need to be scheduled, except in hibernation
   if(state!=HIBERNATION){
-    status_scheduler();
-    gps_scheduler();
-  }
-  else{
-    gps_send_flag = false;
-    status_send_flag = false;
+    //TODO call scheduler events of all modules
   }
 
   // if the main loop is running and not sleeping
@@ -124,16 +62,8 @@ boolean callbackPeriodic(void){
     }
   }
 
-  // if any of the flags are high, wake up
-  if(settings_updated|status_send_flag|gps_send_flag){
-    //STM32L0.wakeup();
-    return true;
-    /*#ifdef debug
-      serial_debug.print("wakeup(");
-      serial_debug.print(millis());
-      serial_debug.println(")");
-    #endif*/
-  }
+  // check all modules for flags that indicate activity
+
   return false;
 }
 
@@ -175,14 +105,11 @@ void setup() {
   STM32L0.wdtEnable(18000);
   analogReadResolution(12);
 
-  pinMode(A_INT2, INPUT);
-  attachInterrupt(digitalPinToInterrupt(A_INT2),accelerometer_callback,CHANGE);
-
   // Serial port debug setup
   #ifdef serial_debug
     serial_debug.begin(115200);
   #endif
-  #ifdef debug
+  #ifdef serial_debug
     serial_debug.print("setup(serial debug begin): ");
     serial_debug.print("resetCause: ");
     serial_debug.println(STM32L0.resetCause(),HEX);
@@ -197,7 +124,7 @@ void setup() {
  * 
  */
 void loop() {
-  #ifdef debug
+  #ifdef serial_debug
     serial_debug.print("fsm(");
     serial_debug.print(state_prev);
     serial_debug.print(">");
@@ -226,14 +153,7 @@ void loop() {
     // setup default settings
     settings_init();
     // load settings, currently can not return an error, thus proceed directly
-    // transition
-    checkReed();
-    if(reed_switch){
-      state_transition(HIBERNATION);
-    }
-    else{
-      state_transition(LORAWAN_INIT);
-    }
+    state_transition(LORAWAN_INIT);
     break;
   case LORAWAN_INIT:
     // defaults for timing out
@@ -253,12 +173,12 @@ void loop() {
   case LORAWAN_JOIN_START:
     // defaults for timing out
     state_timeout_duration=0;
-    state_goto_timeout=LORAWAN_JOIN;
+    state_goto_timeout=LORAWAN_JOIN_DONE;
     lorawan_joinCallback(); // call join again
     lora_join_fail_count++;
-    state_transition(LORAWAN_JOIN);
+    state_transition(LORAWAN_JOIN_DONE);
     break;
-  case LORAWAN_JOIN:
+  case LORAWAN_JOIN_DONE:
     // defaults for timing out
     // join once every 20s for the first 10 tries 
     // join once an hour for the first day 
@@ -268,69 +188,49 @@ void loop() {
     }
     else if(lora_join_fail_count<24){
       state_timeout_duration=60*60*1000;
-    }
+    }    // TODO: apply settings to all modules
     else{
       state_timeout_duration=24*60*60*1000;
     }
     state_goto_timeout=LORAWAN_JOIN_START;
     // transition
     if(lorawan_joined()){
-      state_transition(GENERAL_INIT);
+      state_transition(MODULE_INIT);
       lora_join_fail_count=0;
-      // LED diode
-      digitalWrite(LED_RED,LOW);
     }
     else{
       sleep=5000;
     }
     break;
-  case GENERAL_INIT:
+  case MODULE_INIT:
     // defaults for timing out
     state_timeout_duration=10000;
     state_goto_timeout=IDLE;
     // setup default settings
-    status_init(); // currently does not report a fail, should not be possible anyhow
-    // Accelerometer
-    accelerometer_init();
-    status_send_flag = true;
+
+    // initialize modules and apply settings to them
+    state_transition(APPLY_SETTINGS);
+    break;
+  case APPLY_SETTINGS:
+    // defaults for timing out
+    state_timeout_duration=10000;
+    state_goto_timeout=IDLE;
+    // setup default settings
+
+    // initialize modules and apply settings to them
+
     // transition
     if(true){
-      state_transition(SETTINGS_SEND);
+      state_transition(IDLE);
     }
     break;
   case IDLE:
     // defaults for timing out
     state_timeout_duration=25*60*60*1000; // 25h maximum
     state_goto_timeout=INIT;
-    // LED diode
-    digitalWrite(LED_RED,LOW);
-    
-    checkReed();
-    if(reed_switch){
-      // Resets the system, expect goign straight to Hiberantion
-      STM32L0.reset();
-    }
-    // transition based on triggers
-    else if(settings_updated|status_send_flag|gps_send_flag|rf_send_flag){
-      if(settings_updated==true){
-        state_transition(GENERAL_INIT);
-        settings_updated=false;
-      }
-      else if(status_send_flag==true){
-        state_transition(STATUS_SEND);
-        status_send_flag=false;
-      }
-      else if(gps_send_flag==true){
-        state_transition(GPS_START);
-        gps_send_flag=false;
-      }
-      else if(rf_send_flag==true){
-        state_transition(RF_SEND);
-        rf_send_flag=false;
-      }
-      else{
-        // This should never happen
-      }
+
+    if(true){
+    // check if any modules has flagged the requirement to be serviced or data sent
     }
     else{
       // sleep until an event is generated
@@ -350,73 +250,17 @@ void loop() {
       sleep=1000;
     }
     break;
-  case STATUS_SEND:
+  case MODULE_SEND:
     // defaults for timing out
     state_timeout_duration=2000;
     state_goto_timeout=IDLE;
     // transition
-    if(status_send()){
+    // TODO> prepare module for sending and do so if success
+    if(true){
       state_transition(LORAWAN_TRANSMIT);
     }
     else{
       sleep=1000;
-    }
-    break;
-  case RF_SEND:
-    // defaults for timing out
-    state_timeout_duration=1000;
-    state_goto_timeout=IDLE;
-    // transition
-    if(rf_send()){
-      state_transition(LORAWAN_TRANSMIT);
-    }
-    else{
-      sleep=1000;
-    }
-    break;
-  case GPS_START:
-    // defaults for timing out
-    state_timeout_duration=0;
-    state_goto_timeout=GPS_SEND;
-    //if gps started continue
-    if(gps_start()){
-      state_transition(GPS_READ);
-    }
-    else{
-      state_transition(STATUS_SEND);
-    }
-    break;
-  case GPS_READ:
-    // defaults for timing out
-    state_timeout_duration=610*1000;
-    state_goto_timeout=GPS_SEND;
-    //if gps started continue
-    if(gps_done==true){
-      //if GPS error, send status
-      if(status_packet.data.system_functions_errors&0x03){
-        // send status instead of GPS
-        status_send_flag=true;
-        state_transition(IDLE);
-      }
-      else{
-        state_transition(GPS_SEND);
-      }
-    }
-    else{
-      sleep=4000;
-    }
-    break;
-  case GPS_SEND:
-    // defaults for timing out
-    state_timeout_duration=2000;
-    state_goto_timeout=IDLE;
-    // transition
-    if(gps_send()){
-      state_transition(LORAWAN_TRANSMIT);
-    }
-    else{
-      // sleep for 1 second and check
-     sleep=1000;
     }
     break;
   case LORAWAN_TRANSMIT:
@@ -438,17 +282,7 @@ void loop() {
     state_timeout_duration=24*60*60*1000; // 24h maximum
     state_goto_timeout=INIT;
     // action
-    checkReed();
-    if(reed_switch==false){
-      state_transition(INIT);
-      // Trigger all events
-      gps_send_flag = true;
-      status_send_flag = true;
-      gps_send_flag = true;
-    }
-    else{
-      sleep=60000; // until an event
-    }
+    sleep=60000; // until an event
     break;
   default:
     state=IDLE;
@@ -457,7 +291,7 @@ void loop() {
 
   // check if the existing state has timed out and transition to next state
   if(state_check_timeout()){
-    #ifdef debug
+    #ifdef serial_debug
       serial_debug.print("timeout(");
       serial_debug.print(state);
       serial_debug.println(")");

@@ -5,11 +5,7 @@
 #include <LoRaWAN.h>
 #include <STM32L0.h>
 #include "settings.h"
-#include "command.h"
 #include <TimerMillis.h>
-#include "board.h"
-#include "status.h"
-#include "rf_testing.h"
 
 extern boolean lorawan_send_successful;
 

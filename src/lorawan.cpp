@@ -76,19 +76,19 @@ boolean lorawan_init(void){
  * @return boolean 
  */
 boolean lorawan_send(uint8_t port, const uint8_t *buffer, size_t size){
-  #ifdef debug
+  #ifdef serial_debug
     serial_debug.println("lorawan_send() init");
   #endif
   int response = 0; 
   if (!LoRaWAN.joined()) {
-    #ifdef debug
+    #ifdef serial_debug
       serial_debug.println("lorawan_send() not joined");
     #endif
     return false;
   }
 
   if (LoRaWAN.busy()) {
-    #ifdef debug
+    #ifdef serial_debug
       serial_debug.println("lorawan_send() busy");
     #endif
     return false;
@@ -96,7 +96,7 @@ boolean lorawan_send(uint8_t port, const uint8_t *buffer, size_t size){
 
   LoRaWAN.setADR(settings_packet.data.lorawan_datarate_adr>>7);
   LoRaWAN.setDataRate(settings_packet.data.lorawan_datarate_adr&0x0f);
-  #ifdef debug
+  #ifdef serial_debug
     serial_debug.print("lorawan_send( ");
     serial_debug.print("TimeOnAir: ");
     serial_debug.print(LoRaWAN.getTimeOnAir());
@@ -121,7 +121,7 @@ boolean lorawan_send(uint8_t port, const uint8_t *buffer, size_t size){
   // int sendPacket(uint8_t port, const uint8_t *buffer, size_t size, bool confirmed = false);
   response = LoRaWAN.sendPacket(port, buffer, size, false);
   if(response>0){
-    #ifdef debug
+    #ifdef serial_debug
       serial_debug.println("lorawan_send() sendPacket");
     #endif
     lorawan_send_successful = false;
@@ -138,14 +138,14 @@ void lorawan_joinCallback(void)
 {
     if (LoRaWAN.joined())
     {
-      #ifdef debug
+      #ifdef serial_debug
         serial_debug.println("JOINED");
       #endif
       LoRaWAN.setRX2Channel(869525000, 3); // SF12 - 0 for join, then SF 9 - 3, see https://github.com/TheThingsNetwork/ttn/issues/155
     }
     else
     {
-      #ifdef debug
+      #ifdef serial_debug
         serial_debug.println("REJOIN( )");
       #endif
       LoRaWAN.rejoinOTAA();
@@ -168,7 +168,7 @@ boolean lorawan_joined(void)
  */
 void lorawan_checkCallback(void)
 {
-  #ifdef debug
+  #ifdef serial_debug
     serial_debug.print("CHECK( ");
     serial_debug.print("RSSI: ");
     serial_debug.print(LoRaWAN.lastRSSI());
@@ -188,7 +188,7 @@ void lorawan_checkCallback(void)
  */
 void lorawan_receiveCallback(void)
 {
-  #ifdef debug
+  #ifdef serial_debug
     serial_debug.print("RECEIVE( ");
     serial_debug.print("RSSI: ");
     serial_debug.print(LoRaWAN.lastRSSI());
@@ -204,42 +204,25 @@ void lorawan_receiveCallback(void)
 
     if (size)
     {
-        data[size] = '\0';
-        #ifdef debug
-            serial_debug.print(", PORT: ");
-            serial_debug.print(LoRaWAN.remotePort());
-            serial_debug.print(", SIZE: \"");
-            serial_debug.print(size);
-            serial_debug.print("\"");
-            serial_debug.println(" )");
-        #endif
+      data[size] = '\0';
+      #ifdef serial_debug
+          serial_debug.print(", PORT: ");
+          serial_debug.print(LoRaWAN.remotePort());
+          serial_debug.print(", SIZE: \"");
+          serial_debug.print(size);
+          serial_debug.print("\"");
+          serial_debug.println(" )");
+      #endif
 
-        //handle settings
-        if(LoRaWAN.remotePort()==settings_get_packet_port()){
-            //check if length is correct
-            if(size==sizeof(settingsData_t)){
-                // now the settings can be copied into the structure
-                memcpy(&settings_packet_downlink.bytes[0],&data, sizeof(settingsData_t));
-                settings_from_downlink();
-            }
+      //handle settings
+      if(LoRaWAN.remotePort()==settings_get_packet_port()){
+        //check if length is correct
+        if(size==sizeof(settingsData_t)){
+            // now the settings can be copied into the structure
+            memcpy(&settings_packet_downlink.bytes[0],&data, sizeof(settingsData_t));
+            settings_from_downlink();
         }
-        //handle rf testing
-        if(LoRaWAN.remotePort()==rf_vswr_port){
-            //check if length is correct
-            if(size==sizeof(rf_settingsData_t)){
-                // now the settings can be copied into the structure
-                memcpy(&rf_settings_packet.bytes[0],&data, sizeof(rf_settingsData_t));
-                rf_send_flag=true;
-            }
-        }
-        //handle commands
-        if(LoRaWAN.remotePort()==command_get_packet_port()){
-            //check if length is correct, single byte expected
-            if(size==1){
-                // now the settings can be copied into the structure
-                command_receive(data[0]);
-            }
-        }
+      }
     }
   }
 }
@@ -250,13 +233,13 @@ void lorawan_receiveCallback(void)
  */
 void lorawan_doneCallback(void)
 {
-  #ifdef debug
+  #ifdef serial_debug
     serial_debug.println("DONE()");
   #endif
 
   if (!LoRaWAN.linkGateways())
   {
-    #ifdef debug
+    #ifdef serial_debug
       serial_debug.println("DISCONNECTED");
     #endif
   }
