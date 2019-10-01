@@ -82,3 +82,8 @@ Measured consumption 30uA on average, excludes sending Lora messages, expecting 
 1. Evaluate power
 1. Clean-up
 
+
+
+# useful
+
+https://stackoverflow.com/questions/15638612/calculating-mean-and-standard-deviation-of-the-data-which-does-not-fit-in-memory

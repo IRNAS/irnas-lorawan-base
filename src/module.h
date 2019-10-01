@@ -3,12 +3,29 @@
 
 // module includes
 #include <Arduino.h>
+//#include "module_system.h"
+
+enum module_flags_e {
+	M_IDLE,
+	M_READ,
+	M_SEND,
+	M_ERROR
+};
 
 // virtual module class
 class module {
 public:
 	virtual ~module() {};
 	virtual String getName() {};
+	uint8_t get_global_id() {};
+	virtual module_flags_e get_flags(void){};
+	virtual uint8_t set_settings(uint16_t *data, uint16_t length){};
+	virtual uint8_t set_downlink_data(uint16_t *data, uint16_t length){};
+	virtual module_flags_e scheduler(void){};
+	virtual uint8_t initialize(void){};
+	virtual uint8_t send(uint8_t *data, size_t *size){};
+	virtual uint8_t read(void){};
+	virtual void print_data(void){};
 };
 
 //Tempalate module class
@@ -26,8 +43,8 @@ public:
 	 * @param param_b 
 	 * @param param_c 
 	 */
-	myModule(uint8_t id, uint8_t param_a, uint8_t param_b, uint8_t param_c) {
-		global_id = id;
+	myModule(uint8_t id, uint8_t param_a = 0, uint8_t param_b = 0, uint8_t param_c = 0) {
+		module.global_id = id;
 		module.param_a=param_a;
 		module.param_b=param_b;
 		module.param_c=param_c;
@@ -43,12 +60,21 @@ public:
 	};
 
 	/**
+	 * @brief Get the global id object
+	 * 
+	 * @return uint8_t 
+	 */
+	uint8_t get_global_id(){
+		return module.global_id;
+	}
+
+	/**
 	 * @brief Get the flags object - universal method for module to triger global actions
 	 * 
-	 * @return uint8_t flag value
+	 * @return module_flags_e flag value
 	 */
-	uint8_t get_flags(void){
-		return module.get_flags;
+	module_flags_e get_flags(void){
+		return module.flags;
 	}
 
 	/**
@@ -76,9 +102,9 @@ public:
 	/**
 	 * @brief scheduler object with the purpose of triggering internal functions of the module
 	 * 
-	 * @return uint8_t response
+	 * @return module_flags_e response
 	 */
-	uint8_t scheduler() {
+	module_flags_e scheduler(void) {
 		return module.scheduler();
 	};
 
@@ -87,7 +113,7 @@ public:
 	 * 
 	 * @return uint8_t 
 	 */
-	uint8_t initialize(){
+	uint8_t initialize(void){
 		return module.initialize();
 	}
 	
@@ -96,12 +122,29 @@ public:
 	 * 
 	 * @return uint8_t 
 	 */
-	uint8_t send(){
-		return module.send();
+	uint8_t send(uint8_t *data, size_t *size){
+		return module.send(data, size);
 	}
+
+	/**
+	 * @brief performs reading of the values/sensors
+	 * 
+	 * @return uint8_t 
+	 */
+	uint8_t read(void){
+		return module.read();
+	}
+
+	/**
+	 * @brief print data of the module
+	 * 
+	 */
+	void print_data(void){
+		module.print_data();
+	}
+
+
 private:
-	// globally unique id, corresponds typically to LoRaWAN port
-	uint8_t global_id;
 
 };
 

@@ -1,7 +1,6 @@
 #include "lorawan.h"
 
-//#define debug
-//#define serial_debug  Serial
+#define serial_debug  Serial
 
 //#define LORAWAN_ABP
 #define LORAWAN_OTAA
@@ -15,9 +14,9 @@ const char *appSKey = "74A22F5287DAA0A6AA9639B32A721190";
 
 #ifdef LORAWAN_OTAA
 // LoraWAN ABP configuration
-const char *appEui  = "70B3D57ED001CC77";
-const char *appKey  = "003FF34E9F1C8864953D78DCFBBC84F8";
-char devEui[32]; // read from the processor
+const char *appEui  = "70B3D57ED0022A92";
+const char *appKey  = "6EAFE1A9D64C6FA2F627C09451A0CDA5";
+const char *devEui  = "004E970288420117";
 #endif
 
 boolean lorawan_send_successful = false; // flags sending has been successful to the FSM
@@ -41,7 +40,7 @@ boolean lorawan_init(void){
   LoRaWAN.addChannel(8, 867900000, 0, 5);
   LoRaWAN.setDutyCycle(false);
   // LoRaWAN.setAntennaGain(2.0);
-  LoRaWAN.setTxPower(20);
+  LoRaWAN.setTxPower(settings_packet.data.lorawan_txp);
   
   LoRaWAN.onJoin(lorawan_joinCallback);
   LoRaWAN.onLinkCheck(lorawan_checkCallback);
@@ -50,12 +49,12 @@ boolean lorawan_init(void){
 
   #ifdef LORAWAN_OTAA
   //Get the device ID
-  LoRaWAN.getDevEui(devEui, 18);
+  //LoRaWAN.getDevEui(devEui, 18);
   LoRaWAN.setSaveSession(true); // this will save the session for reboot, useful if reboot happens with in poor signal conditons
   //LoRaWAN.setLinkCheckLimit(48); // number of uplinks link check is sent, 5 for experimenting, 48 otherwise
   //LoRaWAN.setLinkCheckDelay(4); // number of uplinks waiting for an answer, 2 for experimenting, 4 otherwise
   //LoRaWAN.setLinkCheckThreshold(4); // number of times link check fails to assert link failed, 1 for experimenting, 4 otherwise
-  LoRaWAN.joinOTAA(appEui, appKey, devEui);
+  serial_debug.println(LoRaWAN.joinOTAA(appEui, appKey, devEui));
   #endif
 
   #ifdef LORAWAN_ABP
@@ -94,8 +93,8 @@ boolean lorawan_send(uint8_t port, const uint8_t *buffer, size_t size){
     return false;
   }
 
-  LoRaWAN.setADR(settings_packet.data.lorawan_datarate_adr>>7);
-  LoRaWAN.setDataRate(settings_packet.data.lorawan_datarate_adr&0x0f);
+  LoRaWAN.setADR(settings_packet.data.lorawan_adr);
+  LoRaWAN.setDataRate(settings_packet.data.lorawan_datarate);
   #ifdef serial_debug
     serial_debug.print("lorawan_send( ");
     serial_debug.print("TimeOnAir: ");

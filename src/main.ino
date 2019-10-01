@@ -3,8 +3,29 @@
 #include "board.h"
 #include "lorawan.h"
 #include "project_utils.h"
-
+#include "module.h"
+//include modules
+#include "module_system.h"
+// Define debug if required
 #define serial_debug  Serial
+
+// Default system module
+module *s_SYSTEM = new myModule<MODULE_SYSTEM>(0);
+
+// Array of modules to be loaded - project specific
+module *modules[] = {s_SYSTEM};
+int n_modules= 1;
+
+// General system variables
+
+int active_module = -1;
+
+// Last packet buffer
+
+uint8_t last_packet[51]; // 51 is the max packet size supported
+size_t last_packet_size;
+uint8_t last_packet_port;
+unsigned long last_packet_time;
 
 enum state_e{
   INIT,
@@ -15,6 +36,7 @@ enum state_e{
   APPLY_SETTINGS,
   IDLE,
   SETTINGS_SEND,
+  MODULE_READ,
   MODULE_SEND,
   LORAWAN_TRANSMIT,
   HIBERNATION
@@ -40,19 +62,7 @@ bool state_check_timeout(void);
  * 
  */
 boolean callbackPeriodic(void){
-  //periodic.start(callbackPeriodic, 5000);
   STM32L0.wdtReset();
-  
-  /*#ifdef serial_debug
-    serial_debug.print("wdt(): ");
-    serial_debug.println(millis());
-  #endif*/
-
-  // determine which events need to be scheduled, except in hibernation
-  if(state!=HIBERNATION){
-    //TODO call scheduler events of all modules
-  }
-
   // if the main loop is running and not sleeping
   if(event_loop_start!=0){
     unsigned long elapsed = millis()-event_loop_start;
@@ -62,9 +72,22 @@ boolean callbackPeriodic(void){
     }
   }
 
-  // check all modules for flags that indicate activity
+  // iterate through modules and check flags for activity requested
+  boolean wakeup_needed = false;
+  for (size_t count = 0; count < n_modules; count++){
+    module_flags_e flag = modules[count]->scheduler();
+    if(flag!=M_IDLE){
+      wakeup_needed= true;
+    }
+  }
 
-  return false;
+  // wake up the system if required
+  if (wakeup_needed){
+    return true;
+  }
+  else{
+    return false;
+  }
 }
 
 /**
@@ -72,9 +95,7 @@ boolean callbackPeriodic(void){
  * 
  */
 void state_transition(state_e next){
-  // mark the time state has been entered
   state_timeout_start = millis();
-  // move to the following state
   state=next;
 }
 
@@ -83,16 +104,16 @@ void state_transition(state_e next){
  * 
  */
 bool state_check_timeout(void){
-  // timeout can be disabled
   if(state_timeout_duration==0){
     return false;
   }
   unsigned long elapsed = millis()-state_timeout_start;
-  //check if we have been in the existing state too long
   if(elapsed >=state_timeout_duration){
     return true;
   }
-  return false;
+  else{
+    return false;
+  }
 }
 
 /**
@@ -100,22 +121,17 @@ bool state_check_timeout(void){
  * 
  */
 void setup() {
-  //STM32L0.stop(60000); //limits the reboot continuous cycle from happening for any reason, likely low battery
-  // Watchdog
   STM32L0.wdtEnable(18000);
   analogReadResolution(12);
 
   // Serial port debug setup
   #ifdef serial_debug
     serial_debug.begin(115200);
-  #endif
-  #ifdef serial_debug
     serial_debug.print("setup(serial debug begin): ");
     serial_debug.print("resetCause: ");
     serial_debug.println(STM32L0.resetCause(),HEX);
   #endif
 
-  // start the FSM with LoraWAN init
   state = INIT;
 }
 
@@ -136,12 +152,12 @@ void loop() {
     serial_debug.println(")");
     serial_debug.flush();
   #endif
+
   sleep = -1; // reset the sleep after loop, set in every state if required
   event_loop_start = millis(); // start the timer of the loop
-  callbackPeriodic();
-
   // update prevous state
   state_prev=state;
+
   // FSM implementaiton for clarity of process loop
   switch (state)
   {
@@ -149,7 +165,6 @@ void loop() {
     // defaults for timing out
     state_timeout_duration=0;
     state_goto_timeout=INIT;
-    // LED diode
     // setup default settings
     settings_init();
     // load settings, currently can not return an error, thus proceed directly
@@ -159,8 +174,6 @@ void loop() {
     // defaults for timing out
     state_timeout_duration=1000;
     state_goto_timeout=INIT;
-    // transition
-    // if initialization successful, move forward
     if(lorawan_init()){
       state_transition(LORAWAN_JOIN_START);
     }
@@ -206,33 +219,41 @@ void loop() {
     // defaults for timing out
     state_timeout_duration=10000;
     state_goto_timeout=IDLE;
-    // setup default settings
-
-    // initialize modules and apply settings to them
+    for (size_t count = 0; count < n_modules; count++){
+      modules[count]->initialize();
+    }
     state_transition(APPLY_SETTINGS);
     break;
   case APPLY_SETTINGS:
     // defaults for timing out
     state_timeout_duration=10000;
     state_goto_timeout=IDLE;
-    // setup default settings
-
-    // initialize modules and apply settings to them
-
-    // transition
-    if(true){
-      state_transition(IDLE);
-    }
+    // TODO
+    state_transition(IDLE);
     break;
   case IDLE:
     // defaults for timing out
     state_timeout_duration=25*60*60*1000; // 25h maximum
     state_goto_timeout=INIT;
 
-    if(true){
-    // check if any modules has flagged the requirement to be serviced or data sent
+    for (size_t count = 0; count < n_modules; count++){
+      module_flags_e flag = modules[count]->get_flags();
+      flag=M_SEND;
+      // order is important as send has priority over read
+      if (flag==M_SEND){
+        state_transition(MODULE_SEND);
+        active_module=count;
+        break;
+      }
+      else if (flag==M_READ){
+        state_transition(MODULE_READ);
+        active_module=count;
+        break;
+      }
+      //TODO handle other flags
     }
-    else{
+
+    if(active_module==-1){
       // sleep until an event is generated
       sleep=0;
     }
@@ -250,17 +271,45 @@ void loop() {
       sleep=1000;
     }
     break;
-  case MODULE_SEND:
+  case MODULE_READ:
     // defaults for timing out
     state_timeout_duration=2000;
     state_goto_timeout=IDLE;
     // transition
     // TODO> prepare module for sending and do so if success
-    if(true){
-      state_transition(LORAWAN_TRANSMIT);
+    if(modules[active_module]->read()){
+      state_transition(IDLE);
+      active_module=-1;
     }
     else{
       sleep=1000;
+    }
+    break;
+  case MODULE_SEND:
+    {
+    // defaults for timing out
+    state_timeout_duration=2000;
+    state_goto_timeout=IDLE;
+    // transition
+    uint8_t *data = &last_packet[0];
+    size_t *size = &last_packet_size;
+    last_packet_port=modules[active_module]->get_global_id();
+    last_packet_time=millis();
+    if(modules[active_module]->send(data,size)){
+      #ifdef serial_debug
+        serial_debug.print(modules[active_module]->getName());
+        serial_debug.print(": send(");
+        serial_debug.print(modules[active_module]->get_global_id());
+        serial_debug.println(")");
+      #endif
+
+      //lorawan_send(last_packet_port,&last_packet[0],last_packet_size);
+      state_transition(LORAWAN_TRANSMIT);
+      active_module=-1;
+    }
+    else{
+      sleep=1000;
+    }
     }
     break;
   case LORAWAN_TRANSMIT:
@@ -316,7 +365,6 @@ void loop() {
 
 void system_sleep(unsigned long sleep){
   unsigned long remaining_sleep = sleep;
-  callbackPeriodic();
   while(remaining_sleep>0){
     if(remaining_sleep>5000){
       remaining_sleep=remaining_sleep-5000;
@@ -326,9 +374,10 @@ void system_sleep(unsigned long sleep){
       STM32L0.stop(remaining_sleep);
       remaining_sleep=0;
     }
-    //wake-up
+    // wake-up if event generated
     if(callbackPeriodic()){
       return;
     }
+
   }
 }

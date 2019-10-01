@@ -2,10 +2,8 @@
 
 //#define debug
 //#define serial_debug  Serial
-//#define FORCE_DEFAULT_SETTINGS // TODO: remove for production
+#define FORCE_DEFAULT_SETTINGS // TODO: remove for production
 
-boolean settings_send_flag = false;
-boolean settings_updated = false;
 settingsPacket_t settings_packet;
 settingsPacket_t settings_packet_downlink;
 
@@ -26,21 +24,10 @@ uint8_t settings_get_packet_port(void){
  */
 void settings_init(void){
     //default settings
-    settings_packet.data.system_status_interval=1;
-    settings_packet.data.system_functions=0xff;
-    settings_packet.data.lorawan_datarate_adr=3;
-    settings_packet.data.gps_periodic_interval=1;
-    settings_packet.data.gps_triggered_interval=0;
-    settings_packet.data.gps_triggered_threshold=0x0f;
-    settings_packet.data.gps_triggered_duration=0xff;
-    settings_packet.data.gps_cold_fix_timeout=200;
-    settings_packet.data.gps_hot_fix_timeout=30;
-    settings_packet.data.gps_min_fix_time=5;
-    settings_packet.data.gps_min_ehpe=50;
-    settings_packet.data.gps_hot_fix_retry=5;
-    settings_packet.data.gps_cold_fix_retry=2;
-    settings_packet.data.gps_fail_retry=0; //must be 0 due to bug in GPS core
-    settings_packet.data.gps_settings=0b00001101;
+    settings_packet.data.lorawan_adr=0;
+    settings_packet.data.lorawan_datarate=3;
+    settings_packet.data.lorawan_txp=20;
+
     //check if valid settings present in eeprom 
     uint8_t eeprom_settings_address = EEPROM_DATA_START_SETTINGS;
     #ifndef FORCE_DEFAULT_SETTINGS
@@ -48,7 +35,6 @@ void settings_init(void){
         for(int i=0;i<sizeof(settingsData_t);i++){
             settings_packet.bytes[i]=EEPROM.read(eeprom_settings_address+1+i);
         }
-        //EEPROM.get(eeprom_settings_address,settings_packet.bytes); // does not work on the byte array
     }
     #endif
 
@@ -65,33 +51,9 @@ void settings_from_downlink(void)
 {
     // perform validation
     // copy to main settings
-    settings_packet.data.system_status_interval=constrain(settings_packet_downlink.data.system_status_interval, 1, 24*60);
-    settings_packet.data.system_functions=constrain(settings_packet_downlink.data.system_functions, 0,0xff);
-    settings_packet.data.lorawan_datarate_adr=constrain(settings_packet_downlink.data.lorawan_datarate_adr, 0, 0xff);
-    settings_packet.data.gps_periodic_interval=constrain(settings_packet_downlink.data.gps_periodic_interval, 0, 24*60);
-    settings_packet.data.gps_triggered_interval=constrain(settings_packet_downlink.data.gps_triggered_interval, 0, 24*60);
-    settings_packet.data.gps_triggered_threshold=constrain(settings_packet_downlink.data.gps_triggered_threshold, 0,0x3f);
-    settings_packet.data.gps_triggered_duration=constrain(settings_packet_downlink.data.gps_triggered_duration, 0,0xff);
-    settings_packet.data.gps_cold_fix_timeout=constrain(settings_packet_downlink.data.gps_cold_fix_timeout, 0,600);
-    settings_packet.data.gps_hot_fix_timeout=constrain(settings_packet_downlink.data.gps_hot_fix_timeout, 0,600);
-    settings_packet.data.gps_min_fix_time=constrain(settings_packet_downlink.data.gps_min_fix_time, 0,60);
-    settings_packet.data.gps_min_ehpe=constrain(settings_packet_downlink.data.gps_min_ehpe, 0,100);
-    settings_packet.data.gps_hot_fix_retry=constrain(settings_packet_downlink.data.gps_hot_fix_retry, 0,0xff);
-    settings_packet.data.gps_cold_fix_retry=constrain(settings_packet_downlink.data.gps_cold_fix_retry, 0,0xff);
-    settings_packet.data.gps_fail_retry=constrain(settings_packet_downlink.data.gps_fail_retry, 0,0xff); //must be 1 due to bug in GPS core
-    settings_packet.data.gps_settings=constrain(settings_packet_downlink.data.gps_settings, 0,0xff);
-
-    // Checks against stupid configurations
-
-    // Hot-fix timeout should not be smaller then the cold-fix timeout
-    if(settings_packet.data.gps_hot_fix_timeout>settings_packet.data.gps_cold_fix_timeout){
-        settings_packet.data.gps_hot_fix_timeout=settings_packet.data.gps_cold_fix_timeout;
-    }
-
-    // Min fix time should not be greater the hot fix time
-    if(settings_packet.data.gps_min_fix_time>settings_packet.data.gps_hot_fix_timeout){
-        settings_packet.data.gps_min_fix_time=settings_packet.data.gps_hot_fix_timeout;
-    }
+    settings_packet.data.lorawan_adr=constrain(settings_packet_downlink.data.lorawan_adr, 0, 1);
+    settings_packet.data.lorawan_datarate=constrain(settings_packet_downlink.data.lorawan_datarate, 0, 5);
+    settings_packet.data.lorawan_txp=constrain(settings_packet_downlink.data.lorawan_txp, 0, 20);
 
     uint8_t eeprom_settings_address = EEPROM_DATA_START_SETTINGS;
     EEPROM.write(eeprom_settings_address,0xab);
@@ -99,7 +61,6 @@ void settings_from_downlink(void)
         EEPROM.write(eeprom_settings_address+1+i,settings_packet.bytes[i]);
     }
     //EEPROM.put(eeprom_settings_address,settings_packet.bytes); // does not work on the byte array
-    settings_updated = true;
 }
 
 /**

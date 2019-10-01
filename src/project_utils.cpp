@@ -38,3 +38,26 @@ uint32_t get_bits(float x, float min, float max, int precision){
   uint32_t out_x = x * new_range;
   return out_x;
 }
+
+// Implemented based on https://stackoverflow.com/questions/15638612/calculating-mean-and-standard-deviation-of-the-data-which-does-not-fit-in-memory
+
+void push_value(float value,reading_structure_t *values){
+  values->r_count++;
+  float delta = value - values->r_mean;
+  values->r_mean += delta/values->r_count;
+  values->r_m2+= delta*(value - values->r_mean);
+  values->r_min=min(values->r_min,value);
+  values->r_max=max(values->r_max,value);
+}
+
+float get_variance(reading_structure_t *values){
+  return values->r_m2/(values->r_count-1);
+}
+
+void clear_value(reading_structure_t *values){
+  values->r_min=0;
+  values->r_max=0;
+  values->r_mean=0;
+  values->r_count=0;
+  values->r_m2=0;
+}
