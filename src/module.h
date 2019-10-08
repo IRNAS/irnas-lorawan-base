@@ -9,6 +9,7 @@ enum module_flags_e {
 	M_IDLE,
 	M_READ,
 	M_SEND,
+	M_RUNNING,
 	M_ERROR
 };
 
@@ -17,7 +18,7 @@ class module {
 public:
 	virtual ~module() {};
 	virtual String getName() {};
-	uint8_t get_global_id() {};
+	virtual uint8_t get_global_id() {};
 	virtual module_flags_e get_flags(void){};
 	virtual uint8_t set_settings(uint16_t *data, uint16_t length){};
 	virtual uint8_t set_downlink_data(uint16_t *data, uint16_t length){};
@@ -25,6 +26,7 @@ public:
 	virtual uint8_t initialize(void){};
 	virtual uint8_t send(uint8_t *data, size_t *size){};
 	virtual uint8_t read(void){};
+	virtual void running(void){};
 	virtual void print_data(void){};
 };
 
@@ -44,7 +46,7 @@ public:
 	 * @param param_c 
 	 */
 	myModule(uint8_t id, uint8_t param_a = 0, uint8_t param_b = 0, uint8_t param_c = 0) {
-		module.global_id = id;
+		global_id = id;
 		module.param_a=param_a;
 		module.param_b=param_b;
 		module.param_c=param_c;
@@ -56,7 +58,7 @@ public:
 	 * @return String 
 	 */
 	String get_name(void) {
-		return module.name;
+		return "name";//module.name;
 	};
 
 	/**
@@ -65,7 +67,7 @@ public:
 	 * @return uint8_t 
 	 */
 	uint8_t get_global_id(){
-		return module.global_id;
+		return global_id;
 	}
 
 	/**
@@ -136,6 +138,15 @@ public:
 	}
 
 	/**
+	 * @brief performs running of the values/sensors
+	 * 
+	 * @return uint8_t 
+	 */
+	void running(void){
+		module.running();
+	}
+
+	/**
 	 * @brief print data of the module
 	 * 
 	 */
@@ -145,7 +156,7 @@ public:
 
 
 private:
-
+	uint8_t global_id=3;
 };
 
 #endif

@@ -6,15 +6,17 @@
 #include "module.h"
 //include modules
 #include "module_system.h"
+#include "module_gps_ublox.h"
 // Define debug if required
 #define serial_debug  Serial
 
 // Default system module
-module *s_SYSTEM = new myModule<MODULE_SYSTEM>(0);
+module *s_SYSTEM = new myModule<MODULE_SYSTEM>(1); // global id 1
+module *s_GPS = new myModule<MODULE_GPS_UBLOX>(2); // global id 2
 
 // Array of modules to be loaded - project specific
-module *modules[] = {s_SYSTEM};
-int n_modules= 1;
+module *modules[] = {s_SYSTEM,s_GPS};
+int n_modules= 2;
 
 // General system variables
 
@@ -76,7 +78,7 @@ boolean callbackPeriodic(void){
   boolean wakeup_needed = false;
   for (size_t count = 0; count < n_modules; count++){
     module_flags_e flag = modules[count]->scheduler();
-    if(flag!=M_IDLE){
+    if((flag!=M_IDLE)&(flag!=M_ERROR)){
       wakeup_needed= true;
     }
   }
@@ -238,9 +240,16 @@ void loop() {
 
     for (size_t count = 0; count < n_modules; count++){
       module_flags_e flag = modules[count]->get_flags();
-      flag=M_SEND;
       // order is important as send has priority over read
-      if (flag==M_SEND){
+      if (flag==M_RUNNING){
+        //run the module
+        modules[count]->running();
+        active_module=count;
+        sleep=500; // keep iterating every 500s
+        // TODO: timeout
+        break;
+      }
+      else if (flag==M_SEND){
         state_transition(MODULE_SEND);
         active_module=count;
         break;
@@ -293,17 +302,19 @@ void loop() {
     // transition
     uint8_t *data = &last_packet[0];
     size_t *size = &last_packet_size;
+
     last_packet_port=modules[active_module]->get_global_id();
     last_packet_time=millis();
     if(modules[active_module]->send(data,size)){
       #ifdef serial_debug
-        serial_debug.print(modules[active_module]->getName());
+        // this below does not return the right values, problem with name and string
+        /*serial_debug.print(modules[active_module]->getName());
         serial_debug.print(": send(");
         serial_debug.print(modules[active_module]->get_global_id());
-        serial_debug.println(")");
+        serial_debug.println(")");*/
       #endif
 
-      //lorawan_send(last_packet_port,&last_packet[0],last_packet_size);
+      lorawan_send(last_packet_port,&last_packet[0],last_packet_size);
       state_transition(LORAWAN_TRANSMIT);
       active_module=-1;
     }

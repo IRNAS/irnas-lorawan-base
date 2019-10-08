@@ -1,9 +1,9 @@
 #include "lorawan.h"
 
-#define serial_debug  Serial
+//#define serial_debug  Serial
 
-//#define LORAWAN_ABP
-#define LORAWAN_OTAA
+#define LORAWAN_ABP
+//#define LORAWAN_OTAA
 
 #ifdef LORAWAN_ABP
 // LoraWAN ABP configuration
@@ -125,6 +125,13 @@ boolean lorawan_send(uint8_t port, const uint8_t *buffer, size_t size){
     #endif
     lorawan_send_successful = false;
     return true;
+  }
+  else{
+    #ifdef serial_debug
+      serial_debug.print("lorawan_send failed (");
+      serial_debug.print(response);
+      serial_debug.println(")");
+    #endif
   }
   return false;
 }

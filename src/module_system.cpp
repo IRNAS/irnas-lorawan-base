@@ -1,6 +1,6 @@
 #include "module_system.h"
 
-#define serial_debug Serial
+//#define serial_debug Serial
 uint8_t MODULE_SYSTEM::set_settings(uint16_t *data, uint16_t length){
 
 }
@@ -12,24 +12,24 @@ uint8_t MODULE_SYSTEM::set_downlink_data(uint16_t *data, uint16_t length){
 module_flags_e MODULE_SYSTEM::scheduler(void){
 
   unsigned long elapsed = millis()-read_timestamp;
-  if(elapsed>=(settings_packet.data.read_interval*1000)){
+  if((settings_packet.data.read_interval!=0) & (elapsed>=(settings_packet.data.read_interval*1000))){
     if (flags==M_IDLE){
         read_timestamp=millis();
         flags=M_READ;
     }
-    #ifdef debug
+    #ifdef serial_debug
       serial_debug.print("scheduler(");
       serial_debug.println("_read_values)");
     #endif
   }
 
   elapsed = millis()-send_timestamp;
-  if(elapsed>=(settings_packet.data.send_interval*60*1000)){
+  if((settings_packet.data.send_interval!=0) & (elapsed>=(settings_packet.data.send_interval*60*1000))){
     if (flags==M_IDLE){
         send_timestamp=millis();
         flags=M_SEND;
     }
-    #ifdef debug
+    #ifdef serial_debug
       serial_debug.print("scheduler(");
       serial_debug.println("send)");
     #endif
@@ -45,6 +45,12 @@ uint8_t MODULE_SYSTEM::initialize(void){
 
 uint8_t MODULE_SYSTEM::send(uint8_t *data, size_t *size){
     //form the readings_packet
+
+    #ifdef serial_debug
+        serial_debug.print(name);
+        serial_debug.print(": send(");
+        serial_debug.println(")");
+    #endif
 
     readings_packet.data.reset_cause=STM32L0.resetCause();
 
@@ -65,8 +71,8 @@ uint8_t MODULE_SYSTEM::send(uint8_t *data, size_t *size){
     readings_packet.data.temperature_max=(uint8_t)get_bits(r_temperature.r_max,-20,80,8);
     clear_value(&r_temperature);
 
-    //memcpy(data,&readings_packet.bytes[0], sizeof(module_readings_data_t));
-    //*size=sizeof(module_readings_data_t);
+    memcpy(data,&readings_packet.bytes[0], sizeof(module_readings_data_t));
+    *size=sizeof(module_readings_data_t);
     flags=M_IDLE;
     return 1;
 }
@@ -129,4 +135,7 @@ uint8_t MODULE_SYSTEM::read(void){
 
     flags=M_IDLE;
     return 1;
+}
+
+uint8_t MODULE_SYSTEM::running(void){
 }
