@@ -1,7 +1,7 @@
 import json
 
 data = {}
-data['system_status_interval'] = 3
+data['system_status_interval'] = 30
 
 system_functions = {}
 system_functions['accelerometer_enabled'] = False

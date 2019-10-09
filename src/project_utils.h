@@ -18,5 +18,7 @@ uint32_t get_bits(float x, float min, float max, int precision);
 void push_value(float value,reading_structure_t *values);
 float get_variance(reading_structure_t *values);
 void clear_value(reading_structure_t *values);
+unsigned int bcd2bin(unsigned char val);
+char bin2bcd(unsigned int val);
 
 #endif /* PROJECT_UTILS_H_ */

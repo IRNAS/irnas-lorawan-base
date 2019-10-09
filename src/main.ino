@@ -7,12 +7,14 @@
 //include modules
 #include "module_system.h"
 #include "module_gps_ublox.h"
+#include "module_pira.h"
 // Define debug if required
 #define serial_debug  Serial
 
 // Default system module
 module *s_SYSTEM = new myModule<MODULE_SYSTEM>(1); // global id 1
 module *s_GPS = new myModule<MODULE_GPS_UBLOX>(2); // global id 2
+module *s_PIRA = new myModule<MODULE_PIRA>(3); // global id 3
 
 // Array of modules to be loaded - project specific
 module *modules[] = {s_SYSTEM,s_GPS};

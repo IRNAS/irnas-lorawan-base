@@ -61,3 +61,27 @@ void clear_value(reading_structure_t *values){
   values->r_count=0;
   values->r_m2=0;
 }
+
+/**
+ * @brief Converts binary coded decimal to binary
+ *
+ * @param[in] val
+ *
+ * @return unsinged int
+ */
+unsigned int bcd2bin(unsigned char val)
+{
+    return (val & 0x0F) + (val >> 4) * 10;
+}
+
+/**
+ * @brief Converts binary to binary coded decimal
+ *
+ * @param[in] val
+ *
+ * @return char
+ */
+char bin2bcd(unsigned int val)
+{
+    return ((val / 10) << 4) + val % 10;
+}
