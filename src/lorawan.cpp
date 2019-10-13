@@ -1,9 +1,9 @@
 #include "lorawan.h"
 
-//#define serial_debug  Serial
+#define serial_debug  Serial
 
-#define LORAWAN_ABP
-//#define LORAWAN_OTAA
+//#define LORAWAN_ABP
+#define LORAWAN_OTAA
 
 #ifdef LORAWAN_ABP
 // LoraWAN ABP configuration
@@ -54,7 +54,7 @@ boolean lorawan_init(void){
   //LoRaWAN.setLinkCheckLimit(48); // number of uplinks link check is sent, 5 for experimenting, 48 otherwise
   //LoRaWAN.setLinkCheckDelay(4); // number of uplinks waiting for an answer, 2 for experimenting, 4 otherwise
   //LoRaWAN.setLinkCheckThreshold(4); // number of times link check fails to assert link failed, 1 for experimenting, 4 otherwise
-  serial_debug.println(LoRaWAN.joinOTAA(appEui, appKey, devEui));
+  LoRaWAN.joinOTAA(appEui, appKey, devEui);
   #endif
 
   #ifdef LORAWAN_ABP
@@ -222,12 +222,7 @@ void lorawan_receiveCallback(void)
 
       //handle settings
       if(LoRaWAN.remotePort()==settings_get_packet_port()){
-        //check if length is correct
-        if(size==sizeof(settingsData_t)){
-            // now the settings can be copied into the structure
-            memcpy(&settings_packet_downlink.bytes[0],&data, sizeof(settingsData_t));
-            settings_from_downlink();
-        }
+        settings_from_downlink(&data[0], sizeof(data));
       }
     }
   }

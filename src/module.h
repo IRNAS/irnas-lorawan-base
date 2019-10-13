@@ -3,7 +3,6 @@
 
 // module includes
 #include <Arduino.h>
-//#include "module_system.h"
 
 enum module_flags_e {
 	M_IDLE,
@@ -20,8 +19,9 @@ public:
 	virtual String getName() {};
 	virtual uint8_t get_global_id() {};
 	virtual module_flags_e get_flags(void){};
-	virtual uint8_t set_settings(uint16_t *data, uint16_t length){};
-	virtual uint8_t set_downlink_data(uint16_t *data, uint16_t length){};
+	virtual uint8_t set_settings(uint8_t *data, uint16_t length){};
+	virtual uint8_t get_settings_length(){};
+	virtual uint8_t set_downlink_data(uint8_t *data, uint16_t length){};
 	virtual module_flags_e scheduler(void){};
 	virtual uint8_t initialize(void){};
 	virtual uint8_t send(uint8_t *data, size_t *size){};
@@ -89,6 +89,15 @@ public:
 	uint8_t set_settings(uint16_t *data, uint16_t length){
 		return module.set_settings(data, length);
 	}
+
+	/**
+	 * @brief Get the settings length object
+	 * 
+	 * @return uint8_t 
+	 */
+	uint8_t get_settings_length(){
+		return module.get_settings_length();
+	};
 
 	/**
 	 * @brief Pass the downlink data to the module

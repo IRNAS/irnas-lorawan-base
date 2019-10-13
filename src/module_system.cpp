@@ -1,11 +1,21 @@
 #include "module_system.h"
 
 //#define serial_debug Serial
-uint8_t MODULE_SYSTEM::set_settings(uint16_t *data, uint16_t length){
 
+uint8_t MODULE_SYSTEM::set_settings(uint8_t *data, uint16_t length){
+    #ifdef serial_debug
+        serial_debug.print(name);
+        serial_debug.print(":scheduler(");
+        serial_debug.println("set_settings)");;
+    #endif
 }
 
-uint8_t MODULE_SYSTEM::set_downlink_data(uint16_t *data, uint16_t length){
+uint8_t MODULE_SYSTEM::get_settings_length(){
+    return sizeof(module_settings_data_t);
+}
+
+
+uint8_t MODULE_SYSTEM::set_downlink_data(uint8_t *data, uint16_t length){
 
 }
 
@@ -18,8 +28,9 @@ module_flags_e MODULE_SYSTEM::scheduler(void){
         flags=M_READ;
     }
     #ifdef serial_debug
-      serial_debug.print("scheduler(");
-      serial_debug.println("_read_values)");
+        serial_debug.print(name);
+        serial_debug.print(":scheduler(");
+        serial_debug.println("_read_values)");
     #endif
   }
 
@@ -30,8 +41,9 @@ module_flags_e MODULE_SYSTEM::scheduler(void){
         flags=M_SEND;
     }
     #ifdef serial_debug
-      serial_debug.print("scheduler(");
-      serial_debug.println("send)");
+        serial_debug.print(name);
+        serial_debug.print(":scheduler(");
+        serial_debug.println("send)");
     #endif
   }
   return flags;

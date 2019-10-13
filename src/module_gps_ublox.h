@@ -5,16 +5,17 @@
 #include "board.h"
 #include "project_utils.h"
 #include "STM32L0.h"
-#include "module.h"
 #include "GNSS.h"
+#include "module.h"
 
 class MODULE_GPS_UBLOX
 {
     public:
 
         // functions
-        uint8_t set_settings(uint16_t *data, uint16_t length);
-        uint8_t set_downlink_data(uint16_t *data, uint16_t length);
+        uint8_t set_settings(uint8_t *data, uint16_t length);
+        uint8_t get_settings_length();
+        uint8_t set_downlink_data(uint8_t *data, uint16_t length);
         module_flags_e scheduler(void);
         uint8_t initialize(void);
         uint8_t send(uint8_t *buffer, size_t *size);
@@ -35,6 +36,8 @@ class MODULE_GPS_UBLOX
 
     // add
         struct module_settings_data_t{
+            uint8_t  global_id;
+            uint8_t  length;
             uint16_t send_interval;         // in minutes
             uint16_t periodic_interval;    // in seconds
             uint16_t triggered_interval;    // in seconds

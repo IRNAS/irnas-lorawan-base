@@ -1,11 +1,39 @@
 #include "module_gps_ublox.h"
 
 #define serial_debug Serial
-uint8_t MODULE_GPS_UBLOX::set_settings(uint16_t *data, uint16_t length){
+uint8_t MODULE_GPS_UBLOX::set_settings(uint8_t *data, uint16_t length){
+
+if(length != sizeof(module_settings_data_t)){
+  return 0;
+}
+// copy to buffer
+module_settings_packet_t settings_packet_downlink;
+memcpy(&settings_packet_downlink.bytes[0],data, sizeof(module_settings_data_t));
+// validate settings value range 
+settings_packet.data.global_id=settings_packet_downlink.data.global_id;
+settings_packet.data.length=settings_packet_downlink.data.length;
+settings_packet.data.send_interval=constrain(settings_packet_downlink.data.send_interval, 0, 24*60);
+settings_packet.data.periodic_interval=constrain(settings_packet_downlink.data.periodic_interval, 0, 24*60);
+settings_packet.data.triggered_interval=constrain(settings_packet_downlink.data.triggered_interval, 0, 24*60);
+settings_packet.data.gps_triggered_threshold=constrain(settings_packet_downlink.data.gps_triggered_threshold, 0,0x3f);
+settings_packet.data.gps_triggered_duration=constrain(settings_packet_downlink.data.gps_triggered_duration, 0,0xff);
+settings_packet.data.gps_cold_fix_timeout=constrain(settings_packet_downlink.data.gps_cold_fix_timeout, 0,600);
+settings_packet.data.gps_hot_fix_timeout=constrain(settings_packet_downlink.data.gps_hot_fix_timeout, 0,600);
+settings_packet.data.gps_min_fix_time=constrain(settings_packet_downlink.data.gps_min_fix_time, 0,60);
+settings_packet.data.gps_min_ehpe=constrain(settings_packet_downlink.data.gps_min_ehpe, 0,100);
+settings_packet.data.gps_hot_fix_retry=constrain(settings_packet_downlink.data.gps_hot_fix_retry, 0,0xff);
+settings_packet.data.gps_cold_fix_retry=constrain(settings_packet_downlink.data.gps_cold_fix_retry, 0,0xff);
+settings_packet.data.gps_fail_retry=constrain(settings_packet_downlink.data.gps_fail_retry, 0,0xff); //must be 1 due to bug in GPS core
+settings_packet.data.gps_settings=constrain(settings_packet_downlink.data.gps_settings, 0,0xff);
+// write to main settings
 
 }
 
-uint8_t MODULE_GPS_UBLOX::set_downlink_data(uint16_t *data, uint16_t length){
+uint8_t MODULE_GPS_UBLOX::get_settings_length(){
+    return sizeof(module_settings_data_t);
+}
+
+uint8_t MODULE_GPS_UBLOX::set_downlink_data(uint8_t *data, uint16_t length){
 
 }
 
@@ -40,7 +68,8 @@ module_flags_e MODULE_GPS_UBLOX::scheduler(void){
         flags=M_READ;
     }
     #ifdef serial_debug
-      serial_debug.print("scheduler(");
+      serial_debug.print(name);
+      serial_debug.print(":scheduler(");
       serial_debug.println("_read_values)");
     #endif
   }
@@ -52,6 +81,7 @@ module_flags_e MODULE_GPS_UBLOX::scheduler(void){
         flags=M_SEND;
     }
     #ifdef serial_debug
+      serial_debug.print(name);
       serial_debug.print("scheduler(");
       serial_debug.println("send)");
     #endif
@@ -63,6 +93,16 @@ uint8_t MODULE_GPS_UBLOX::initialize(void){
     settings_packet.data.periodic_interval=10;
     settings_packet.data.triggered_interval=0;
     settings_packet.data.send_interval=0;
+    settings_packet.data.gps_triggered_threshold=0;
+    settings_packet.data.gps_triggered_duration=0;
+    settings_packet.data.gps_cold_fix_timeout=120;
+    settings_packet.data.gps_hot_fix_timeout=60;
+    settings_packet.data.gps_min_fix_time=5;
+    settings_packet.data.gps_min_ehpe=40;
+    settings_packet.data.gps_hot_fix_retry=3;
+    settings_packet.data.gps_cold_fix_retry=1;
+    settings_packet.data.gps_fail_retry=0;
+    settings_packet.data.gps_settings=0xff;
     flags=M_IDLE;
 }
 

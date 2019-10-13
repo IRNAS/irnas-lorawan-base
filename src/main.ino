@@ -1,24 +1,13 @@
 #include <STM32L0.h> 
 #include <TimerMillis.h>
+#include "module_configure.h"
 #include "board.h"
 #include "lorawan.h"
 #include "project_utils.h"
-#include "module.h"
-//include modules
-#include "module_system.h"
-#include "module_gps_ublox.h"
-#include "module_pira.h"
+#include "settings.h"
+
 // Define debug if required
 #define serial_debug  Serial
-
-// Default system module
-module *s_SYSTEM = new myModule<MODULE_SYSTEM>(1); // global id 1
-module *s_GPS = new myModule<MODULE_GPS_UBLOX>(2); // global id 2
-module *s_PIRA = new myModule<MODULE_PIRA>(3); // global id 3
-
-// Array of modules to be loaded - project specific
-module *modules[] = {s_SYSTEM,s_GPS};
-int n_modules= 2;
 
 // General system variables
 
@@ -78,7 +67,7 @@ boolean callbackPeriodic(void){
 
   // iterate through modules and check flags for activity requested
   boolean wakeup_needed = false;
-  for (size_t count = 0; count < n_modules; count++){
+  for (size_t count = 0; count < N_MODULES; count++){
     module_flags_e flag = modules[count]->scheduler();
     if((flag!=M_IDLE)&(flag!=M_ERROR)){
       wakeup_needed= true;
@@ -223,7 +212,7 @@ void loop() {
     // defaults for timing out
     state_timeout_duration=10000;
     state_goto_timeout=IDLE;
-    for (size_t count = 0; count < n_modules; count++){
+    for (size_t count = 0; count < N_MODULES; count++){
       modules[count]->initialize();
     }
     state_transition(APPLY_SETTINGS);
@@ -240,7 +229,7 @@ void loop() {
     state_timeout_duration=25*60*60*1000; // 25h maximum
     state_goto_timeout=INIT;
 
-    for (size_t count = 0; count < n_modules; count++){
+    for (size_t count = 0; count < N_MODULES; count++){
       module_flags_e flag = modules[count]->get_flags();
       // order is important as send has priority over read
       if (flag==M_RUNNING){

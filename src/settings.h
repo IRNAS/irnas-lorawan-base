@@ -6,10 +6,12 @@
 #include "lorawan.h"
 #include "EEPROM.h"
 #include "stm32l0_eeprom.h"
+#include "module_configure.h"
 
 #define EEPROM_DATA_START_SETTINGS 0
 
 extern boolean settings_updated;
+extern module *modules[];
 
 /*
 storage of settings is somewhat complex in this case, to allow certain parts of settings to be sent independently
@@ -24,6 +26,8 @@ V - array of values of given length, mathing the settings struct/union length of
  * @brief LoraWAN settings packet setup - port 100
  */
 struct settingsData_t{
+  uint8_t   global_id;
+  uint8_t   length;
   uint8_t   lorawan_datarate;
   uint8_t   lorawan_adr;
   uint8_t   lorawan_txp;
@@ -36,13 +40,12 @@ union settingsPacket_t{
   byte bytes[sizeof(settingsData_t)];
 };
 
-static const uint8_t settings_packet_port = 100;
 extern settingsPacket_t settings_packet;
-extern settingsPacket_t settings_packet_downlink;
 
 uint8_t settings_get_packet_port(void);
+uint8_t settings_set_settings(uint8_t *data, uint16_t length);
 void settings_init(void);
-void settings_from_downlink(void);
+void settings_from_downlink(uint8_t* data, size_t length);
 boolean settings_send(void);
 
 #endif

@@ -12,8 +12,9 @@ class MODULE_SYSTEM
     public:
 
         // functions
-        uint8_t set_settings(uint16_t *data, uint16_t length);
-        uint8_t set_downlink_data(uint16_t *data, uint16_t length);
+        uint8_t set_settings(uint8_t *data, uint16_t length);
+        uint8_t get_settings_length();
+        uint8_t set_downlink_data(uint8_t *data, uint16_t length);
         module_flags_e scheduler(void);
         uint8_t initialize(void);
         uint8_t send(uint8_t *buffer, size_t *size);
@@ -34,6 +35,8 @@ class MODULE_SYSTEM
 
         // add
         struct module_settings_data_t{
+            uint8_t  global_id;
+            uint8_t  length;
             uint16_t read_interval; // in seconds
             uint16_t send_interval; // in minutes
         }__attribute__((packed));
