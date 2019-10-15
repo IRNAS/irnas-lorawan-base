@@ -1,15 +1,19 @@
 #include "module_pira.h"
 
 #define serial_debug Serial
-uint8_t MODULE_PIRA::set_settings(uint8_t *data, uint16_t length){
-
+uint8_t MODULE_PIRA::configure(uint8_t *data, size_t *size){
+    #ifdef serial_debug
+        serial_debug.print(name);
+        serial_debug.print(":configure(");
+        serial_debug.println(")");;
+    #endif
 }
 
 uint8_t MODULE_PIRA::get_settings_length(){
     return sizeof(module_settings_data_t);
 }
 
-uint8_t MODULE_PIRA::set_downlink_data(uint8_t *data, uint16_t length){
+uint8_t MODULE_PIRA::set_downlink_data(uint8_t *data, size_t *size){
 
 }
 

@@ -8,6 +8,9 @@
 #include <TimerMillis.h>
 
 extern boolean lorawan_send_successful;
+extern boolean lorawan_settings_new;
+extern uint8_t lorawan_settings_buffer[256];
+extern size_t lorawan_settings_length;
 
 boolean lorawan_init(void);
 boolean lorawan_send(uint8_t port, const uint8_t *buffer, size_t size);

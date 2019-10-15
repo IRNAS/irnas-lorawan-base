@@ -21,6 +21,10 @@ const char *devEui  = "004E970288420117";
 
 boolean lorawan_send_successful = false; // flags sending has been successful to the FSM
 
+boolean lorawan_settings_new = false;
+uint8_t lorawan_settings_buffer[256];
+size_t lorawan_settings_length=0;
+
 /**
  * @brief Initialize LoraWAN communication, returns fales if fails
  * 
@@ -40,7 +44,7 @@ boolean lorawan_init(void){
   LoRaWAN.addChannel(8, 867900000, 0, 5);
   LoRaWAN.setDutyCycle(false);
   // LoRaWAN.setAntennaGain(2.0);
-  LoRaWAN.setTxPower(settings_packet.data.lorawan_txp);
+  LoRaWAN.setTxPower(20);
   
   LoRaWAN.onJoin(lorawan_joinCallback);
   LoRaWAN.onLinkCheck(lorawan_checkCallback);
@@ -93,6 +97,8 @@ boolean lorawan_send(uint8_t port, const uint8_t *buffer, size_t size){
     return false;
   }
 
+  LoRaWAN.setDutyCycle(settings_packet.data.lorawan_reg);
+  LoRaWAN.setTxPower(settings_packet.data.lorawan_txp);
   LoRaWAN.setADR(settings_packet.data.lorawan_adr);
   LoRaWAN.setDataRate(settings_packet.data.lorawan_datarate);
   #ifdef serial_debug
@@ -222,7 +228,9 @@ void lorawan_receiveCallback(void)
 
       //handle settings
       if(LoRaWAN.remotePort()==settings_get_packet_port()){
-        settings_from_downlink(&data[0], sizeof(data));
+        memcpy(&lorawan_settings_buffer[0],&data[0], size);
+        lorawan_settings_length=size;
+        lorawan_settings_new=true;
       }
     }
   }

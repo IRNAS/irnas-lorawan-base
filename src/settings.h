@@ -31,6 +31,7 @@ struct settingsData_t{
   uint8_t   lorawan_datarate;
   uint8_t   lorawan_adr;
   uint8_t   lorawan_txp;
+  uint8_t   lorawan_reg;
   uint8_t   resend_delay; // in minutes, 0 disables it
   uint8_t   resend_count; // in times to be resent, 0 disables it
 }__attribute__((packed));
@@ -43,7 +44,7 @@ union settingsPacket_t{
 extern settingsPacket_t settings_packet;
 
 uint8_t settings_get_packet_port(void);
-uint8_t settings_set_settings(uint8_t *data, uint16_t length);
+uint8_t settings_set_settings(uint8_t *data, size_t *size);
 void settings_init(void);
 void settings_from_downlink(uint8_t* data, size_t length);
 boolean settings_send(void);

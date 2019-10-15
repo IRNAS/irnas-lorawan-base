@@ -1,40 +1,52 @@
 #include "module_system.h"
 
-//#define serial_debug Serial
+#define serial_debug Serial
 
-uint8_t MODULE_SYSTEM::set_settings(uint8_t *data, uint16_t length){
+uint8_t MODULE_SYSTEM::configure(uint8_t *data, size_t *size){
+
+    // copy to buffer
+    module_settings_packet_t settings_packet_downlink;
+    memcpy(&settings_packet_downlink.bytes[0],data, sizeof(module_settings_data_t));
+    // validate settings value range 
+    settings_packet.data.global_id=settings_packet_downlink.data.global_id;
+    settings_packet.data.length=settings_packet_downlink.data.length;
+    settings_packet.data.send_interval=constrain(settings_packet_downlink.data.send_interval, 0, 24*60);
+    settings_packet.data.read_interval=constrain(settings_packet_downlink.data.read_interval, 0, 3600);
+
     #ifdef serial_debug
         serial_debug.print(name);
-        serial_debug.print(":scheduler(");
-        serial_debug.println("set_settings)");;
+        serial_debug.print(":configure(");
+        serial_debug.print("s:");
+        serial_debug.print(settings_packet.data.send_interval);
+        serial_debug.print(" r:");
+        serial_debug.print(settings_packet.data.read_interval);
+        /*serial_debug.print(" data:");
+        for(int i=0;i<sizeof(module_settings_data_t);i++){
+            serial_debug.print(" 0x");
+            serial_debug.print(data[i],HEX);
+        }*/
+        serial_debug.println(")");;
     #endif
+    return 0;
 }
 
 uint8_t MODULE_SYSTEM::get_settings_length(){
+    #ifdef serial_debug
+        serial_debug.print(name);
+        serial_debug.print(":get_settings_length(");
+        serial_debug.println(")");;
+    #endif
     return sizeof(module_settings_data_t);
 }
 
 
-uint8_t MODULE_SYSTEM::set_downlink_data(uint8_t *data, uint16_t length){
+uint8_t MODULE_SYSTEM::set_downlink_data(uint8_t *data, size_t *size){
 
 }
 
 module_flags_e MODULE_SYSTEM::scheduler(void){
 
-  unsigned long elapsed = millis()-read_timestamp;
-  if((settings_packet.data.read_interval!=0) & (elapsed>=(settings_packet.data.read_interval*1000))){
-    if (flags==M_IDLE){
-        read_timestamp=millis();
-        flags=M_READ;
-    }
-    #ifdef serial_debug
-        serial_debug.print(name);
-        serial_debug.print(":scheduler(");
-        serial_debug.println("_read_values)");
-    #endif
-  }
-
-  elapsed = millis()-send_timestamp;
+  unsigned long elapsed = millis()-send_timestamp;
   if((settings_packet.data.send_interval!=0) & (elapsed>=(settings_packet.data.send_interval*60*1000))){
     if (flags==M_IDLE){
         send_timestamp=millis();
@@ -45,7 +57,23 @@ module_flags_e MODULE_SYSTEM::scheduler(void){
         serial_debug.print(":scheduler(");
         serial_debug.println("send)");
     #endif
+    return flags;
   }
+
+  elapsed = millis()-read_timestamp;
+  if((settings_packet.data.read_interval!=0) & (elapsed>=(settings_packet.data.read_interval*1000))){
+    if (flags==M_IDLE){
+        read_timestamp=millis();
+        flags=M_READ;
+    }
+    #ifdef serial_debug
+        serial_debug.print(name);
+        serial_debug.print(":scheduler(");
+        serial_debug.println("_read_values)");
+    #endif
+    return flags;
+  }
+
   return flags;
 }
 
@@ -90,7 +118,11 @@ uint8_t MODULE_SYSTEM::send(uint8_t *data, size_t *size){
 }
 
 void MODULE_SYSTEM::print_data(void){
-
+#ifdef serial_debug
+    serial_debug.print(name);
+    serial_debug.print(": print_data(");
+    serial_debug.println(")");
+#endif
 }
 
 uint8_t MODULE_SYSTEM::read(void){

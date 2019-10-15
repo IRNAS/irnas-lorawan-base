@@ -13,9 +13,9 @@ class MODULE_GPS_UBLOX
     public:
 
         // functions
-        uint8_t set_settings(uint8_t *data, uint16_t length);
+        uint8_t configure(uint8_t *data, size_t *size);
         uint8_t get_settings_length();
-        uint8_t set_downlink_data(uint8_t *data, uint16_t length);
+        uint8_t set_downlink_data(uint8_t *data, size_t *size);
         module_flags_e scheduler(void);
         uint8_t initialize(void);
         uint8_t send(uint8_t *buffer, size_t *size);

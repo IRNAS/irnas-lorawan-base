@@ -8,7 +8,7 @@ settingsPacket_t settings_packet;
 settingsPacket_t settings_packet_downlink;
 uint16_t settings_buffer_total_length=0;
 uint8_t settings_buffer_tlv_type[N_MODULES_TOTAL]; // all modules + basic settings
-uint8_t settings_buffer_tlv_length[N_MODULES_TOTAL]; // all modules + basic settings
+size_t settings_buffer_tlv_length[N_MODULES_TOTAL]; // all modules + basic settings
 uint8_t *settings_buffer_tlv_ptr[N_MODULES_TOTAL]; // all modules + basic settings
 
 static uint8_t settings_buffer[1024]; // Note that at 0x1400 EEPROm LoraWAN things start, so must not run into that
@@ -29,15 +29,45 @@ uint8_t settings_get_packet_port(void){
  * @param length 
  * @return uint8_t 
  */
-uint8_t settings_set_settings(uint8_t *data, uint16_t length){
+uint8_t settings_set_settings(uint8_t *data, size_t *size){
 
-if(length != sizeof(settingsData_t)){
-  return 0;
-}
+// copy to buffer
+    settingsPacket_t settings_packet_downlink;
+    memcpy(&settings_packet_downlink.bytes[0],data, sizeof(settingsData_t));
+    // validate settings value range 
+    settings_packet.data.global_id=settings_packet_downlink.data.global_id;
+    settings_packet.data.length=settings_packet_downlink.data.length;
+    settings_packet.data.lorawan_datarate=constrain(settings_packet_downlink.data.lorawan_datarate, 0, 5); // DR0/SF12 to DR5/SF7
+    settings_packet.data.lorawan_adr=constrain(settings_packet_downlink.data.lorawan_adr, 0, 1); // ADR enable/disable
+    settings_packet.data.lorawan_txp=constrain(settings_packet_downlink.data.lorawan_txp, 0, 30); // Configure TX power
+    settings_packet.data.lorawan_reg=constrain(settings_packet_downlink.data.lorawan_reg, 0, 1); // Enable the regulatory limit
+    settings_packet.data.resend_delay=constrain(settings_packet_downlink.data.resend_delay, 0, 24*60); // Resend delay in minutes
+    settings_packet.data.resend_count=constrain(settings_packet_downlink.data.resend_count, 0, 10); // Number of times for this to be resent
 
-memcpy(&settings_packet_downlink.bytes[0],data, sizeof(settingsData_t));
-// validate settings value range 
+    // Default packet value: 01 07 05 00 0F 00 00 00
 
+    #ifdef serial_debug
+        serial_debug.print("basic");
+        serial_debug.print(":configure(");
+        serial_debug.print("dr:");
+        serial_debug.print(settings_packet.data.lorawan_datarate);
+        serial_debug.print(" adr:");
+        serial_debug.print(settings_packet.data.lorawan_adr);
+        serial_debug.print(" txp:");
+        serial_debug.print(settings_packet.data.lorawan_txp);
+        serial_debug.print(" res_d:");
+        serial_debug.print(settings_packet.data.resend_delay);
+        serial_debug.print(" res_c:");
+        serial_debug.print(settings_packet.data.resend_count);
+        /*serial_debug.print(" data:");
+        for(int i=0;i<sizeof(module_settings_data_t);i++){
+            serial_debug.print(" 0x");
+            serial_debug.print(data[i],HEX);
+        }*/
+        serial_debug.println(")");;
+    #endif
+    
+    return 0;
 }
 
 /**
@@ -67,7 +97,7 @@ void settings_init(void){
     // Modules
     for (size_t count = 0; count < N_MODULES; count++){
         delay(100);
-        settings_buffer_tlv_type[count+1]=1;
+        settings_buffer_tlv_type[count+1]=modules[count]->get_global_id();
         settings_buffer_tlv_length[count+1]=modules[count]->get_settings_length();
         // create pointers
         settings_buffer_tlv_ptr[count+1]=&settings_buffer[settings_buffer_total_length];
@@ -109,10 +139,10 @@ void settings_init(void){
     #ifndef FORCE_DEFAULT_SETTINGS
 
     // basic settings
-    memcpy(&settings_packet.bytes[0],settings_buffer_tlv_ptr[0], (size_t)settings_buffer_tlv_length[0]);
+    settings_set_settings(settings_buffer_tlv_ptr[0], &settings_buffer_tlv_length[0]);
     // modules
     for (size_t count = 0; count < N_MODULES; count++){
-        modules[count]->set_settings(settings_buffer_tlv_ptr[count+1],settings_buffer_tlv_length[count+1]);
+        modules[count]->configure(settings_buffer_tlv_ptr[count+1],&settings_buffer_tlv_length[count+1]);
     }
 
     #endif
@@ -131,8 +161,8 @@ void settings_from_downlink(uint8_t* data, size_t length){
 
     while(buffer_processed_length<length){
         // check the data for header
-        uint8_t in_global_id=data[buffer_processed_length++];
-        uint8_t in_length=data[buffer_processed_length++];
+        uint8_t in_global_id=data[buffer_processed_length];
+        uint8_t in_length=data[buffer_processed_length+1];
         #ifdef serial_debug
             serial_debug.print("settings_from_downlink(id:");
             serial_debug.print(in_global_id);
@@ -140,16 +170,33 @@ void settings_from_downlink(uint8_t* data, size_t length){
             serial_debug.print(in_length);
             serial_debug.println(")");
         #endif 
+
+        if(in_length==0){
+            return;
+        }
         // find id and check length in array, then copy to main setting buffer
         for (size_t count = 0; count < sizeof(settings_buffer_tlv_type); count++){
+            #ifdef serial_debug
+                serial_debug.print("settings_received(mod:");
+                serial_debug.print(settings_buffer_tlv_type[count]);
+                serial_debug.print(" len:");
+                serial_debug.print(settings_buffer_tlv_length[count]);
+                serial_debug.print(" count:");
+                serial_debug.print(count);
+                serial_debug.print(" data:");
+                for(int i=0;i<settings_buffer_tlv_length[count];i++){
+                    serial_debug.print(" 0x");
+                    serial_debug.print(data[buffer_processed_length+i],HEX);
+                }
+                serial_debug.println(")");
+            #endif 
             if(settings_buffer_tlv_type[count]==in_global_id){
                 if(settings_buffer_tlv_length[count]==in_length){
                     // copy to main array first
                     memcpy(settings_buffer_tlv_ptr[count],&data[buffer_processed_length], settings_buffer_tlv_length[count]);
-                    buffer_processed_length+=settings_buffer_tlv_length[count];
                     // basic settings
-                    if(settings_buffer_tlv_type[count]==0){
-                        settings_set_settings(settings_buffer_tlv_ptr[count+1],settings_buffer_tlv_length[count+1]);
+                    if(settings_buffer_tlv_type[count]==1){
+                        settings_set_settings(settings_buffer_tlv_ptr[0],&settings_buffer_tlv_length[0]);
                        #ifdef serial_debug
                             serial_debug.print("settings_received(0");
                             serial_debug.println(")");
@@ -157,10 +204,12 @@ void settings_from_downlink(uint8_t* data, size_t length){
                     }
                     // module settings
                     else{
-                        modules[count]->set_settings(settings_buffer_tlv_ptr[count+1],settings_buffer_tlv_length[count+1]);
+                        //this does not seem to be called correctly
+                        modules[count-1]->configure(settings_buffer_tlv_ptr[count],&settings_buffer_tlv_length[count]);
+                        modules[count-1]->get_settings_length();
                         #ifdef serial_debug
                             serial_debug.print("settings_received(");
-                            serial_debug.print(modules[count]->get_global_id());
+                            serial_debug.print(modules[count-1]->get_global_id());
                             serial_debug.println(")");
                         #endif
                     }       
@@ -168,6 +217,8 @@ void settings_from_downlink(uint8_t* data, size_t length){
                 break;
             }
         }
+        // this skips the received TLV if no matching modules found
+        buffer_processed_length+=in_length;
     }
 
     // Store to EEPROM
@@ -176,6 +227,10 @@ void settings_from_downlink(uint8_t* data, size_t length){
     for(int i=0;i<settings_buffer_total_length;i++){
         EEPROM.write(eeprom_settings_address+1+i,settings_buffer[i]);
     }
+    #ifdef serial_debug
+        serial_debug.print("settings_received(");
+        serial_debug.println("eeprom stored)");
+    #endif
 }
 
 /**
@@ -186,5 +241,14 @@ boolean settings_send(void){
     #ifdef serial_debug
         serial_debug.println("settings_send()");
     #endif
-    return lorawan_send(settings_packet_port, &settings_packet.bytes[0], sizeof(settingsData_t));
+
+    uint16_t lenght=settings_buffer_total_length;
+    if (settings_buffer_total_length>LoRaWAN.getMaxPayloadSize()){
+        lenght = LoRaWAN.getMaxPayloadSize();
+        #ifdef serial_debug
+            serial_debug.print("settings larger then packet size, truncating");
+            serial_debug.println("");
+        #endif
+    }
+    return lorawan_send(settings_packet_port, &settings_buffer[0], lenght);
 }

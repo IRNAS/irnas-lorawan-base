@@ -65,8 +65,13 @@ boolean callbackPeriodic(void){
     }
   }
 
-  // iterate through modules and check flags for activity requested
   boolean wakeup_needed = false;
+
+  if(lorawan_settings_new==true){
+    wakeup_needed=true;
+  }
+
+  // iterate through modules and check flags for activity requested
   for (size_t count = 0; count < N_MODULES; count++){
     module_flags_e flag = modules[count]->scheduler();
     if((flag!=M_IDLE)&(flag!=M_ERROR)){
@@ -215,22 +220,37 @@ void loop() {
     for (size_t count = 0; count < N_MODULES; count++){
       modules[count]->initialize();
     }
-    state_transition(APPLY_SETTINGS);
+    state_transition(IDLE);
     break;
   case APPLY_SETTINGS:
     // defaults for timing out
     state_timeout_duration=10000;
     state_goto_timeout=IDLE;
+    settings_from_downlink(&lorawan_settings_buffer[0],lorawan_settings_length);
     // TODO
-    state_transition(IDLE);
+    state_transition(SETTINGS_SEND);
     break;
   case IDLE:
     // defaults for timing out
     state_timeout_duration=25*60*60*1000; // 25h maximum
     state_goto_timeout=INIT;
+    sleep=-1;
+
+    if(lorawan_settings_new==true){
+      lorawan_settings_new=false;
+      state_transition(APPLY_SETTINGS);
+      break;
+    }
 
     for (size_t count = 0; count < N_MODULES; count++){
       module_flags_e flag = modules[count]->get_flags();
+      /*#ifdef serial_debug
+        serial_debug.print("flags(");
+        serial_debug.print(modules[count]->get_global_id());
+        serial_debug.print(":");
+        serial_debug.print(flag);
+        serial_debug.println(")");
+      #endif*/
       // order is important as send has priority over read
       if (flag==M_RUNNING){
         //run the module

@@ -19,9 +19,9 @@ public:
 	virtual String getName() {};
 	virtual uint8_t get_global_id() {};
 	virtual module_flags_e get_flags(void){};
-	virtual uint8_t set_settings(uint8_t *data, uint16_t length){};
+	virtual uint8_t configure(uint8_t *data, size_t *size){};
 	virtual uint8_t get_settings_length(){};
-	virtual uint8_t set_downlink_data(uint8_t *data, uint16_t length){};
+	virtual uint8_t set_downlink_data(uint8_t *data, size_t *size){};
 	virtual module_flags_e scheduler(void){};
 	virtual uint8_t initialize(void){};
 	virtual uint8_t send(uint8_t *data, size_t *size){};
@@ -50,7 +50,7 @@ public:
 		module.param_a=param_a;
 		module.param_b=param_b;
 		module.param_c=param_c;
-	};
+	}
 
 	/**
 	 * @brief Get the Name object
@@ -59,7 +59,7 @@ public:
 	 */
 	String get_name(void) {
 		return "name";//module.name;
-	};
+	}
 
 	/**
 	 * @brief Get the global id object
@@ -86,8 +86,8 @@ public:
 	 * @param length 
 	 * @return uint8_t response
 	 */
-	uint8_t set_settings(uint16_t *data, uint16_t length){
-		return module.set_settings(data, length);
+	uint8_t configure(uint8_t *data, size_t *size){
+		return module.configure(data, size);
 	}
 
 	/**
@@ -97,7 +97,7 @@ public:
 	 */
 	uint8_t get_settings_length(){
 		return module.get_settings_length();
-	};
+	}
 
 	/**
 	 * @brief Pass the downlink data to the module
@@ -106,8 +106,8 @@ public:
 	 * @param length 
 	 * @return uint8_t response
 	 */
-	uint8_t set_downlink_data(uint16_t *data, uint16_t length){
-		return module.set_downlink_data(data, length);
+	uint8_t set_downlink_data(uint16_t *data, size_t *size){
+		return module.set_downlink_data(data, size);
 	}
 
 	/**
@@ -117,7 +117,7 @@ public:
 	 */
 	module_flags_e scheduler(void) {
 		return module.scheduler();
-	};
+	}
 
 	/**
 	 * @brief initialize the actions required in this module
