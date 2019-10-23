@@ -7,11 +7,8 @@
 #include "STM32L0.h"
 #include "module.h"
 #include "Wire.h"
-#include "ISL1208_RTC.h"
-#include <stdint.h>
-#include <time.h>
+#include "rtc.h"
 
-#define TIME_INIT_VALUE             (1514764800UL)  // Initial Time is Mon, 1 Jan 2018 00:00:00
 #define ON_PERIOD_INIT_VALUE_s      (7200)
 #define OFF_PERIOD_INIT_VALUE_s     (7200)
 #define RX_BUFFER_SIZE              (7)             // Size in B, do not change, comunication protocol between Pira and RPi depends on this
@@ -122,16 +119,6 @@ class MODULE_PIRA
         void uart_command_receive(void);
         void send_status_values(void);
         void print_status_values(void);
-
-        // RTC related functions
-        void init_rtc(time_t);
-        time_t time();
-        void time(time_t t);
-
-        // I2C related functions
-        char read8(char addr, char reg);
-        void write8(char addr, char reg, char data);
-
         uint32_t get_overview_value(void);
         void pira_state_transition(state_pira_e next);
         bool pira_state_check_timeout(void);

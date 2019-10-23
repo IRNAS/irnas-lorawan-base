@@ -165,6 +165,8 @@ void loop() {
     state_goto_timeout=INIT;
     // setup default settings
     settings_init();
+    // setup RTC
+    rtc_init();
     // load settings, currently can not return an error, thus proceed directly
     state_transition(LORAWAN_INIT);
     break;
