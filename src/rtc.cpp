@@ -1,5 +1,7 @@
 #include "rtc.h"
 
+#define serial_debug Serial
+
 /**
  * @brief RTC object, used to read and write time to rtc chip 
  */
@@ -12,6 +14,7 @@ ISL1208_RTC rtc;
  */
 void rtc_init(){
     time_t t = TIME_INIT_VALUE;
+    Wire.begin();
     rtc.begin();
 
     //Try to open the ISL1208,checks if the RTC is available on the I2C bus
