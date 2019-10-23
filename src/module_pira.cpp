@@ -1,6 +1,7 @@
 #include "module_pira.h"
 
 #define serial_debug Serial
+
 uint8_t MODULE_PIRA::configure(uint8_t *data, size_t *size){
     #ifdef serial_debug
         serial_debug.print(name);
@@ -20,30 +21,30 @@ uint8_t MODULE_PIRA::set_downlink_data(uint8_t *data, size_t *size){
 module_flags_e MODULE_PIRA::scheduler(void){
 
   pira_state_machine();
-  if(status_pira_state_machine != IDLE_PIRA)  {
-    flags=M_RUNNING;
-  }
+  //flags are updated in the state machine
   return flags;
 }
 
 uint8_t MODULE_PIRA::initialize(void){
     settings_packet.data.read_interval=10;
     settings_packet.data.send_interval=1;
+    settings_packet.data.status_battery=10;
+    settings_packet.data.safety_power_period=10;
+    settings_packet.data.safety_sleep_period=10;
+    settings_packet.data.safety_reboot=10;
+    settings_packet.data.operational_wakeup=5;
     flags=M_IDLE;
 
     MODULE_PIRA_SERIAL.begin(115200);
     MODULE_PIRA_SERIAL.setWakeup(1);
     MODULE_PIRA_SERIAL.onReceive(Callback(&MODULE_PIRA::uart_receive, this));
 
-    status_pira_state_machine = WAIT_STATUS_ON;
-    state_prev = WAIT_STATUS_ON;
-
-        // Get reset cause
-    uint32_t status_error_reset = STM32L0.resetCause();
+    status_pira_state_machine = IDLE_PIRA;
+    state_prev = IDLE_PIRA;
 
     // Initially enable RaspberryPi power
     pinMode(MODULE_PIRA_5V, OUTPUT);
-    digitalWrite(MODULE_PIRA_5V, HIGH);
+    digitalWrite(MODULE_PIRA_5V, LOW);
 
     // Prepare status pin
     pinMode(MODULE_PIRA_STATUS, INPUT_PULLDOWN);
@@ -57,12 +58,6 @@ uint8_t MODULE_PIRA::initialize(void){
 
     // RTC init
     init_rtc(TIME_INIT_VALUE);
-
-    #ifdef serial_debug
-        serial_debug.print("Cause for reset = ");
-        serial_debug.println(status_error_reset);
-    #endif
-    uart_command_send('e', status_error_reset);
 }
 
 uint8_t MODULE_PIRA::send(uint8_t *data, size_t *size){
@@ -101,12 +96,12 @@ uint8_t MODULE_PIRA::running(void){
 
   // Get the current time from RTC
   readings_packet.data.status_time = (uint64_t)time();
-  #ifdef serial_debug
+  /*#ifdef serial_debug
       time_t time_string = (time_t)readings_packet.data.status_time;
       serial_debug.print("Time as a basic string = ");
       serial_debug.println(ctime(&time_string));
       print_status_values();
-  #endif
+  #endif*/
 
   // Update status values in not in IsDLE_PIRA state
   if(status_pira_state_machine != IDLE_PIRA)
@@ -154,6 +149,7 @@ void MODULE_PIRA::uart_command_parse(uint8_t *rxBuffer)
     {
         switch(firstChar)
         {
+            //TODO: constrain values
             case 't':
                 //MODULE_PIRA_SERIAL.println("t: received");
                 time((time_t)data);
@@ -621,7 +617,18 @@ char* MODULE_PIRA::return_state(state_pira_e status_pira_state_machine)
  */
 void MODULE_PIRA::pira_state_machine()
 {
+    //update previous state
+    state_prev=status_pira_state_machine;
+
 #ifdef serial_debug
+    serial_debug.print(name);
+    serial_debug.print(":fsm(");
+    serial_debug.print(return_state(state_prev));
+    serial_debug.print(" -> ");
+    serial_debug.print(return_state(status_pira_state_machine));
+    serial_debug.println(")");;
+#endif
+/*#ifdef serial_debug
     serial_debug.print("fsm(");
     serial_debug.print(return_state(state_prev));
     serial_debug.print(" -> ");
@@ -633,7 +640,7 @@ void MODULE_PIRA::pira_state_machine()
     serial_debug.print(get_overview_value());
     serial_debug.println(")");
     serial_debug.flush();
-#endif
+#endif*/
 
     switch(status_pira_state_machine)
     {
@@ -650,10 +657,7 @@ void MODULE_PIRA::pira_state_machine()
             }
 
             state_goto_timeout = WAIT_STATUS_ON;
-            flags=M_SEND;
-
-            // IDLE_PIRA state reached, turn off power for raspberry pi
-            digitalWrite(MODULE_PIRA_5V, LOW);
+            flags=M_IDLE;
 
             //TODO: implement waking up RPi via LoraWAN
             /*if(settings_packet.data.turnOnRpi)
@@ -665,10 +669,16 @@ void MODULE_PIRA::pira_state_machine()
             }*/
         break;
 
+        case START_PIRA:
+            flags=M_RUNNING;
+            pira_state_transition(WAIT_STATUS_ON);
+
+        break;
+
         case WAIT_STATUS_ON:
 
             stateTimeoutDuration = settings_packet.data.safety_power_period;
-            state_goto_timeout = IDLE_PIRA;
+            state_goto_timeout = STOP_PIRA;
 
             // WAIT_STATUS_ON state reached, turn on power for raspberry pi
             digitalWrite(MODULE_PIRA_5V, HIGH);
@@ -683,7 +693,7 @@ void MODULE_PIRA::pira_state_machine()
         case WAKEUP:
 
             stateTimeoutDuration = settings_packet.data.safety_power_period;
-            state_goto_timeout = IDLE_PIRA;
+            state_goto_timeout = STOP_PIRA;
 
             //Check status pin, if low then turn off power supply.
             if(!digitalRead(MODULE_PIRA_STATUS))
@@ -695,7 +705,7 @@ void MODULE_PIRA::pira_state_machine()
         case REBOOT_DETECTION:
 
             stateTimeoutDuration = settings_packet.data.safety_reboot;
-            state_goto_timeout = IDLE_PIRA;
+            state_goto_timeout = STOP_PIRA;
 
             if(digitalRead(MODULE_PIRA_STATUS))
             {
@@ -704,8 +714,13 @@ void MODULE_PIRA::pira_state_machine()
             }
         break;
 
-        default:
+        case STOP_PIRA:
+            flags=M_SEND;
+            digitalWrite(MODULE_PIRA_5V, LOW);
+            pira_state_transition(IDLE_PIRA);
+        break;
 
+        default:
             status_pira_state_machine=IDLE_PIRA;
         break;
     }

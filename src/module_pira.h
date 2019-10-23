@@ -83,9 +83,11 @@ class MODULE_PIRA
         enum state_pira_e
         {
             IDLE_PIRA,
+            START_PIRA,
             WAIT_STATUS_ON,
             WAKEUP,
             REBOOT_DETECTION,
+            STOP_PIRA,
         };
 
         /**
