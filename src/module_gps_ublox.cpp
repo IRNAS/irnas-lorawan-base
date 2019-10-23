@@ -244,7 +244,7 @@ boolean MODULE_GPS_UBLOX::gps_begin(void){
   // Note: https://github.com/GrumpyOldPizza/ArduinoCore-stm32l0/issues/86
   // Note: https://github.com/GrumpyOldPizza/ArduinoCore-stm32l0/issues/90
   gps_busy_timeout(1000);
-  GNSS.begin(Serial1, GNSS.MODE_UBLOX, GNSS.RATE_1HZ);
+  GNSS.begin(MODULE_GPS_SERIAL, GNSS.MODE_UBLOX, GNSS.RATE_1HZ);
   gps_begin_happened=true;
   if(gps_busy_timeout(3000)){
     gps_end();

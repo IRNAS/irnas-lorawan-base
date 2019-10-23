@@ -252,6 +252,7 @@ void loop() {
         serial_debug.println(")");
       #endif*/
       // order is important as send has priority over read
+      active_module=-1;
       if (flag==M_RUNNING){
         //run the module
         modules[count]->running();
