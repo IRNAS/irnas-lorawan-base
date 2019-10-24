@@ -1,6 +1,9 @@
 #include "module_gps_ublox.h"
 
 #define serial_debug Serial
+
+extern boolean accelerometer_event_flag;
+
 uint8_t MODULE_GPS_UBLOX::configure(uint8_t *data, size_t *size){
   #ifdef serial_debug
       serial_debug.print(name);
@@ -44,6 +47,7 @@ uint8_t MODULE_GPS_UBLOX::set_downlink_data(uint8_t *data, size_t *size){
 
 module_flags_e MODULE_GPS_UBLOX::scheduler(void){
   unsigned long interval=0;
+  accelerometer_event_flag=false;
 
   // do not schedule a GPS event if it has failed more then the specified amount of times
   if(gps_fail_count>settings_packet.data.gps_fail_retry){

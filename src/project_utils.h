@@ -2,6 +2,7 @@
 #define PROJECT_UTILS_H_
 
 #include "Arduino.h"
+#include "LIS2DW12.h"
 
 struct reading_structure_t
 {
@@ -11,6 +12,21 @@ struct reading_structure_t
     float r_count;
     float r_m2;
 };
+
+enum input_event_e : uint16_t{
+  HALL,
+  INPUT1,
+  INPUT2
+}; 
+
+struct main_share_t{
+  uint64_t time;
+  uint16_t voltage;
+  input_event_e input_event;
+  lis2dw_event_t accelerometer_event_e ;
+};
+
+
 
 
 float mapfloat(float x, float in_min, float in_max, float out_min, float out_max);

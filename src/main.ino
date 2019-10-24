@@ -5,6 +5,7 @@
 #include "lorawan.h"
 #include "project_utils.h"
 #include "settings.h"
+#include "LIS2DW12.h"
 
 // Define debug if required
 #define serial_debug  Serial
@@ -19,6 +20,12 @@ uint8_t last_packet[51]; // 51 is the max packet size supported
 size_t last_packet_size;
 uint8_t last_packet_port;
 unsigned long last_packet_time;
+
+input_event_e input_event;
+boolean input_event_flag=false;
+lis2dw_event_t accelerometer_event;
+boolean accelerometer_event_flag=false;
+main_share_t main_share;
 
 enum state_e{
   INIT,

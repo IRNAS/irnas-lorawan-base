@@ -6,6 +6,7 @@
 #include "module_system.h"
 #include "module_gps_ublox.h"
 #include "module_pira.h"
+#include "module_accelerometer.h"
 
 #define N_MODULES 3
 #define N_MODULES_TOTAL N_MODULES+1

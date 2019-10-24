@@ -3,6 +3,7 @@
 
 // module includes
 #include <Arduino.h>
+#include "project_utils.h"
 
 enum module_flags_e {
 	M_IDLE,
@@ -27,6 +28,7 @@ public:
 	virtual uint8_t send(uint8_t *data, size_t *size){};
 	virtual uint8_t read(void){};
 	virtual void running(void){};
+	virtual void event(main_share_t main_share){};
 	virtual void print_data(void){};
 };
 
