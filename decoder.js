@@ -67,6 +67,8 @@ function Decoder(bytes) {
     pira.empty_space = bytes[cnt++] | (bytes[cnt++] << 8);
     pira.photo_count = bytes[cnt++] | (bytes[cnt++] << 8);
     pira.status_time = bytes[cnt++] | (bytes[cnt++] << 8)| (bytes[cnt++] << 16)| (bytes[cnt++] << 24);
+    var d= new Date(pira.status_time*1000);
+    pira.status_time_decoded =d.toLocaleString();
     pira.error_values = bytes[cnt++] | (bytes[cnt++] << 8);
     decoded.pira=pira;
 

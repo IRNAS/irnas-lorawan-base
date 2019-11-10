@@ -36,6 +36,11 @@ uint8_t MODULE_PIRA::initialize(void){
     settings_packet.data.safety_reboot=60;
     settings_packet.data.operational_wakeup=300;
 
+    readings_packet.data.empty_space=0;
+    readings_packet.data.photo_count=0;
+    readings_packet.data.status_time=0;
+    readings_packet.data.error_values=0;
+
     MODULE_PIRA_SERIAL.begin(115200);
     MODULE_PIRA_SERIAL.setWakeup(1);
     MODULE_PIRA_SERIAL.onReceive(Callback(&MODULE_PIRA::uart_receive, this));
