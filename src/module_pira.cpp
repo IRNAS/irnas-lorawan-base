@@ -42,6 +42,7 @@ uint8_t MODULE_PIRA::initialize(void){
     MODULE_PIRA_SERIAL.onReceive(Callback(&MODULE_PIRA::uart_receive, this));
 
     status_pira_state_machine = START_PIRA;
+    stateTimeoutStart=millis();
     state_prev = IDLE_PIRA;
 
     // Initially enable RaspberryPi power

@@ -75,12 +75,12 @@ module_flags_e MODULE_GPS_UBLOX::scheduler(void){
     if (flags==M_IDLE){
         read_timestamp=millis();
         flags=M_READ;
-    }
     #ifdef serial_debug
       serial_debug.print(name);
       serial_debug.print(":scheduler(");
       serial_debug.println("_read_values)");
     #endif
+    }
     return flags;
   }
 
@@ -89,19 +89,19 @@ module_flags_e MODULE_GPS_UBLOX::scheduler(void){
     if (flags==M_IDLE){
         send_timestamp=millis();
         flags=M_SEND;
-    }
     #ifdef serial_debug
       serial_debug.print(name);
       serial_debug.print("scheduler(");
       serial_debug.println("send)");
     #endif
+    }
     return flags;
   }
   return flags;
 }
 
 uint8_t MODULE_GPS_UBLOX::initialize(void){
-    settings_packet.data.periodic_interval=10;
+    settings_packet.data.periodic_interval=1;
     settings_packet.data.triggered_interval=0;
     settings_packet.data.send_interval=0;
     settings_packet.data.gps_triggered_threshold=0;
@@ -111,7 +111,7 @@ uint8_t MODULE_GPS_UBLOX::initialize(void){
     settings_packet.data.gps_min_fix_time=5;
     settings_packet.data.gps_min_ehpe=40;
     settings_packet.data.gps_hot_fix_retry=3;
-    settings_packet.data.gps_cold_fix_retry=1;
+    settings_packet.data.gps_cold_fix_retry=2;
     settings_packet.data.gps_fail_retry=0;
     settings_packet.data.gps_settings=0xff;
     flags=M_IDLE;
@@ -235,6 +235,37 @@ boolean MODULE_GPS_UBLOX::gps_begin(void){
     serial_debug.println(")");
   #endif
 
+  #ifdef serial_debug
+    serial_debug.print("gps_settings(");
+    serial_debug.print("per: ");
+    serial_debug.print(settings_packet.data.periodic_interval);
+    serial_debug.print(" trig: ");
+    serial_debug.print(settings_packet.data.triggered_interval);
+    serial_debug.print(" send: ");
+    serial_debug.print(settings_packet.data.send_interval);
+    serial_debug.print(" trig_th: ");
+    serial_debug.print(settings_packet.data.gps_triggered_threshold);
+    serial_debug.print(" trig_dur: ");
+    serial_debug.print(settings_packet.data.gps_triggered_duration);
+    serial_debug.print(" cold_t: ");
+    serial_debug.print(settings_packet.data.gps_cold_fix_timeout);
+    serial_debug.print(" hot_t: ");
+    serial_debug.print(settings_packet.data.gps_hot_fix_timeout);
+    serial_debug.print(" min_fix: ");
+    serial_debug.print(settings_packet.data.gps_min_fix_time);
+    serial_debug.print(" min_ehpe: ");
+    serial_debug.print(settings_packet.data.gps_min_ehpe);
+    serial_debug.print(" hot_ret: ");
+    serial_debug.print(settings_packet.data.gps_hot_fix_retry);
+    serial_debug.print(" cold_ret: ");
+    serial_debug.print(settings_packet.data.gps_cold_fix_retry);
+    serial_debug.print(" fail_ret: ");
+    serial_debug.print(settings_packet.data.gps_fail_retry);
+    serial_debug.print(" set: ");
+    serial_debug.print(settings_packet.data.gps_settings);
+    serial_debug.println(")");
+  #endif
+
   // check if more fails have occured then allowed
   if(gps_fail_count>settings_packet.data.gps_fail_retry){
     return false;
@@ -279,7 +310,7 @@ boolean MODULE_GPS_UBLOX::gps_begin(void){
   error|=gps_busy_timeout(1000);
 
   //GNSS.onLocation(gps_acquiring_callback);
-  GNSS.onLocation(Callback(&MODULE_GPS_UBLOX::running, this));
+  //GNSS.onLocation(Callback(&MODULE_GPS_UBLOX::running, this));
   error|=gps_busy_timeout(1000);
   
   if(error){
@@ -365,13 +396,14 @@ boolean MODULE_GPS_UBLOX::gps_start(void){
 void MODULE_GPS_UBLOX::running(void){
   // Restart automatic stop after timeout if no messages received
   //gps_timer_response_timeout.start(gps_acquiring_callback,1000);
-  if(millis()-gps_fix_start_time>gps_timeout){
+  if((millis()-gps_fix_start_time)>gps_timeout){
     gps_stop();
   }
   else if(GNSS.location(gps_location)){
     float ehpe = gps_location.ehpe();
     boolean gps_3D_fix_required = bitRead(settings_packet.data.gps_settings,0);
     boolean gps_fully_resolved_required = bitRead(settings_packet.data.gps_settings,3);
+    gps_response_fail_count=0;
 
     #ifdef serial_debug
       serial_debug.print("gps( ehpe ");
@@ -386,6 +418,10 @@ void MODULE_GPS_UBLOX::running(void){
       serial_debug.print(gps_location.fixType());
       serial_debug.print(" res ");
       serial_debug.print(gps_location.fullyResolved());
+      serial_debug.print(" to ");
+      serial_debug.print((millis()-gps_fix_start_time)/1000);
+      serial_debug.print("/");
+      serial_debug.print(gps_timeout/1000);
       serial_debug.println(" )");
     #endif
 
@@ -423,6 +459,10 @@ void MODULE_GPS_UBLOX::running(void){
     if(gps_response_fail_count>10){
       //raise error and stop
       gps_fail_count++;
+      #ifdef serial_debug
+      serial_debug.print("gps_running_reponse(");
+      serial_debug.println("fail)");
+      #endif
       gps_stop();
       //gps_timer_timeout.start(gps_stop,1);
     }
@@ -437,6 +477,11 @@ void MODULE_GPS_UBLOX::running(void){
 void MODULE_GPS_UBLOX::gps_stop(void){
   //gps_timer_timeout.stop();
   //gps_timer_response_timeout.stop();
+  #ifdef serial_debug
+    serial_debug.print("gps_stop(");
+    serial_debug.println(")");
+  #endif
+  flags=M_IDLE; // provisional flag
   gps_time_to_fix = (millis()-gps_fix_start_time);
   // Power off GPS
   gps_power(false);
@@ -516,11 +561,12 @@ void MODULE_GPS_UBLOX::gps_stop(void){
     serial_debug.println(")");
     serial_debug.flush();
   #endif
+  flags=M_SEND; // send flag
 }
 
 void MODULE_GPS_UBLOX::gps_end(void){
   // Note: https://github.com/GrumpyOldPizza/ArduinoCore-stm32l0/issues/90
-  //GNSS.end();
+  // GNSS.end();
   gps_begin_happened==false;
   gps_power(false);
   gps_backup(false);

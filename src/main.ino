@@ -282,6 +282,12 @@ void loop() {
         active_module=count;
         break;
       }
+      else if (flag==M_ERROR){
+        //do nothing for now
+        //state_transition(MODULE_READ);
+        //active_module=count;
+        break;
+      }
       //TODO handle other flags
     }
 
