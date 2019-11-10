@@ -46,6 +46,11 @@ uint32_t get_bits(float x, float min, float max, int precision){
 // Implemented based on https://stackoverflow.com/questions/15638612/calculating-mean-and-standard-deviation-of-the-data-which-does-not-fit-in-memory
 
 void push_value(float value,reading_structure_t *values){
+  // special case if the array is empty, opulate both min and max
+  if(values->r_count==0){
+    values->r_min=value;
+    values->r_max=value;
+  }
   values->r_count++;
   float delta = value - values->r_mean;
   values->r_mean += delta/values->r_count;
