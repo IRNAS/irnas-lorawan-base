@@ -71,7 +71,7 @@ module_flags_e MODULE_GPS_UBLOX::scheduler(void){
     interval=interval*(gps_fail_count+1);
   }
 
-  if((interval!=0) & (millis()-gps_event_last>=interval*60*1000|gps_event_last==0)){
+  if((interval!=0) & (millis()-read_timestamp>=interval*60*1000|read_timestamp==0)){
     if (flags==M_IDLE){
         read_timestamp=millis();
         flags=M_READ;

@@ -94,7 +94,6 @@ class MODULE_GPS_UBLOX
         uint8_t gps_fail_fix_count = 0;
         uint8_t gps_response_fail_count = 0;
         boolean gps_hot_fix = false;
-        unsigned long gps_event_last = 0;
         unsigned long gps_accelerometer_last = 0;
         unsigned long gps_fix_start_time = 0;
         unsigned long gps_timeout = 0;
