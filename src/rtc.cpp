@@ -13,6 +13,9 @@ ISL1208_RTC rtc;
  * @return none (void)
  */
 void rtc_init(){
+    #ifdef serial_debug
+        serial_debug.println("rtc_init()");
+    #endif
     time_t t = TIME_INIT_VALUE;
     Wire.begin();
     rtc.begin();

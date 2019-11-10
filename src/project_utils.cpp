@@ -1,5 +1,9 @@
 #include "project_utils.h"
 
+// Define debug if required
+#define serial_debug  Serial
+
+
 /**
  * @brief Maps the variable with the given minimum and maximum value to the value with specified min, max
  * 
@@ -84,4 +88,30 @@ unsigned int bcd2bin(unsigned char val)
 char bin2bcd(unsigned int val)
 {
     return ((val / 10) << 4) + val % 10;
+}
+
+/**
+ * @brief function to check if i2c pull-up is present, call only once prior to init of Wire library
+ * 
+ * @return boolean 
+ */
+boolean check_i2c(){
+  boolean fail=false;
+  if(digitalRead(PIN_WIRE_SCL)==LOW){
+    //no I2C pull-up detected
+    #ifdef serial_debug
+      serial_debug.print("i2c pull-up error(");
+      serial_debug.println("scl)");
+    #endif
+    fail=true;
+  }
+  if(digitalRead(PIN_WIRE_SDA)==LOW){
+    //no I2C pull-up detected
+    #ifdef serial_debug
+      serial_debug.print("i2c pull-up error(");
+      serial_debug.println("sda)");
+    #endif
+    fail=true;
+  }
+  return fail;
 }

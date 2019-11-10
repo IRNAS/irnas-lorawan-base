@@ -13,7 +13,7 @@ The board definition is defined per project and per module. Thus the pin names m
 #define MODULE_GPS_SERIAL Serial2
 
 #define MODULE_PIRA_SERIAL Serial1
-#define MODULE_PIRA_5V PH0 //TODO change back to PB6
+#define MODULE_PIRA_5V PB6 // PH0 is LED
 #define MODULE_PIRA_STATUS PA11
 
 #define MODULE_ACCELEROMETER_INT1 -1

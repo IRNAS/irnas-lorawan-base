@@ -20,26 +20,28 @@ uint8_t MODULE_PIRA::set_downlink_data(uint8_t *data, size_t *size){
 
 module_flags_e MODULE_PIRA::scheduler(void){
 
-  pira_state_machine();
-  //flags are updated in the state machine
-  return flags;
+    if(flags!=M_RUNNING){
+        pira_state_machine();
+    }
+    //flags are updated in the state machine
+    return flags;
 }
 
 uint8_t MODULE_PIRA::initialize(void){
     settings_packet.data.read_interval=10;
     settings_packet.data.send_interval=1;
     settings_packet.data.status_battery=10;
-    settings_packet.data.safety_power_period=10;
-    settings_packet.data.safety_sleep_period=10;
-    settings_packet.data.safety_reboot=10;
-    settings_packet.data.operational_wakeup=5;
+    settings_packet.data.safety_power_period=600;
+    settings_packet.data.safety_sleep_period=600;
+    settings_packet.data.safety_reboot=60;
+    settings_packet.data.operational_wakeup=300;
     flags=M_IDLE;
 
     MODULE_PIRA_SERIAL.begin(115200);
     MODULE_PIRA_SERIAL.setWakeup(1);
     MODULE_PIRA_SERIAL.onReceive(Callback(&MODULE_PIRA::uart_receive, this));
 
-    status_pira_state_machine = IDLE_PIRA;
+    status_pira_state_machine = START_PIRA;
     state_prev = IDLE_PIRA;
 
     // Initially enable RaspberryPi power
@@ -419,6 +421,10 @@ char* MODULE_PIRA::return_state(state_pira_e status_pira_state_machine)
     {
         sprintf(buffer, "%s", "IDLE_PIRA");
     }
+    if(status_pira_state_machine == START_PIRA)
+    {
+        sprintf(buffer, "%s", "START_PIRA");
+    }
     if(status_pira_state_machine == WAIT_STATUS_ON)
     {
         sprintf(buffer, "%s", "WAIT_STATUS_ON");
@@ -430,6 +436,10 @@ char* MODULE_PIRA::return_state(state_pira_e status_pira_state_machine)
     if(status_pira_state_machine == REBOOT_DETECTION)
     {
         sprintf(buffer, "%s", "REBOOT_DETECTION");
+    }
+    if(status_pira_state_machine == STOP_PIRA)
+    {
+        sprintf(buffer, "%s", "STOP_PIRA");
     }
 
     return buffer;
@@ -452,11 +462,16 @@ void MODULE_PIRA::pira_state_machine()
     state_prev=status_pira_state_machine;
 
 #ifdef serial_debug
+    pira_elapsed = millis() - stateTimeoutStart;stateTimeoutDuration;
     serial_debug.print(name);
     serial_debug.print(":fsm(");
     serial_debug.print(return_state(state_prev));
     serial_debug.print(" -> ");
     serial_debug.print(return_state(status_pira_state_machine));
+    serial_debug.print(" :e ");
+    serial_debug.print(pira_elapsed/1000);
+    serial_debug.print(" :t ");
+    serial_debug.print(stateTimeoutDuration);
     serial_debug.println(")");;
 #endif
 /*#ifdef serial_debug
@@ -488,7 +503,7 @@ void MODULE_PIRA::pira_state_machine()
             }
 
             state_goto_timeout = WAIT_STATUS_ON;
-            flags=M_IDLE;
+            //flags=M_IDLE;
 
             //TODO: implement waking up RPi via LoraWAN
             /*if(settings_packet.data.turnOnRpi)
@@ -508,7 +523,7 @@ void MODULE_PIRA::pira_state_machine()
 
         case WAIT_STATUS_ON:
 
-            stateTimeoutDuration = settings_packet.data.safety_power_period;
+            stateTimeoutDuration = settings_packet.data.safety_reboot;
             state_goto_timeout = STOP_PIRA;
 
             // WAIT_STATUS_ON state reached, turn on power for raspberry pi

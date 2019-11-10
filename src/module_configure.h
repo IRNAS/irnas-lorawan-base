@@ -8,7 +8,7 @@
 #include "module_pira.h"
 #include "module_accelerometer.h"
 
-#define N_MODULES 3
+#define N_MODULES 2
 #define N_MODULES_TOTAL N_MODULES+1
 
 extern module *s_SYSTEM;

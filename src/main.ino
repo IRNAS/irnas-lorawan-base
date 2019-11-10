@@ -170,6 +170,8 @@ void loop() {
     // defaults for timing out
     state_timeout_duration=0;
     state_goto_timeout=INIT;
+    // check i2c
+    check_i2c();
     // setup default settings
     settings_init();
     // setup RTC

@@ -2,8 +2,8 @@
 
 #define serial_debug  Serial
 
-#define LORAWAN_ABP
-//#define LORAWAN_OTAA
+//#define LORAWAN_ABP
+#define LORAWAN_OTAA
 
 #ifdef LORAWAN_ABP
 // LoraWAN ABP configuration
@@ -14,9 +14,9 @@ const char *appSKey = "74A22F5287DAA0A6AA9639B32A721190";
 
 #ifdef LORAWAN_OTAA
 // LoraWAN ABP configuration
-const char *appEui  = "70B3D57ED0022A92";
-const char *appKey  = "6EAFE1A9D64C6FA2F627C09451A0CDA5";
-const char *devEui  = "004E970288420117";
+const char *appEui  = "70B3D57ED0025459";
+const char *appKey  = "5C430C71D8D7127D66B1AF0A2EE5DFF2";
+const char *devEui  = "00FD6DA8412EEE70";
 #endif
 
 boolean lorawan_send_successful = false; // flags sending has been successful to the FSM
