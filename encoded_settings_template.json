@@ -1,0 +1,56 @@
+{
+    "basic_settings": {
+        "global_id": {"value": 1, "size": 1, "order": 0},
+        "length": {"value": 8, "size": 1, "order": 1},
+        "lorawan_datarate": {"value": 0, "size": 1, "order": 2},
+        "lorawan_adr": {"value": 0, "size": 1, "order": 3},
+        "lorawan_txp": {"value": 0, "size": 1, "order": 4},
+        "lorawan_reg": {"value": 0, "size": 1, "order": 5},
+        "resend_delay": {"value": 0, "size": 1, "order": 6},
+        "resend_count": {"value": 0, "size": 1, "order": 7}
+    },
+    "module_system": {
+        "global_id": {"value": 2, "size": 1, "order": 0},
+        "length": {"value": 6, "size": 1, "order": 1},
+        "read_interval": {"value": 0, "size": 2, "order": 2},
+        "send_interval": {"value": 0, "size": 2, "order": 3}
+    },
+    "module_gps_ublox": {
+        "global_id": {"value": 3, "size": 1, "order": 0},
+        "length": {"value": 20, "size": 1, "order": 1},
+        "send_interval": {"value": 0, "size": 2, "order": 2},
+        "periodic_interval": {"value": 0, "size": 2, "order": 3},
+        "triggered_interval": {"value": 0, "size": 2, "order": 4},
+        "gps_triggered_threshold": {"value": 0, "size": 1, "order": 5},
+        "gps_triggered_duration": {"value": 0, "size": 1, "order": 6},
+        "gps_cold_fix_timeout": {"value": 0, "size": 2, "order": 7},
+        "gps_hot_fix_timeout": {"value": 0, "size": 2, "order": 8},
+        "gps_min_fix_time": {"value": 0, "size": 1, "order": 9},
+        "gps_min_ehpe": {"value": 0, "size": 1, "order": 10},
+        "gps_hot_fix_retry": {"value": 0, "size": 1, "order": 11},
+        "gps_cold_fix_retry": {"value": 0, "size": 1, "order": 12},
+        "gps_fail_retry": {"value": 0, "size": 1, "order": 13},
+        "gps_settings": {"value": 0, "size": 1, "order": 14}
+    },
+    "module_pira": {
+        "global_id": {"value": 4, "size": 1, "order": 0},
+        "length": {"value": 24, "size": 1, "order": 1},
+        "read_interval": {"value": 0, "size": 2, "order": 2},
+        "send_interval": {"value": 0, "size": 2, "order": 3},
+        "status_battery": {"value": 0, "size": 2, "order": 4},
+        "safety_power_period": {"value": 0, "size": 4, "order": 5},
+        "safety_sleep_period": {"value": 0, "size": 4, "order": 6},
+        "safety_reboot": {"value": 0, "size": 4, "order": 7},
+        "operational_wakeup": {"value": 0, "size": 4, "order": 8}
+    },
+    "module_accelerometer": {
+        "global_id": {"value": 5, "size": 1, "order": 0},
+        "length": {"value": 10, "size": 1, "order": 1},
+        "read_interval": {"value": 0, "size": 2, "order": 2},
+        "send_interval": {"value": 0, "size": 2, "order": 3},
+        "triggered_threshold": {"value": 0, "size": 1, "order": 4},
+        "triggered_duration": {"value": 0, "size": 1, "order": 5},
+        "free_fall": {"value": 0, "size": 1, "order": 6},
+        "dummy": {"value": 0, "size": 1, "order": 7}
+    }
+}
