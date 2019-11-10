@@ -7,6 +7,9 @@
 #include "STM32L0.h"
 #include "GNSS.h"
 #include "module.h"
+#include <stdint.h>
+#include <time.h>
+#include "rtc.h"
 
 class MODULE_GPS_UBLOX
 {

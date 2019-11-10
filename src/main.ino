@@ -129,6 +129,9 @@ void setup() {
   STM32L0.wdtEnable(18000);
   analogReadResolution(12);
 
+  pinMode(BOARD_LED,OUTPUT);
+  digitalWrite(BOARD_LED,HIGH);
+
   // Serial port debug setup
   #ifdef serial_debug
     serial_debug.begin(115200);
@@ -247,6 +250,9 @@ void loop() {
     state_goto_timeout=INIT;
     sleep=-1;
 
+    //LED status 
+    digitalWrite(BOARD_LED,HIGH);
+
     if(lorawan_settings_new==true){
       lorawan_settings_new=false;
       state_transition(APPLY_SETTINGS);
@@ -267,10 +273,9 @@ void loop() {
       if (flag==M_RUNNING){
         //run the module
         modules[count]->running();
-        active_module=count;
         sleep=500; // keep iterating every 500s
         // TODO: timeout
-        break;
+        // break; // Do not break and process running modules in parallel
       }
       else if (flag==M_SEND){
         state_transition(MODULE_SEND);
@@ -288,6 +293,7 @@ void loop() {
         //active_module=count;
         break;
       }
+      digitalWrite(BOARD_LED,LOW);
       //TODO handle other flags
     }
 

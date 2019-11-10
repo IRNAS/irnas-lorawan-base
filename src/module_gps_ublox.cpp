@@ -522,6 +522,16 @@ void MODULE_GPS_UBLOX::gps_stop(void){
     }
   }
 
+  struct tm timeinfo;
+  timeinfo.tm_sec = gps_location.seconds();
+  timeinfo.tm_min = gps_location.minutes();
+  timeinfo.tm_hour = gps_location.hours();
+  timeinfo.tm_mday = gps_location.day();
+  timeinfo.tm_mon  = gps_location.month()-1;
+  timeinfo.tm_year = gps_location.year()-1900;
+  time_t time = mktime(&timeinfo);
+  rtc_time_sync(time, true);
+
   float latitude, longitude, hdop, epe, satellites, altitude = 0;
   latitude = gps_location.latitude();
   longitude = gps_location.longitude();

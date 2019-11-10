@@ -5,7 +5,7 @@
 /**
  * @brief RTC object, used to read and write time to rtc chip 
  */
-ISL1208_RTC rtc; 
+//ISL1208_RTC rtc; 
 
 /*
  * @brief Intializes rtc and sets init time value
@@ -18,10 +18,16 @@ void rtc_init(){
     #endif
     time_t t = TIME_INIT_VALUE;
     Wire.begin();
-    rtc.begin();
+    //rtc.begin();
+    //set the WRTC (Write RTC Enable Bit) bit to 1 to enable the RTC
+    //only then the RTC start counting
+    Wire.beginTransmission(ISL1208_ADDRESS);
+    Wire.write(ISL1208_SR); //status register
+    Wire.write(0x10); //enable WRTC 
+    Wire.endTransmission();
 
     //Try to open the ISL1208,checks if the RTC is available on the I2C bus
-    if(rtc.isRtcActive()){
+    if(rtc_present()){
         #ifdef serial_debug
         serial_debug.println("RTC detected!");
         #endif
@@ -35,12 +41,40 @@ void rtc_init(){
             //Set RTC time to Mon, 1 Jan 2018 00:00:00
             rtc_time_write(t);
         }
+        #ifdef serial_debug
+            time_t time = rtc_time_read();
+            Serial.println(ctime(&time));
+            Serial.println(time);
+        #endif
     }
     else{
         #ifdef serial_debug
         serial_debug.println("RTC not detected!");
         #endif
     }
+}
+
+/**
+ * @brief sync rtc time to external source if new time is newer then existing or forced
+ * 
+ * @param time_received 
+ * @return boolean 
+ */
+boolean rtc_time_sync(time_t time_received, boolean force){
+    // if local time is greater then received time, reject unless forced
+    if(rtc_time_read()>(time_received)&force==false){
+        return false;
+    }
+    rtc_time_write(time_received);
+    #ifdef serial_debug
+        time_t time = rtc_time_read();
+        Serial.print("rtc_time_updated(");
+        Serial.print(ctime(&time));
+        Serial.print(" ");
+        Serial.print(time);
+        Serial.println(")");
+    #endif
+    return true;
 }
 
 /**
@@ -119,6 +153,23 @@ void rtc_time_write(time_t t){
     //Disable RTC writing
     write8(ISL1208_ADDRESS, ISL1208_SR, sr);
 }
+
+/**
+ * @brief check if RTC is present
+ * 
+ * @return true 
+ * @return false 
+ */
+bool rtc_present() {
+  Wire.beginTransmission(ISL1208_ADDRESS); //send the address
+  byte error = Wire.endTransmission(); //read ACK
+
+  if(error == 0) { //if RTC is available
+    return true;
+  }
+  return false;
+}
+
 
 /**
  * @brief Reads a register over I2C

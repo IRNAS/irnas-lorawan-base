@@ -97,6 +97,8 @@ char bin2bcd(unsigned int val)
  */
 boolean check_i2c(){
   boolean fail=false;
+  pinMode(PIN_WIRE_SCL,INPUT);
+  pinMode(PIN_WIRE_SDA,INPUT);
   if(digitalRead(PIN_WIRE_SCL)==LOW){
     //no I2C pull-up detected
     #ifdef serial_debug

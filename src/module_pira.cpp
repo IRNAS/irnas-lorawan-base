@@ -35,19 +35,25 @@ uint8_t MODULE_PIRA::initialize(void){
     settings_packet.data.safety_sleep_period=600;
     settings_packet.data.safety_reboot=60;
     settings_packet.data.operational_wakeup=300;
-    flags=M_IDLE;
 
     MODULE_PIRA_SERIAL.begin(115200);
     MODULE_PIRA_SERIAL.setWakeup(1);
     MODULE_PIRA_SERIAL.onReceive(Callback(&MODULE_PIRA::uart_receive, this));
 
+    // start the module in active state
     status_pira_state_machine = START_PIRA;
     stateTimeoutStart=millis();
     state_prev = IDLE_PIRA;
+    flags=M_RUNNING;
 
     // Initially enable RaspberryPi power
+    
+    pinMode(MODULE_5V_EN, OUTPUT);
+    digitalWrite(MODULE_5V_EN, LOW);
     pinMode(MODULE_PIRA_5V, OUTPUT);
     digitalWrite(MODULE_PIRA_5V, LOW);
+
+
 
     // Prepare status pin
     pinMode(MODULE_PIRA_STATUS, INPUT_PULLDOWN);
@@ -144,7 +150,7 @@ void MODULE_PIRA::uart_command_parse(uint8_t *rxBuffer)
             //TODO: constrain values
             case 't':
                 //MODULE_PIRA_SERIAL.println("t: received");
-                rtc_time_write((time_t)data);
+                rtc_time_sync((time_t)data,false);
                 break;
             case 'p':
                 //MODULE_PIRA_SERIAL.println("p: received");
@@ -463,7 +469,7 @@ void MODULE_PIRA::pira_state_machine()
     state_prev=status_pira_state_machine;
 
 #ifdef serial_debug
-    pira_elapsed = millis() - stateTimeoutStart;stateTimeoutDuration;
+    pira_elapsed = millis() - stateTimeoutStart;
     serial_debug.print(name);
     serial_debug.print(":fsm(");
     serial_debug.print(return_state(state_prev));
@@ -528,6 +534,7 @@ void MODULE_PIRA::pira_state_machine()
             state_goto_timeout = STOP_PIRA;
 
             // WAIT_STATUS_ON state reached, turn on power for raspberry pi
+            digitalWrite(MODULE_5V_EN, HIGH);
             digitalWrite(MODULE_PIRA_5V, HIGH);
 
             // If status pin is read as high go to WAKEUP state
@@ -563,6 +570,7 @@ void MODULE_PIRA::pira_state_machine()
 
         case STOP_PIRA:
             flags=M_SEND;
+            digitalWrite(MODULE_5V_EN, LOW);
             digitalWrite(MODULE_PIRA_5V, LOW);
             pira_state_transition(IDLE_PIRA);
         break;
