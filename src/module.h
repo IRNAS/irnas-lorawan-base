@@ -28,7 +28,7 @@ public:
 	virtual uint8_t send(uint8_t *data, size_t *size){};
 	virtual uint8_t read(void){};
 	virtual void running(void){};
-	virtual void event(main_share_t main_share){};
+	virtual void event(event_e event){};
 	virtual void print_data(void){};
 };
 
@@ -155,6 +155,15 @@ public:
 	 */
 	void running(void){
 		module.running();
+	}
+
+	/**
+	 * @brief performs event handling
+	 * 
+	 * @return uint8_t 
+	 */
+	void event(event_e event){
+		module.event(event);
 	}
 
 	/**

@@ -13,19 +13,14 @@ struct reading_structure_t
     float r_m2;
 };
 
-enum input_event_e : uint16_t{
-  HALL,
-  INPUT1,
-  INPUT2
+enum event_e : uint8_t{
+  EVENT_NONE,
+  EVENT_HALL,
+  EVENT_INPUT1,
+  EVENT_INPUT2,
+  EVENT_MOTION,
+  EVENT_FREEFALL,
 }; 
-
-struct main_share_t{
-  uint64_t time;
-  uint16_t voltage;
-  input_event_e input_event;
-  lis2dw_event_t accelerometer_event_e ;
-};
-
 
 
 boolean check_i2c();

@@ -83,6 +83,10 @@ uint8_t MODULE_PIRA::send(uint8_t *data, size_t *size){
     return 1;
 }
 
+void MODULE_PIRA::event(event_e event){
+
+}
+
 void MODULE_PIRA::print_data(void){
 
 }

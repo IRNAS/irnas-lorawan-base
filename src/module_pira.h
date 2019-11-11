@@ -28,7 +28,7 @@ class MODULE_PIRA
         uint8_t send(uint8_t *buffer, size_t *size);
         uint8_t read(void);
         uint8_t running(void);
-
+        void event(event_e event);
         void print_data(void);
 
         // variables

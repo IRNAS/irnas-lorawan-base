@@ -117,6 +117,10 @@ uint8_t MODULE_SYSTEM::send(uint8_t *data, size_t *size){
     return 1;
 }
 
+void MODULE_SYSTEM::event(event_e event){
+
+}
+
 void MODULE_SYSTEM::print_data(void){
 #ifdef serial_debug
     serial_debug.print(name);

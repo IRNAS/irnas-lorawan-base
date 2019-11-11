@@ -24,7 +24,7 @@ class MODULE_GPS_UBLOX
         uint8_t send(uint8_t *buffer, size_t *size);
         uint8_t read(void);
         void running(void);
-
+        void event(event_e event);
         void print_data(void);
 
         // variables

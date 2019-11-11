@@ -2,17 +2,17 @@
 
 #define serial_debug Serial
 
-extern boolean accelerometer_event_flag;
+extern event_e system_event;
 /**
  * @brief called upon pin change
  * 
  */
 void accelerometer_callback(void){
   /*#ifdef debug
-    serial_debug.print("sensopr_accelerometer_callback(");
+    serial_debug.print("sensor_accelerometer_callback(");
     serial_debug.println(")");
   #endif*/
-  accelerometer_event_flag=true;
+  system_event=EVENT_MOTION;
   STM32L0.wakeup();
 }
 
@@ -96,12 +96,17 @@ module_flags_e MODULE_ACCELEROMETER::scheduler(void){
 uint8_t MODULE_ACCELEROMETER::initialize(void){
     settings_packet.data.read_interval=10;
     settings_packet.data.send_interval=1;
+    settings_packet.data.triggered_threshold=1;
+    settings_packet.data.triggered_duration=1;
+    settings_packet.data.free_fall=1;
+    flags=M_ERROR;
 
     if(lis.begin()==false){
       #ifdef serial_debug
         serial_debug.print("accelerometer_init(");
         serial_debug.println("accel error)");
       #endif
+      return 0;
     }
 
     pinMode(MODULE_ACCELEROMETER_INT1, INPUT);
@@ -138,6 +143,16 @@ uint8_t MODULE_ACCELEROMETER::send(uint8_t *data, size_t *size){
     *size=sizeof(module_readings_data_t);
     flags=M_IDLE;
     return 1;
+}
+
+void MODULE_ACCELEROMETER::event(event_e event){
+    if(event==EVENT_MOTION){
+        #ifdef serial_debug
+        serial_debug.print(name);
+        serial_debug.print(": motion(");
+        serial_debug.println(")");
+        #endif
+    }
 }
 
 void MODULE_ACCELEROMETER::print_data(void){

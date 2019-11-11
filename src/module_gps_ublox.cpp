@@ -2,8 +2,6 @@
 
 #define serial_debug Serial
 
-extern boolean accelerometer_event_flag;
-
 uint8_t MODULE_GPS_UBLOX::configure(uint8_t *data, size_t *size){
   #ifdef serial_debug
       serial_debug.print(name);
@@ -47,7 +45,6 @@ uint8_t MODULE_GPS_UBLOX::set_downlink_data(uint8_t *data, size_t *size){
 
 module_flags_e MODULE_GPS_UBLOX::scheduler(void){
   unsigned long interval=0;
-  accelerometer_event_flag=false;
 
   // do not schedule a GPS event if it has failed more then the specified amount of times
   if(gps_fail_count>settings_packet.data.gps_fail_retry){
@@ -130,6 +127,10 @@ uint8_t MODULE_GPS_UBLOX::send(uint8_t *data, size_t *size){
     *size=sizeof(module_readings_data_t);
     flags=M_IDLE;
     return 1;
+}
+
+void MODULE_GPS_UBLOX::event(event_e event){
+
 }
 
 void MODULE_GPS_UBLOX::print_data(void){
@@ -530,8 +531,10 @@ void MODULE_GPS_UBLOX::gps_stop(void){
   timeinfo.tm_mon  = gps_location.month()-1;
   timeinfo.tm_year = gps_location.year()-1900;
   time_t time = mktime(&timeinfo);
-  rtc_time_sync(time, true);
-
+  // make sure to sync onliy valid time fix
+  if(gps_location.fixType()>= GNSSLocation::TYPE_TIME){
+    rtc_time_sync(time, true);
+  }
   float latitude, longitude, hdop, epe, satellites, altitude = 0;
   latitude = gps_location.latitude();
   longitude = gps_location.longitude();
