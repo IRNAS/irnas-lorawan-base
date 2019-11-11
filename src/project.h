@@ -1,9 +1,24 @@
-#ifndef BOARD_H_
-#define BOARD_H_
+#ifndef PROJECT_H_
+#define PROJECT_H_
 
 /*
 The board definition is defined per project and per module. Thus the pin names must be in format MODULE_NAME
  */
+
+//include modules
+//#include "module.h"
+#include "module_system.h"
+#include "module_gps_ublox.h"
+#include "module_pira.h"
+#include "module_accelerometer.h"
+
+#define N_MODULES 3
+#define N_MODULES_TOTAL N_MODULES+1
+
+extern module *s_SYSTEM;
+extern module *s_GPS;
+extern module *s_PIRA;
+extern module *modules[];
 
 // MODULE_SYSTEM
 #define MODULE_SYSTEM_BAN_MON_EN -1
@@ -20,5 +35,8 @@ The board definition is defined per project and per module. Thus the pin names m
 #define MODULE_ACCELEROMETER_INT1 -1
 
 #define BOARD_LED PH0
+
+
+
 
 #endif

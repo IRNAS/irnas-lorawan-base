@@ -33,7 +33,7 @@ uint8_t MODULE_PIRA::initialize(void){
     settings_packet.data.status_battery=10;
     settings_packet.data.safety_power_period=600;
     settings_packet.data.safety_sleep_period=600;
-    settings_packet.data.safety_reboot=60;
+    settings_packet.data.safety_reboot=120;
     settings_packet.data.operational_wakeup=300;
 
     readings_packet.data.empty_space=0;
@@ -46,10 +46,11 @@ uint8_t MODULE_PIRA::initialize(void){
     MODULE_PIRA_SERIAL.onReceive(Callback(&MODULE_PIRA::uart_receive, this));
 
     // start the module in active state
-    status_pira_state_machine = START_PIRA;
-    stateTimeoutStart=millis();
+    status_pira_state_machine = IDLE_PIRA;
+    stateTimeoutStart=0;
+    stateTimeoutDuration=0;
     state_prev = IDLE_PIRA;
-    flags=M_RUNNING;
+    flags=M_IDLE;
 
     // Initially enable RaspberryPi power
     
@@ -100,22 +101,7 @@ uint8_t MODULE_PIRA::read(void){
 uint8_t MODULE_PIRA::running(void){
   // Receive any command from raspberry
   uart_command_receive();
-
-  // Get the current time from RTC
-  readings_packet.data.status_time = (uint64_t)rtc_time_read();
-  /*#ifdef serial_debug
-      time_t time_string = (time_t)readings_packet.data.status_time;
-      serial_debug.print("Time as a basic string = ");
-      serial_debug.println(ctime(&time_string));
-      print_status_values();
-  #endif*/
-
-  // Update status values in not in IsDLE_PIRA state
-  if(status_pira_state_machine != IDLE_PIRA)
-  {
-      send_status_values();
-  }
-
+  
   pira_state_machine();
 }
 
@@ -504,27 +490,14 @@ void MODULE_PIRA::pira_state_machine()
     {
         case IDLE_PIRA:
 
-            //Typical usecase would be that operational_wakeup < safety_sleep_period
-            if(settings_packet.data.operational_wakeup < settings_packet.data.safety_sleep_period)
-            {
-                stateTimeoutDuration = settings_packet.data.operational_wakeup;
-            }
-            else
-            {
-                stateTimeoutDuration = settings_packet.data.safety_sleep_period;
-            }
-
+            stateTimeoutDuration = min(settings_packet.data.operational_wakeup,settings_packet.data.safety_sleep_period);
             state_goto_timeout = WAIT_STATUS_ON;
             //flags=M_IDLE;
 
-            //TODO: implement waking up RPi via LoraWAN
-            /*if(settings_packet.data.turnOnRpi)
-            {
-                settings_packet.data.turnOnRpi = false;
-
-                //Change state
+            // wake up immediately after boot
+            if(stateTimeoutStart==0){
                 pira_state_transition(WAIT_STATUS_ON);
-            }*/
+            }
         break;
 
         case START_PIRA:
@@ -542,6 +515,8 @@ void MODULE_PIRA::pira_state_machine()
             digitalWrite(MODULE_5V_EN, HIGH);
             digitalWrite(MODULE_PIRA_5V, HIGH);
 
+            send_status_values();
+
             // If status pin is read as high go to WAKEUP state
             if(digitalRead(MODULE_PIRA_STATUS))
             {
@@ -554,6 +529,8 @@ void MODULE_PIRA::pira_state_machine()
             stateTimeoutDuration = settings_packet.data.safety_power_period;
             state_goto_timeout = STOP_PIRA;
 
+            send_status_values();
+
             //Check status pin, if low then turn off power supply.
             if(!digitalRead(MODULE_PIRA_STATUS))
             {
@@ -565,6 +542,8 @@ void MODULE_PIRA::pira_state_machine()
 
             stateTimeoutDuration = settings_packet.data.safety_reboot;
             state_goto_timeout = STOP_PIRA;
+
+            send_status_values();
 
             if(digitalRead(MODULE_PIRA_STATUS))
             {

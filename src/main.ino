@@ -1,7 +1,6 @@
 #include <STM32L0.h> 
 #include <TimerMillis.h>
-#include "module_configure.h"
-#include "board.h"
+#include "project.h"
 #include "lorawan.h"
 #include "project_utils.h"
 #include "settings.h"

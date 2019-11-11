@@ -2,7 +2,7 @@
 #define MODULE_SYSTEM_h
 
 #include <Arduino.h>
-#include "board.h"
+#include "project.h"
 #include "project_utils.h"
 #include "STM32L0.h"
 #include "module.h"

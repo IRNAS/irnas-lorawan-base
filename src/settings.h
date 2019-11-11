@@ -6,7 +6,7 @@
 #include "lorawan.h"
 #include "EEPROM.h"
 #include "stm32l0_eeprom.h"
-#include "module_configure.h"
+#include "project.h"
 
 #define EEPROM_DATA_START_SETTINGS 0
 

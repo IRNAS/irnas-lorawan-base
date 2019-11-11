@@ -1,4 +1,4 @@
-#include "module_configure.h"
+#include "project.h"
 
 // Default system module
 // core settings global id 1
