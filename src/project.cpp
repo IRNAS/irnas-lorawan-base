@@ -3,6 +3,7 @@
 
 // Default system module
 // core settings global id 1
+//module *s_CORE = new myModule<MODULE_CORE>(1); // global id 1
 module *s_SYSTEM = new myModule<MODULE_SYSTEM>(2); // global id 2
 module *s_GPS = new myModule<MODULE_GPS_UBLOX>(3); // global id 3
 module *s_PIRA = new myModule<MODULE_PIRA>(4); // global id 4
