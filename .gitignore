@@ -6,3 +6,4 @@
 /src/test/build/*
 scatter-mode.html
 build
+*.swp
