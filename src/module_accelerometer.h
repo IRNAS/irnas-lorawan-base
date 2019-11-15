@@ -26,7 +26,7 @@ class MODULE_ACCELEROMETER
 
         // variables
         String name = "accelerometer";
-        module_flags_e flags=M_ERROR;
+        module_flags_e flags = M_ERROR;
 
         // parameters
         uint8_t param_a = 0;
@@ -35,7 +35,8 @@ class MODULE_ACCELEROMETER
     private:
 
         // add
-        struct module_settings_data_t{
+        struct module_settings_data_t
+        {
             uint8_t global_id;
             uint8_t length;
             uint16_t read_interval;
@@ -46,13 +47,15 @@ class MODULE_ACCELEROMETER
             uint8_t dummy;
         }__attribute__((packed));
 
-        union module_settings_packet_t{
+        union module_settings_packet_t
+        {
             module_settings_data_t data;
             uint8_t bytes[sizeof(module_settings_data_t)];
         };
 
         // we are sending 13 bytes anyhow as header, filling up the packet does not matter too much
-        struct module_readings_data_t{
+        struct module_readings_data_t
+        {
             uint8_t accel_x_min;
             uint8_t accel_x_max;
             uint8_t accel_x_avg;
@@ -66,7 +69,8 @@ class MODULE_ACCELEROMETER
             uint8_t dummy;
         }__attribute__((packed));
 
-        union module_readings_packet_t{
+        union module_readings_packet_t
+        {
             module_readings_data_t data;
             uint8_t bytes[sizeof(module_readings_data_t)];
         };
