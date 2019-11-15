@@ -60,11 +60,11 @@ boolean callback_periodic(void)
 {
     STM32L0.wdtReset();
     // if the main loop is running and not sleeping
-    if(event_loop_start!=0)
+    if (event_loop_start != 0)
     {
-        unsigned long elapsed = millis()-event_loop_start;
+        unsigned long elapsed = millis() - event_loop_start;
         // if loop has been running for more then 60s, then reboot system
-        if(elapsed>=60*1000)
+        if(elapsed >= 60*1000)
         {
             STM32L0.reset();
         }
@@ -72,26 +72,26 @@ boolean callback_periodic(void)
 
     boolean wakeup_needed = false;
 
-    if(lorawan_settings_new==true)
+    if (lorawan_settings_new == true)
     {
-        wakeup_needed=true;
+        wakeup_needed = true;
     }
 
-    if(system_event!=EVENT_NONE)
+    if (EVENT_NONE != system_event )
     {
         // iterate through modules on event
         for (size_t count = 0; count < N_MODULES; count++)
         {
             modules[count]->event(system_event);
         }
-        system_event=EVENT_NONE;
+        system_event = EVENT_NONE;
     }
 
     // iterate through modules and check flags for activity requested
     for (size_t count = 0; count < N_MODULES; count++)
     {
         module_flags_e flag = modules[count]->scheduler();
-        if((flag!=M_IDLE)&(flag!=M_ERROR))
+        if ((flag != M_IDLE) && (flag!=M_ERROR))
         {
             wakeup_needed= true;
         }
@@ -115,7 +115,7 @@ boolean callback_periodic(void)
 void state_transition(state_e next)
 {
     state_timeout_start = millis();
-    state=next;
+    state= next;
 }
 
 /**
@@ -124,12 +124,12 @@ void state_transition(state_e next)
  */
 bool state_check_timeout(void)
 {
-    if(state_timeout_duration==0)
+    if (0 == state_timeout_duration)
     {
         return false;
     }
-    unsigned long elapsed = millis()-state_timeout_start;
-    if(elapsed >=state_timeout_duration)
+    unsigned long elapsed = millis() - state_timeout_start;
+    if (elapsed >= state_timeout_duration)
     {
         return true;
     }
@@ -191,8 +191,8 @@ void loop()
     {
         case INIT:
             // defaults for timing out
-            state_timeout_duration=0;
-            state_goto_timeout=INIT;
+            state_timeout_duration = 0;
+            state_goto_timeout = INIT;
             // check i2c
             check_i2c();
             // setup default settings
@@ -201,12 +201,13 @@ void loop()
             rtc_init();
             // load settings, currently can not return an error, thus proceed directly
             state_transition(LORAWAN_INIT);
-            break;
+        break;
+
         case LORAWAN_INIT:
             // defaults for timing out
-            state_timeout_duration=1000;
-            state_goto_timeout=INIT;
-            if(lorawan_init())
+            state_timeout_duration = 1000;
+            state_goto_timeout = INIT;
+            if (lorawan_init())
             {
                 state_transition(LORAWAN_JOIN_START);
             }
@@ -214,76 +215,84 @@ void loop()
             {
                 // TODO: decide what to do if LoraWAN fails
                 // Currently very harsh, doing full system reset
+                //must be handled TODO
                 STM32L0.reset();
             }
-            break;
+        break;
+
         case LORAWAN_JOIN_START:
             // defaults for timing out
-            state_timeout_duration=0;
-            state_goto_timeout=LORAWAN_JOIN_DONE;
+            state_timeout_duration = 0;
+            state_goto_timeout = LORAWAN_JOIN_DONE;
             lorawan_joinCallback(); // call join again
             lora_join_fail_count++;
             state_transition(LORAWAN_JOIN_DONE);
-            break;
+        break;
+
         case LORAWAN_JOIN_DONE:
             // defaults for timing out
             // join once every 20s for the first 10 tries 
             // join once an hour for the first day 
             // join once every day until successful
-            if(lora_join_fail_count<10)
+            if (lora_join_fail_count < 10)
             {
-                state_timeout_duration=20000;
+                state_timeout_duration = 20000;
             }
-            else if(lora_join_fail_count<24)
+            else if (lora_join_fail_count < 24)
             {
-                state_timeout_duration=60*60*1000;
-            }    // TODO: apply settings to all modules
+                state_timeout_duration = 60 * 60 * 1000;
+            }   
             else
             {
-                state_timeout_duration=24*60*60*1000;
+                state_timeout_duration = 24 * 60 * 60 * 1000;
             }
-            state_goto_timeout=LORAWAN_JOIN_START;
+
+            state_goto_timeout = LORAWAN_JOIN_START;
+
             // transition
-            if(lorawan_joined())
+            if (lorawan_joined())
             {
                 state_transition(MODULE_INIT);
-                lora_join_fail_count=0;
+                lora_join_fail_count = 0;
             }
             else
             {
-                sleep=5000;
+                sleep = 5000;
             }
-            break;
+        break;
+
         case MODULE_INIT:
             // defaults for timing out
-            state_timeout_duration=10000;
-            state_goto_timeout=IDLE;
+            state_timeout_duration = 10000;
+            state_goto_timeout = IDLE;
+
             for (size_t count = 0; count < N_MODULES; count++)
             {
                 modules[count]->initialize();
             }
             state_transition(IDLE);
-            break;
+        break;
+
         case APPLY_SETTINGS:
             // defaults for timing out
-            state_timeout_duration=10000;
-            state_goto_timeout=IDLE;
+            state_timeout_duration = 10000;
+            state_goto_timeout = IDLE;
             settings_from_downlink(&lorawan_settings_buffer[0],lorawan_settings_length);
-            // TODO
             state_transition(SETTINGS_SEND);
-            break;
+        break;
+
         case IDLE:
             // defaults for timing out
-            state_timeout_duration=25*60*60*1000; // 25h maximum
-            state_goto_timeout=INIT;
-            sleep=-1;
+            state_timeout_duration = 25 * 60 * 60 * 1000; // 25h maximum
+            state_goto_timeout = INIT;
+            sleep = -1;
 
             //LED status 
             digitalWrite(BOARD_LED,HIGH);
 
-            if(lorawan_settings_new==true)
+            if(true == lorawan_settings_new )
             {
-                lorawan_settings_new=false;
+                lorawan_settings_new = false;
                 state_transition(APPLY_SETTINGS);
                 break;
             }
@@ -291,56 +300,50 @@ void loop()
             for (size_t count = 0; count < N_MODULES; count++)
             {
                 module_flags_e flag = modules[count]->get_flags();
-                /*#ifdef serial_debug
-                  serial_debug.print("flags(");
-                  serial_debug.print(modules[count]->get_global_id());
-                  serial_debug.print(":");
-                  serial_debug.print(flag);
-                  serial_debug.println(")");
-#endif*/
+
                 // order is important as send has priority over read
-                active_module=-1;
-                if (flag==M_RUNNING)
+                active_module = -1;
+                if (M_RUNNING == flag )
                 {
                     //run the module
                     modules[count]->running();
-                    sleep=500; // keep iterating every 500s
-                    // TODO: timeout
+                    sleep = 500; // keep iterating every 500s
                     // break; // Do not break and process running modules in parallel
                 }
-                else if (flag==M_SEND)
+                else if (M_SEND == flag)
                 {
                     state_transition(MODULE_SEND);
-                    active_module=count;
+                    active_module = count;
                     break;
                 }
-                else if (flag==M_READ)
+                else if (M_READ == flag)
                 {
                     state_transition(MODULE_READ);
-                    active_module=count;
+                    active_module = count;
                     break;
                 }
-                else if (flag==M_ERROR)
+                else if (M_ERROR == flag)
                 {
                     //do nothing for now
                     //state_transition(MODULE_READ);
-                    //active_module=count;
+                    //active_module = count;
                     break;
                 }
                 digitalWrite(BOARD_LED,LOW);
                 //TODO handle other flags
             }
 
-            if(active_module==-1)
+            if(-1 == active_module)
             {
                 // sleep until an event is generated
-                sleep=0;
+                sleep = 0;
             }
-            break;
+        break;
+
         case SETTINGS_SEND:
             // defaults for timing out
-            state_timeout_duration=2000;
-            state_goto_timeout=IDLE;
+            state_timeout_duration = 2000;
+            state_goto_timeout = IDLE;
             // action
             // transition
             if(settings_send())
@@ -349,60 +352,55 @@ void loop()
             }
             else
             {
-                sleep=1000;
+                sleep = 1000;
             }
-            break;
+        break;
+
         case MODULE_READ:
             // defaults for timing out
-            state_timeout_duration=2000;
-            state_goto_timeout=IDLE;
+            state_timeout_duration = 2000;
+            state_goto_timeout = IDLE;
             // transition
             // TODO> prepare module for sending and do so if success
             if(modules[active_module]->read())
             {
                 state_transition(IDLE);
-                active_module=-1;
+                active_module = -1;
             }
             else
             {
-                sleep=1000;
+                sleep = 1000;
             }
-            break;
+        break;
+
         case MODULE_SEND:
             {
                 // defaults for timing out
-                state_timeout_duration=2000;
-                state_goto_timeout=IDLE;
+                state_timeout_duration = 2000;
+                state_goto_timeout = IDLE;
                 // transition
-                uint8_t *data = &last_packet[0];
-                size_t *size = &last_packet_size;
+                uint8_t * data = &last_packet[0];
+                size_t * size = &last_packet_size;
 
-                last_packet_port=modules[active_module]->get_global_id();
-                last_packet_time=millis();
+                last_packet_port = modules[active_module]->get_global_id();
+                last_packet_time = millis();
                 if(modules[active_module]->send(data,size))
                 {
-#ifdef serial_debug
-                    // this below does not return the right values, problem with name and string
-                    /*serial_debug.print(modules[active_module]->getName());
-                      serial_debug.print(": send(");
-                      serial_debug.print(modules[active_module]->get_global_id());
-                      serial_debug.println(")");*/
-#endif
-
-                    lorawan_send(last_packet_port,&last_packet[0],last_packet_size);
+                    lorawan_send(last_packet_port, &last_packet[0], last_packet_size);
                     state_transition(LORAWAN_TRANSMIT);
-                    active_module=-1;
+                    active_module = -1;
                 }
                 else
                 {
-                    sleep=1000;
+                    sleep = 1000;
                 }
             }
-            break;
+        break;
+
         case LORAWAN_TRANSMIT:
             // defaults for timing out, transmission should not take more then 10s
-            state_timeout_duration=15000;
-            state_goto_timeout=LORAWAN_INIT;
+            state_timeout_duration = 15000;
+            state_goto_timeout = LORAWAN_INIT;
             // transition
             // if tx fails, reinit lorawan
             if(lorawan_send_successful)
@@ -412,19 +410,22 @@ void loop()
             else
             {
                 // tx successful flag is expected in about 3s after sending, note lora rx windows most complete
-                sleep=5000;
+                sleep = 5000;
             }
-            break;
+        break;
+
         case HIBERNATION:
             // defaults for timing out
-            state_timeout_duration=24*60*60*1000; // 24h maximum
-            state_goto_timeout=INIT;
+            state_timeout_duration = 24 * 60 * 60 * 1000; // 24h maximum
+            state_goto_timeout = INIT;
             // action
-            sleep=60000; // until an event
-            break;
+            sleep = 60000; // until an event
+        break;
+
         default:
-            state=IDLE;
-            break;
+            state = IDLE;
+        break;
+
     }
 
     // check if the existing state has timed out and transition to next state
@@ -440,41 +441,40 @@ void loop()
 
     // reset the event loop start to show the loop has finished
     event_loop_start = 0;
-    if(sleep>0)
+    if(sleep > 0)
     {
         system_sleep(sleep);
-        sleep=0;
+        sleep = 0;
     }
-    else if(sleep==0)
+    else if(sleep == 0)
     {
-        sleep=-1;
-        system_sleep(25*3600*1000); // max 25h
+        sleep = -1;
+        system_sleep(25 * 3600 * 1000); // max 25h
     }
     else{
-        sleep=-1;
+        sleep = -1;
     }
 }
 
 void system_sleep(unsigned long sleep)
 {
     unsigned long remaining_sleep = sleep;
-    while(remaining_sleep>0)
+    while(remaining_sleep > 0)
     {
-        if(remaining_sleep>5000)
+        if(remaining_sleep > 5000)
         {
-            remaining_sleep=remaining_sleep-5000;
+            remaining_sleep = remaining_sleep - 5000;
             STM32L0.stop(5000);
         }
         else
         {
             STM32L0.stop(remaining_sleep);
-            remaining_sleep=0;
+            remaining_sleep = 0;
         }
         // wake-up if event generated
         if(callback_periodic())
         {
             return;
         }
-
     }
 }

@@ -1,0 +1,853 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/89393951/
+*.tcc	.vscode/settings.json	/^        "*.tcc": "cpp",$/;"	s	object:files.associations
+0	.vscode/c_cpp_properties.json	/^                "C:\\\\Users\\\\MarkoSagadin\\\\AppData\\\\Local\\\\Arduino15\\\\packages\\\\Tle/;"	s	array:configurations.0.forcedInclude
+0	.vscode/c_cpp_properties.json	/^                "C:\\\\Users\\\\MarkoSagadin\\\\AppData\\\\Local\\\\Arduino15\\\\packages\\\\Tle/;"	s	array:configurations.0.includePath
+0	.vscode/c_cpp_properties.json	/^        {$/;"	o	array:configurations
+0	.vscode/launch.json	/^        {$/;"	o	array:configurations
+0	decoder.js	/^    0: "POWERON",$/;"	p	class:Decoder.resetCause_dict
+1	.vscode/launch.json	/^        {$/;"	o	array:configurations
+1	decoder.js	/^    1: "EXTERNAL",$/;"	p	class:Decoder.resetCause_dict
+2	decoder.js	/^    2: "SOFTWARE",$/;"	p	class:Decoder.resetCause_dict
+3	decoder.js	/^    3: "WATCHDOG",$/;"	p	class:Decoder.resetCause_dict
+4	decoder.js	/^    4: "FIREWALL",$/;"	p	class:Decoder.resetCause_dict
+5	decoder.js	/^    5: "OTHER",$/;"	p	class:Decoder.resetCause_dict
+6	decoder.js	/^    6: "STANDBY"$/;"	p	class:Decoder.resetCause_dict
+AnonymousFunction4a1a85830100	manual_decoder.js	/^    json_obj.rows.forEach(function (element) {$/;"	f
+AnonymousFunction4a1a85830200	manual_decoder.js	/^fs.writeFile("tracker21_decoded.json", jsonData, function (err) {$/;"	f
+BOARD_LED	src/project.h	/^    #define BOARD_LED /;"	d
+BOARD_REED	src/project.h	/^    #define BOARD_REED /;"	d
+DOUBLE_TAP	src/LIS2DW12.h	/^enum lis2dw_event_t { WAKEUP, DOUBLE_TAP, SINGLE_TAP, FREE_FALL, NO_EVENT};$/;"	e	enum:lis2dw_event_t
+Decoder	decoder.js	/^function Decoder(bytes) {$/;"	f
+Documentation	docs/DOCS.md	/^# Documentation$/;"	c
+Downlink encoding	README.md	/^### Downlink encoding$/;"	S
+EEPROM_DATA_START_SETTINGS	src/settings.h	/^#define EEPROM_DATA_START_SETTINGS /;"	d
+EVENT_FREEFALL	src/project_utils.h	/^  EVENT_FREEFALL,$/;"	e	enum:event_e
+EVENT_HALL	src/project_utils.h	/^  EVENT_HALL,$/;"	e	enum:event_e
+EVENT_INPUT1	src/project_utils.h	/^  EVENT_INPUT1,$/;"	e	enum:event_e
+EVENT_INPUT2	src/project_utils.h	/^  EVENT_INPUT2,$/;"	e	enum:event_e
+EVENT_MOTION	src/project_utils.h	/^  EVENT_MOTION,$/;"	e	enum:event_e
+EVENT_NONE	src/project_utils.h	/^  EVENT_NONE,$/;"	e	enum:event_e
+Encoder	encoder.js	/^function Encoder(object, port) {$/;"	f
+FREE_FALL	src/LIS2DW12.h	/^enum lis2dw_event_t { WAKEUP, DOUBLE_TAP, SINGLE_TAP, FREE_FALL, NO_EVENT};$/;"	e	enum:lis2dw_event_t
+Flow diagram of finite state machine	docs/DOCS.md	/^## Flow diagram of finite state machine$/;"	s
+IDLE_PIRA	src/module_pira.h	/^            IDLE_PIRA,$/;"	e	enum:MODULE_PIRA::state_pira_e
+ISL1208_ADDRESS	src/rtc.h	/^#define ISL1208_ADDRESS /;"	d
+ISL1208_ATR	src/rtc.h	/^#define ISL1208_ATR /;"	d
+ISL1208_DT	src/rtc.h	/^#define ISL1208_DT /;"	d
+ISL1208_DTA	src/rtc.h	/^#define ISL1208_DTA /;"	d
+ISL1208_DTR	src/rtc.h	/^#define ISL1208_DTR /;"	d
+ISL1208_DW	src/rtc.h	/^#define ISL1208_DW /;"	d
+ISL1208_DWA	src/rtc.h	/^#define ISL1208_DWA /;"	d
+ISL1208_HR	src/rtc.h	/^#define ISL1208_HR /;"	d
+ISL1208_HRA	src/rtc.h	/^#define ISL1208_HRA /;"	d
+ISL1208_INT	src/rtc.h	/^#define ISL1208_INT /;"	d
+ISL1208_MN	src/rtc.h	/^#define ISL1208_MN /;"	d
+ISL1208_MNA	src/rtc.h	/^#define ISL1208_MNA /;"	d
+ISL1208_MO	src/rtc.h	/^#define ISL1208_MO /;"	d
+ISL1208_MOA	src/rtc.h	/^#define ISL1208_MOA /;"	d
+ISL1208_SC	src/rtc.h	/^#define ISL1208_SC /;"	d
+ISL1208_SCA	src/rtc.h	/^#define ISL1208_SCA /;"	d
+ISL1208_SR	src/rtc.h	/^#define ISL1208_SR /;"	d
+ISL1208_USR1	src/rtc.h	/^#define ISL1208_USR1 /;"	d
+ISL1208_USR2	src/rtc.h	/^#define ISL1208_USR2 /;"	d
+ISL1208_YR	src/rtc.h	/^#define ISL1208_YR /;"	d
+LIS2DW12CLASS	src/LIS2DW12.cpp	/^LIS2DW12CLASS::LIS2DW12CLASS(TwoWire *twi)$/;"	f	class:LIS2DW12CLASS
+LIS2DW12CLASS	src/LIS2DW12.h	/^class LIS2DW12CLASS$/;"	c
+LIS2DW12_ADDR	src/LIS2DW12.h	/^#define LIS2DW12_ADDR /;"	d
+LIS2DW12_ALL_INT_SRC	src/LIS2DW12.h	/^#define LIS2DW12_ALL_INT_SRC /;"	d
+LIS2DW12_CTRL1	src/LIS2DW12.h	/^#define LIS2DW12_CTRL1 /;"	d
+LIS2DW12_CTRL2	src/LIS2DW12.h	/^#define LIS2DW12_CTRL2 /;"	d
+LIS2DW12_CTRL3	src/LIS2DW12.h	/^#define LIS2DW12_CTRL3 /;"	d
+LIS2DW12_CTRL4_INT1_PAD_CTRL	src/LIS2DW12.h	/^#define LIS2DW12_CTRL4_INT1_PAD_CTRL /;"	d
+LIS2DW12_CTRL6	src/LIS2DW12.h	/^#define LIS2DW12_CTRL6 /;"	d
+LIS2DW12_CTRL7	src/LIS2DW12.h	/^#define LIS2DW12_CTRL7 /;"	d
+LIS2DW12_DOUBLE_TAP_BIT	src/LIS2DW12.h	/^#define LIS2DW12_DOUBLE_TAP_BIT /;"	d
+LIS2DW12_DRDY_AI_BIT	src/LIS2DW12.h	/^#define LIS2DW12_DRDY_AI_BIT /;"	d
+LIS2DW12_FF_AI_BIT	src/LIS2DW12.h	/^#define LIS2DW12_FF_AI_BIT /;"	d
+LIS2DW12_FREE_FALL	src/LIS2DW12.h	/^#define LIS2DW12_FREE_FALL /;"	d
+LIS2DW12_H	src/LIS2DW12.h	/^#define LIS2DW12_H$/;"	d
+LIS2DW12_INT_DUR	src/LIS2DW12.h	/^#define LIS2DW12_INT_DUR /;"	d
+LIS2DW12_OUT_T	src/LIS2DW12.h	/^#define LIS2DW12_OUT_T /;"	d
+LIS2DW12_OUT_X_H	src/LIS2DW12.h	/^#define LIS2DW12_OUT_X_H /;"	d
+LIS2DW12_OUT_X_L	src/LIS2DW12.h	/^#define LIS2DW12_OUT_X_L /;"	d
+LIS2DW12_OUT_Y_H	src/LIS2DW12.h	/^#define LIS2DW12_OUT_Y_H /;"	d
+LIS2DW12_OUT_Y_L	src/LIS2DW12.h	/^#define LIS2DW12_OUT_Y_L /;"	d
+LIS2DW12_OUT_Z_H	src/LIS2DW12.h	/^#define LIS2DW12_OUT_Z_H /;"	d
+LIS2DW12_OUT_Z_L	src/LIS2DW12.h	/^#define LIS2DW12_OUT_Z_L /;"	d
+LIS2DW12_SINGLE_TAP_BIT	src/LIS2DW12.h	/^#define LIS2DW12_SINGLE_TAP_BIT /;"	d
+LIS2DW12_STATUS	src/LIS2DW12.h	/^#define LIS2DW12_STATUS /;"	d
+LIS2DW12_STATUS_DUP	src/LIS2DW12.h	/^#define LIS2DW12_STATUS_DUP /;"	d
+LIS2DW12_TAP_SRC	src/LIS2DW12.h	/^#define LIS2DW12_TAP_SRC /;"	d
+LIS2DW12_TAP_THS_X	src/LIS2DW12.h	/^#define LIS2DW12_TAP_THS_X /;"	d
+LIS2DW12_TAP_THS_Y	src/LIS2DW12.h	/^#define LIS2DW12_TAP_THS_Y /;"	d
+LIS2DW12_TAP_THS_Z	src/LIS2DW12.h	/^#define LIS2DW12_TAP_THS_Z /;"	d
+LIS2DW12_WAKE_UP_DUR	src/LIS2DW12.h	/^#define LIS2DW12_WAKE_UP_DUR /;"	d
+LIS2DW12_WAKE_UP_SRC	src/LIS2DW12.h	/^#define LIS2DW12_WAKE_UP_SRC /;"	d
+LIS2DW12_WAKE_UP_THS	src/LIS2DW12.h	/^#define LIS2DW12_WAKE_UP_THS /;"	d
+LIS2DW12_WHO_AM_I	src/LIS2DW12.h	/^#define LIS2DW12_WHO_AM_I /;"	d
+LIS2DW12_WU_AI_BIT	src/LIS2DW12.h	/^#define LIS2DW12_WU_AI_BIT /;"	d
+LORAWAN_OTAA	src/lorawan.cpp	/^#define LORAWAN_OTAA$/;"	d	file:
+LORAWAN_PROJECT_H_	src/lorawan.h	/^#define LORAWAN_PROJECT_H_$/;"	d
+MODULE_5V_EN	src/project.h	/^    #define MODULE_5V_EN /;"	d
+MODULE_ACCELEROMETER	src/module_accelerometer.h	/^class MODULE_ACCELEROMETER $/;"	c
+MODULE_ACCELEROMETER_INT1	src/project.h	/^    #define MODULE_ACCELEROMETER_INT1 /;"	d
+MODULE_ACCELEROMETER_INT2	src/project.h	/^    #define MODULE_ACCELEROMETER_INT2 /;"	d
+MODULE_ACCLEROMETER_h	src/module_accelerometer.h	/^#define MODULE_ACCLEROMETER_h$/;"	d
+MODULE_GPS_BCK	src/project.h	/^    #define MODULE_GPS_BCK /;"	d
+MODULE_GPS_EN	src/project.h	/^    #define MODULE_GPS_EN /;"	d
+MODULE_GPS_SERIAL	src/project.h	/^    #define MODULE_GPS_SERIAL /;"	d
+MODULE_GPS_UBLOX	src/module_gps_ublox.h	/^class MODULE_GPS_UBLOX$/;"	c
+MODULE_GPS_UBLOX_h	src/module_gps_ublox.h	/^#define MODULE_GPS_UBLOX_h$/;"	d
+MODULE_PIRA	src/module_pira.h	/^class MODULE_PIRA $/;"	c
+MODULE_PIRA_5V	src/project.h	/^    #define MODULE_PIRA_5V /;"	d
+MODULE_PIRA_SERIAL	src/project.h	/^    #define MODULE_PIRA_SERIAL /;"	d
+MODULE_PIRA_STATUS	src/project.h	/^    #define MODULE_PIRA_STATUS /;"	d
+MODULE_PIRA_h	src/module_pira.h	/^#define MODULE_PIRA_h$/;"	d
+MODULE_SYSTEM	src/module_system.h	/^class MODULE_SYSTEM $/;"	c
+MODULE_SYSTEM_BAN_MON_AN	src/project.h	/^    #define MODULE_SYSTEM_BAN_MON_AN /;"	d
+MODULE_SYSTEM_BAN_MON_EN	src/project.h	/^    #define MODULE_SYSTEM_BAN_MON_EN /;"	d
+MODULE_SYSTEM_LIGHT_EN	src/project.h	/^    #define MODULE_SYSTEM_LIGHT_EN /;"	d
+MODULE_SYSTEM_h	src/module_system.h	/^#define MODULE_SYSTEM_h$/;"	d
+MODULE_VSWR_ADC	src/project.h	/^    #define MODULE_VSWR_ADC /;"	d
+MODULE_VSWR_EN	src/project.h	/^    #define MODULE_VSWR_EN /;"	d
+M_ERROR	src/module.h	/^	M_ERROR$/;"	e	enum:module_flags_e
+M_IDLE	src/module.h	/^	M_IDLE,$/;"	e	enum:module_flags_e
+M_READ	src/module.h	/^	M_READ,$/;"	e	enum:module_flags_e
+M_RUNNING	src/module.h	/^	M_RUNNING,$/;"	e	enum:module_flags_e
+M_SEND	src/module.h	/^	M_SEND,$/;"	e	enum:module_flags_e
+NO_EVENT	src/LIS2DW12.h	/^enum lis2dw_event_t { WAKEUP, DOUBLE_TAP, SINGLE_TAP, FREE_FALL, NO_EVENT};$/;"	e	enum:lis2dw_event_t
+N_MODULES	src/project.h	/^#define N_MODULES /;"	d
+N_MODULES_TOTAL	src/project.h	/^#define N_MODULES_TOTAL /;"	d
+OFF_PERIOD_INIT_VALUE_s	src/module_pira.h	/^#define OFF_PERIOD_INIT_VALUE_s /;"	d
+ON_PERIOD_INIT_VALUE_s	src/module_pira.h	/^#define ON_PERIOD_INIT_VALUE_s /;"	d
+Overview of main.ino file	docs/DOCS.md	/^## Overview of main.ino file$/;"	s
+Overview of projects directory	docs/DOCS.md	/^## Overview of projects directory$/;"	s
+PROJECT_H_	src/project.h	/^#define PROJECT_H_$/;"	d
+PROJECT_UTILS_H_	src/project_utils.h	/^#define PROJECT_UTILS_H_$/;"	d
+REBOOT_DETECTION	src/module_pira.h	/^            REBOOT_DETECTION,$/;"	e	enum:MODULE_PIRA::state_pira_e
+REBOOT_TIMEOUT_s	src/module_pira.h	/^#define REBOOT_TIMEOUT_s /;"	d
+RHINO_2_4	src/project.h	/^#define  RHINO_2_4$/;"	d
+RTC_PROJECT_H	src/rtc.h	/^#define RTC_PROJECT_H$/;"	d
+RX_BUFFER_SIZE	src/module_pira.h	/^#define RX_BUFFER_SIZE /;"	d
+SETTINGS_H_	src/settings.h	/^#define SETTINGS_H_$/;"	d
+SINGLE_TAP	src/LIS2DW12.h	/^enum lis2dw_event_t { WAKEUP, DOUBLE_TAP, SINGLE_TAP, FREE_FALL, NO_EVENT};$/;"	e	enum:lis2dw_event_t
+START_PIRA	src/module_pira.h	/^            START_PIRA,$/;"	e	enum:MODULE_PIRA::state_pira_e
+STOP_PIRA	src/module_pira.h	/^            STOP_PIRA,$/;"	e	enum:MODULE_PIRA::state_pira_e
+TIME_INIT_VALUE	src/rtc.h	/^#define TIME_INIT_VALUE /;"	d
+WAIT_STATUS_ON	src/module_pira.h	/^            WAIT_STATUS_ON,$/;"	e	enum:MODULE_PIRA::state_pira_e
+WAKEUP	src/LIS2DW12.h	/^enum lis2dw_event_t { WAKEUP, DOUBLE_TAP, SINGLE_TAP, FREE_FALL, NO_EVENT};$/;"	e	enum:lis2dw_event_t
+WAKEUP	src/module_pira.h	/^            WAKEUP,$/;"	e	enum:MODULE_PIRA::state_pira_e
+WATCHDOG_RESET_VALUE_s	src/module_pira.h	/^#define WATCHDOG_RESET_VALUE_s /;"	d
+accel_data	src/LIS2DW12.h	/^struct accel_data {$/;"	s
+accel_x_avg	src/module_accelerometer.h	/^            uint8_t accel_x_avg;$/;"	m	struct:MODULE_ACCELEROMETER::module_readings_data_t	typeref:typename:uint8_t
+accel_x_max	src/module_accelerometer.h	/^            uint8_t accel_x_max;$/;"	m	struct:MODULE_ACCELEROMETER::module_readings_data_t	typeref:typename:uint8_t
+accel_x_min	src/module_accelerometer.h	/^            uint8_t accel_x_min;$/;"	m	struct:MODULE_ACCELEROMETER::module_readings_data_t	typeref:typename:uint8_t
+accel_y_avg	src/module_accelerometer.h	/^            uint8_t accel_y_avg;$/;"	m	struct:MODULE_ACCELEROMETER::module_readings_data_t	typeref:typename:uint8_t
+accel_y_max	src/module_accelerometer.h	/^            uint8_t accel_y_max;$/;"	m	struct:MODULE_ACCELEROMETER::module_readings_data_t	typeref:typename:uint8_t
+accel_y_min	src/module_accelerometer.h	/^            uint8_t accel_y_min;$/;"	m	struct:MODULE_ACCELEROMETER::module_readings_data_t	typeref:typename:uint8_t
+accel_z_avg	src/module_accelerometer.h	/^            uint8_t accel_z_avg;$/;"	m	struct:MODULE_ACCELEROMETER::module_readings_data_t	typeref:typename:uint8_t
+accel_z_max	src/module_accelerometer.h	/^            uint8_t accel_z_max;$/;"	m	struct:MODULE_ACCELEROMETER::module_readings_data_t	typeref:typename:uint8_t
+accel_z_min	src/module_accelerometer.h	/^            uint8_t accel_z_min;$/;"	m	struct:MODULE_ACCELEROMETER::module_readings_data_t	typeref:typename:uint8_t
+accelerometer_callback	src/module_accelerometer.cpp	/^void accelerometer_callback(void){$/;"	f	typeref:typename:void
+alt	src/module_gps_ublox.h	/^            uint16_t alt;$/;"	m	struct:MODULE_GPS_UBLOX::module_readings_data_t	typeref:typename:uint16_t
+appEui	src/lorawan.cpp	/^const char *appEui  = "70B3D57ED0025459";$/;"	v	typeref:typename:const char *
+appKey	src/lorawan.cpp	/^const char *appKey  = "5C430C71D8D7127D66B1AF0A2EE5DFF2";$/;"	v	typeref:typename:const char *
+appSKey	src/lorawan.cpp	/^const char *appSKey = "74A22F5287DAA0A6AA9639B32A721190";$/;"	v	typeref:typename:const char *
+basic_settings	encoded_settings_template.json	/^    "basic_settings": {$/;"	o
+basic_settings	encoder_generator.py	/^basic_settings=create_array_from_settings(settings)$/;"	v
+battery_avg	src/module_system.h	/^            uint8_t battery_avg; \/\/ average of readings during a period, maximally once a day$/;"	m	struct:MODULE_SYSTEM::module_readings_data_t	typeref:typename:uint8_t
+battery_max	src/module_system.h	/^            uint8_t battery_max; \/\/ max of readings during a period, maximally once a day$/;"	m	struct:MODULE_SYSTEM::module_readings_data_t	typeref:typename:uint8_t
+battery_min	src/module_system.h	/^            uint8_t battery_min; \/\/ min of readings during a period, maximally once a day$/;"	m	struct:MODULE_SYSTEM::module_readings_data_t	typeref:typename:uint8_t
+bcd2bin	src/project_utils.cpp	/^unsigned int bcd2bin(unsigned char val)$/;"	f	typeref:typename:unsigned int
+begin	src/LIS2DW12.cpp	/^bool LIS2DW12CLASS::begin()$/;"	f	class:LIS2DW12CLASS	typeref:typename:bool
+bin2bcd	src/project_utils.cpp	/^char bin2bcd(unsigned int val)$/;"	f	typeref:typename:char
+board	.vscode/arduino.json	/^    "board": "TleraCorp:stm32l0:IRNAS-env-module-L072Z",$/;"	s
+bytes	src/module_accelerometer.h	/^            uint8_t bytes[sizeof(module_readings_data_t)];$/;"	m	union:MODULE_ACCELEROMETER::module_readings_packet_t	typeref:typename:uint8_t[]
+bytes	src/module_accelerometer.h	/^            uint8_t bytes[sizeof(module_settings_data_t)];$/;"	m	union:MODULE_ACCELEROMETER::module_settings_packet_t	typeref:typename:uint8_t[]
+bytes	src/module_gps_ublox.h	/^            uint8_t bytes[sizeof(module_readings_data_t)];$/;"	m	union:MODULE_GPS_UBLOX::module_readings_packet_t	typeref:typename:uint8_t[]
+bytes	src/module_gps_ublox.h	/^            uint8_t bytes[sizeof(module_settings_data_t)];$/;"	m	union:MODULE_GPS_UBLOX::module_settings_packet_t	typeref:typename:uint8_t[]
+bytes	src/module_pira.h	/^            uint8_t bytes[sizeof(module_readings_data_t)];$/;"	m	union:MODULE_PIRA::module_readings_packet_t	typeref:typename:uint8_t[]
+bytes	src/module_pira.h	/^            uint8_t bytes[sizeof(module_settings_data_t)];$/;"	m	union:MODULE_PIRA::module_settings_packet_t	typeref:typename:uint8_t[]
+bytes	src/module_system.h	/^            uint8_t bytes[sizeof(module_readings_data_t)];$/;"	m	union:MODULE_SYSTEM::module_readings_packet_t	typeref:typename:uint8_t[]
+bytes	src/module_system.h	/^            uint8_t bytes[sizeof(module_settings_data_t)];$/;"	m	union:MODULE_SYSTEM::module_settings_packet_t	typeref:typename:uint8_t[]
+bytes	src/settings.h	/^  byte bytes[sizeof(settingsData_t)];$/;"	m	union:settingsPacket_t	typeref:typename:byte[]
+cStandard	.vscode/c_cpp_properties.json	/^            "cStandard": "c11",$/;"	s	object:configurations.0
+check_i2c	src/project_utils.cpp	/^boolean check_i2c(){$/;"	f	typeref:typename:boolean
+clear_value	src/project_utils.cpp	/^void clear_value(reading_structure_t *values){$/;"	f	typeref:typename:void
+collapse_json	encoder_generator.py	/^def collapse_json(text, indent=12):$/;"	f
+compilerPath	.vscode/c_cpp_properties.json	/^            "compilerPath": "D:\/Program Files\/MicrosoftVisualStudio\/VC\/Tools\/MSVC\/14.16.27/;"	s	object:configurations.0
+configuration	.vscode/arduino.json	/^    "configuration": "speed=32,opt=os",$/;"	s
+configurations	.vscode/c_cpp_properties.json	/^    "configurations": [$/;"	a
+configurations	.vscode/launch.json	/^    "configurations": [$/;"	a
+configure	src/module.h	/^	uint8_t configure(uint8_t *data, size_t *size){$/;"	f	class:myModule	typeref:typename:uint8_t
+configure	src/module.h	/^	virtual uint8_t configure(uint8_t *data, size_t *size){};$/;"	f	class:module	typeref:typename:uint8_t
+configure	src/module_accelerometer.cpp	/^uint8_t MODULE_ACCELEROMETER::configure(uint8_t *data, size_t *size){$/;"	f	class:MODULE_ACCELEROMETER	typeref:typename:uint8_t
+configure	src/module_gps_ublox.cpp	/^uint8_t MODULE_GPS_UBLOX::configure(uint8_t *data, size_t *size){$/;"	f	class:MODULE_GPS_UBLOX	typeref:typename:uint8_t
+configure	src/module_pira.cpp	/^uint8_t MODULE_PIRA::configure(uint8_t *data, size_t *size){$/;"	f	class:MODULE_PIRA	typeref:typename:uint8_t
+configure	src/module_system.cpp	/^uint8_t MODULE_SYSTEM::configure(uint8_t *data, size_t *size){$/;"	f	class:MODULE_SYSTEM	typeref:typename:uint8_t
+console	.vscode/launch.json	/^            "console": "integratedTerminal"$/;"	s	object:configurations.0
+console	.vscode/launch.json	/^            "console": "integratedTerminal"$/;"	s	object:configurations.1
+cppStandard	.vscode/c_cpp_properties.json	/^            "cppStandard": "c++17"$/;"	s	object:configurations.0
+create_array_from_settings	encoder_generator.py	/^def create_array_from_settings(settings):$/;"	f
+data	src/module_accelerometer.h	/^            module_readings_data_t data;$/;"	m	union:MODULE_ACCELEROMETER::module_readings_packet_t	typeref:typename:module_readings_data_t
+data	src/module_accelerometer.h	/^            module_settings_data_t data;$/;"	m	union:MODULE_ACCELEROMETER::module_settings_packet_t	typeref:typename:module_settings_data_t
+data	src/module_gps_ublox.h	/^            module_readings_data_t data;$/;"	m	union:MODULE_GPS_UBLOX::module_readings_packet_t	typeref:typename:module_readings_data_t
+data	src/module_gps_ublox.h	/^            module_settings_data_t data;$/;"	m	union:MODULE_GPS_UBLOX::module_settings_packet_t	typeref:typename:module_settings_data_t
+data	src/module_pira.h	/^            module_readings_data_t data;$/;"	m	union:MODULE_PIRA::module_readings_packet_t	typeref:typename:module_readings_data_t
+data	src/module_pira.h	/^            module_settings_data_t data;$/;"	m	union:MODULE_PIRA::module_settings_packet_t	typeref:typename:module_settings_data_t
+data	src/module_system.h	/^            module_readings_data_t data;$/;"	m	union:MODULE_SYSTEM::module_readings_packet_t	typeref:typename:module_readings_data_t
+data	src/module_system.h	/^            module_settings_data_t data;$/;"	m	union:MODULE_SYSTEM::module_settings_packet_t	typeref:typename:module_settings_data_t
+data	src/settings.h	/^  settingsData_t data;$/;"	m	union:settingsPacket_t	typeref:typename:settingsData_t
+decoder	manual_decoder.js	/^var decoder = require(".\/decoder")$/;"	v
+devAddr	src/lorawan.cpp	/^const char *devAddr = "260118C5";$/;"	v	typeref:typename:const char *
+devEui	src/lorawan.cpp	/^const char *devEui  = "00FD6DA8412EEE70";$/;"	v	typeref:typename:const char *
+dummy	encoded_settings_template.json	/^        "dummy": {"value": 0, "size": 1, "order": 7}$/;"	o	object:module_accelerometer
+dummy	src/module_accelerometer.h	/^            uint8_t dummy;$/;"	m	struct:MODULE_ACCELEROMETER::module_readings_data_t	typeref:typename:uint8_t
+dummy	src/module_accelerometer.h	/^            uint8_t dummy;$/;"	m	struct:MODULE_ACCELEROMETER::module_settings_data_t	typeref:typename:uint8_t
+empty_space	src/module_pira.h	/^            uint16_t empty_space; \/\/ RPi disk space value$/;"	m	struct:MODULE_PIRA::module_readings_data_t	typeref:typename:uint16_t
+epe	src/module_gps_ublox.h	/^            uint8_t epe;$/;"	m	struct:MODULE_GPS_UBLOX::module_readings_data_t	typeref:typename:uint8_t
+error_values	src/module_pira.h	/^            uint16_t error_values;$/;"	m	struct:MODULE_PIRA::module_readings_data_t	typeref:typename:uint16_t
+errors	src/module_system.h	/^            uint8_t errors[10];$/;"	m	struct:MODULE_SYSTEM::module_readings_data_t	typeref:typename:uint8_t[10]
+event	src/module.h	/^	virtual void event(event_e event){};$/;"	f	class:module	typeref:typename:void
+event	src/module.h	/^	void event(event_e event){$/;"	f	class:myModule	typeref:typename:void
+event	src/module_accelerometer.cpp	/^void MODULE_ACCELEROMETER::event(event_e event){$/;"	f	class:MODULE_ACCELEROMETER	typeref:typename:void
+event	src/module_gps_ublox.cpp	/^void MODULE_GPS_UBLOX::event(event_e event){$/;"	f	class:MODULE_GPS_UBLOX	typeref:typename:void
+event	src/module_pira.cpp	/^void MODULE_PIRA::event(event_e event){$/;"	f	class:MODULE_PIRA	typeref:typename:void
+event	src/module_system.cpp	/^void MODULE_SYSTEM::event(event_e event){$/;"	f	class:MODULE_SYSTEM	typeref:typename:void
+event_detection	src/LIS2DW12.cpp	/^lis2dw_event_t LIS2DW12CLASS::event_detection()$/;"	f	class:LIS2DW12CLASS	typeref:typename:lis2dw_event_t
+event_e	src/project_utils.h	/^enum event_e : uint8_t{$/;"	g	typeref:typename:uint8_t
+f	encoder_generator.py	/^f = open('encoded_settings_template.json', 'w')$/;"	v
+fetch_settings_struct_from_header	encoder_generator.py	/^def fetch_settings_struct_from_header(filename,classname):$/;"	f
+files.associations	.vscode/settings.json	/^    "files.associations": {$/;"	o
+flags	src/module_accelerometer.h	/^        module_flags_e flags=M_ERROR;$/;"	m	class:MODULE_ACCELEROMETER	typeref:typename:module_flags_e
+flags	src/module_gps_ublox.h	/^        module_flags_e flags=M_ERROR;$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:module_flags_e
+flags	src/module_pira.h	/^        module_flags_e flags=M_ERROR;$/;"	m	class:MODULE_PIRA	typeref:typename:module_flags_e
+flags	src/module_system.h	/^        module_flags_e flags=M_ERROR;$/;"	m	class:MODULE_SYSTEM	typeref:typename:module_flags_e
+forcedInclude	.vscode/c_cpp_properties.json	/^            "forcedInclude": [$/;"	a	object:configurations.0
+free_fall	encoded_settings_template.json	/^        "free_fall": {"value": 0, "size": 1, "order": 6},$/;"	o	object:module_accelerometer
+free_fall	src/module_accelerometer.h	/^            uint8_t free_fall;$/;"	m	struct:MODULE_ACCELEROMETER::module_settings_data_t	typeref:typename:uint8_t
+free_fall_setup	src/LIS2DW12.cpp	/^void LIS2DW12CLASS::free_fall_setup()$/;"	f	class:LIS2DW12CLASS	typeref:typename:void
+fs	manual_decoder.js	/^var fs = require('fs');$/;"	v
+getName	src/module.h	/^	virtual String getName() {};$/;"	f	class:module	typeref:typename:String
+get_bits	src/project_utils.cpp	/^uint32_t get_bits(float x, float min, float max, int precision){$/;"	f	typeref:typename:uint32_t
+get_flags	src/module.h	/^	module_flags_e get_flags(void){$/;"	f	class:myModule	typeref:typename:module_flags_e
+get_flags	src/module.h	/^	virtual module_flags_e get_flags(void){};$/;"	f	class:module	typeref:typename:module_flags_e
+get_global_id	src/module.h	/^	uint8_t get_global_id(){$/;"	f	class:myModule	typeref:typename:uint8_t
+get_global_id	src/module.h	/^	virtual uint8_t get_global_id() {};$/;"	f	class:module	typeref:typename:uint8_t
+get_name	src/module.h	/^	String get_name(void) {$/;"	f	class:myModule	typeref:typename:String
+get_num	decoder.js	/^function get_num(x, min, max, precision, round) {$/;"	f
+get_overview_value	src/module_pira.cpp	/^uint32_t MODULE_PIRA::get_overview_value(void)$/;"	f	class:MODULE_PIRA	typeref:typename:uint32_t
+get_settings_length	src/module.h	/^	uint8_t get_settings_length(){$/;"	f	class:myModule	typeref:typename:uint8_t
+get_settings_length	src/module.h	/^	virtual uint8_t get_settings_length(){};$/;"	f	class:module	typeref:typename:uint8_t
+get_settings_length	src/module_accelerometer.cpp	/^uint8_t MODULE_ACCELEROMETER::get_settings_length(){$/;"	f	class:MODULE_ACCELEROMETER	typeref:typename:uint8_t
+get_settings_length	src/module_gps_ublox.cpp	/^uint8_t MODULE_GPS_UBLOX::get_settings_length(){$/;"	f	class:MODULE_GPS_UBLOX	typeref:typename:uint8_t
+get_settings_length	src/module_pira.cpp	/^uint8_t MODULE_PIRA::get_settings_length(){$/;"	f	class:MODULE_PIRA	typeref:typename:uint8_t
+get_settings_length	src/module_system.cpp	/^uint8_t MODULE_SYSTEM::get_settings_length(){$/;"	f	class:MODULE_SYSTEM	typeref:typename:uint8_t
+get_variance	src/project_utils.cpp	/^float get_variance(reading_structure_t *values){$/;"	f	typeref:typename:float
+global_id	encoded_settings_template.json	/^        "global_id": {"value": 1, "size": 1, "order": 0},$/;"	o	object:basic_settings
+global_id	encoded_settings_template.json	/^        "global_id": {"value": 2, "size": 1, "order": 0},$/;"	o	object:module_system
+global_id	encoded_settings_template.json	/^        "global_id": {"value": 3, "size": 1, "order": 0},$/;"	o	object:module_gps_ublox
+global_id	encoded_settings_template.json	/^        "global_id": {"value": 4, "size": 1, "order": 0},$/;"	o	object:module_pira
+global_id	encoded_settings_template.json	/^        "global_id": {"value": 5, "size": 1, "order": 0},$/;"	o	object:module_accelerometer
+global_id	src/module.h	/^	uint8_t global_id=3;$/;"	m	class:myModule	typeref:typename:uint8_t
+global_id	src/module_accelerometer.h	/^            uint8_t global_id;$/;"	m	struct:MODULE_ACCELEROMETER::module_settings_data_t	typeref:typename:uint8_t
+global_id	src/module_gps_ublox.h	/^            uint8_t  global_id;$/;"	m	struct:MODULE_GPS_UBLOX::module_settings_data_t	typeref:typename:uint8_t
+global_id	src/module_pira.h	/^            uint8_t  global_id;$/;"	m	struct:MODULE_PIRA::module_settings_data_t	typeref:typename:uint8_t
+global_id	src/module_system.h	/^            uint8_t  global_id;$/;"	m	struct:MODULE_SYSTEM::module_settings_data_t	typeref:typename:uint8_t
+global_id	src/settings.h	/^  uint8_t   global_id;$/;"	m	struct:settingsData_t	typeref:typename:uint8_t
+gps_accelerometer_interrupt	src/module_gps_ublox.cpp	/^void MODULE_GPS_UBLOX::gps_accelerometer_interrupt(void){$/;"	f	class:MODULE_GPS_UBLOX	typeref:typename:void
+gps_accelerometer_last	src/module_gps_ublox.h	/^        unsigned long gps_accelerometer_last = 0;$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:unsigned long
+gps_backup	src/module_gps_ublox.cpp	/^void MODULE_GPS_UBLOX::gps_backup(boolean enable){$/;"	f	class:MODULE_GPS_UBLOX	typeref:typename:void
+gps_begin	src/module_gps_ublox.cpp	/^boolean MODULE_GPS_UBLOX::gps_begin(void){$/;"	f	class:MODULE_GPS_UBLOX	typeref:typename:boolean
+gps_begin_happened	src/module_gps_ublox.h	/^        boolean gps_begin_happened = false;$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:boolean
+gps_busy_timeout	src/module_gps_ublox.cpp	/^boolean MODULE_GPS_UBLOX::gps_busy_timeout(uint16_t timeout){$/;"	f	class:MODULE_GPS_UBLOX	typeref:typename:boolean
+gps_cold_fix_retry	encoded_settings_template.json	/^        "gps_cold_fix_retry": {"value": 0, "size": 1, "order": 12},$/;"	o	object:module_gps_ublox
+gps_cold_fix_retry	src/module_gps_ublox.h	/^            uint8_t  gps_cold_fix_retry;$/;"	m	struct:MODULE_GPS_UBLOX::module_settings_data_t	typeref:typename:uint8_t
+gps_cold_fix_timeout	encoded_settings_template.json	/^        "gps_cold_fix_timeout": {"value": 0, "size": 2, "order": 7},$/;"	o	object:module_gps_ublox
+gps_cold_fix_timeout	src/module_gps_ublox.h	/^            uint16_t gps_cold_fix_timeout;$/;"	m	struct:MODULE_GPS_UBLOX::module_settings_data_t	typeref:typename:uint16_t
+gps_done	src/module_gps_ublox.h	/^        boolean gps_done = false; \/\/ extern$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:boolean
+gps_end	src/module_gps_ublox.cpp	/^void MODULE_GPS_UBLOX::gps_end(void){$/;"	f	class:MODULE_GPS_UBLOX	typeref:typename:void
+gps_fail_count	src/module_gps_ublox.h	/^        uint8_t gps_fail_count = 0;$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:uint8_t
+gps_fail_fix_count	src/module_gps_ublox.h	/^        uint8_t gps_fail_fix_count = 0;$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:uint8_t
+gps_fail_retry	encoded_settings_template.json	/^        "gps_fail_retry": {"value": 0, "size": 1, "order": 13},$/;"	o	object:module_gps_ublox
+gps_fail_retry	src/module_gps_ublox.h	/^            uint8_t  gps_fail_retry;$/;"	m	struct:MODULE_GPS_UBLOX::module_settings_data_t	typeref:typename:uint8_t
+gps_fix_start_time	src/module_gps_ublox.h	/^        unsigned long gps_fix_start_time = 0;$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:unsigned long
+gps_hot_fix	src/module_gps_ublox.h	/^        boolean gps_hot_fix = false;$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:boolean
+gps_hot_fix_retry	encoded_settings_template.json	/^        "gps_hot_fix_retry": {"value": 0, "size": 1, "order": 11},$/;"	o	object:module_gps_ublox
+gps_hot_fix_retry	src/module_gps_ublox.h	/^            uint8_t  gps_hot_fix_retry;$/;"	m	struct:MODULE_GPS_UBLOX::module_settings_data_t	typeref:typename:uint8_t
+gps_hot_fix_timeout	encoded_settings_template.json	/^        "gps_hot_fix_timeout": {"value": 0, "size": 2, "order": 8},$/;"	o	object:module_gps_ublox
+gps_hot_fix_timeout	src/module_gps_ublox.h	/^            uint16_t gps_hot_fix_timeout;$/;"	m	struct:MODULE_GPS_UBLOX::module_settings_data_t	typeref:typename:uint16_t
+gps_location	src/module_gps_ublox.h	/^        GNSSLocation gps_location;$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:GNSSLocation
+gps_min_ehpe	encoded_settings_template.json	/^        "gps_min_ehpe": {"value": 0, "size": 1, "order": 10},$/;"	o	object:module_gps_ublox
+gps_min_ehpe	src/module_gps_ublox.h	/^            uint8_t  gps_min_ehpe;$/;"	m	struct:MODULE_GPS_UBLOX::module_settings_data_t	typeref:typename:uint8_t
+gps_min_fix_time	encoded_settings_template.json	/^        "gps_min_fix_time": {"value": 0, "size": 1, "order": 9},$/;"	o	object:module_gps_ublox
+gps_min_fix_time	src/module_gps_ublox.h	/^            uint8_t  gps_min_fix_time;$/;"	m	struct:MODULE_GPS_UBLOX::module_settings_data_t	typeref:typename:uint8_t
+gps_power	src/module_gps_ublox.cpp	/^void MODULE_GPS_UBLOX::gps_power(boolean enable){$/;"	f	class:MODULE_GPS_UBLOX	typeref:typename:void
+gps_response_fail_count	src/module_gps_ublox.h	/^        uint8_t gps_response_fail_count = 0;$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:uint8_t
+gps_satellites	src/module_gps_ublox.h	/^        GNSSSatellites gps_satellites;$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:GNSSSatellites
+gps_send_flag	src/module_gps_ublox.h	/^        boolean gps_send_flag = false; \/\/ extern$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:boolean
+gps_settings	encoded_settings_template.json	/^        "gps_settings": {"value": 0, "size": 1, "order": 14}$/;"	o	object:module_gps_ublox
+gps_settings	src/module_gps_ublox.h	/^            uint8_t  gps_settings;$/;"	m	struct:MODULE_GPS_UBLOX::module_settings_data_t	typeref:typename:uint8_t
+gps_start	src/module_gps_ublox.cpp	/^boolean MODULE_GPS_UBLOX::gps_start(void){$/;"	f	class:MODULE_GPS_UBLOX	typeref:typename:boolean
+gps_stop	src/module_gps_ublox.cpp	/^void MODULE_GPS_UBLOX::gps_stop(void){$/;"	f	class:MODULE_GPS_UBLOX	typeref:typename:void
+gps_time_to_fix	src/module_gps_ublox.h	/^        unsigned long gps_time_to_fix;$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:unsigned long
+gps_timeout	src/module_gps_ublox.h	/^        unsigned long gps_timeout = 0;$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:unsigned long
+gps_triggered_duration	encoded_settings_template.json	/^        "gps_triggered_duration": {"value": 0, "size": 1, "order": 6},$/;"	o	object:module_gps_ublox
+gps_triggered_duration	src/module_gps_ublox.h	/^            uint8_t  gps_triggered_duration;$/;"	m	struct:MODULE_GPS_UBLOX::module_settings_data_t	typeref:typename:uint8_t
+gps_triggered_threshold	encoded_settings_template.json	/^        "gps_triggered_threshold": {"value": 0, "size": 1, "order": 5},$/;"	o	object:module_gps_ublox
+gps_triggered_threshold	src/module_gps_ublox.h	/^            uint8_t  gps_triggered_threshold;$/;"	m	struct:MODULE_GPS_UBLOX::module_settings_data_t	typeref:typename:uint8_t
+includePath	.vscode/c_cpp_properties.json	/^            "includePath": [$/;"	a	object:configurations.0
+initialize	src/module.h	/^	uint8_t initialize(void){$/;"	f	class:myModule	typeref:typename:uint8_t
+initialize	src/module.h	/^	virtual uint8_t initialize(void){};$/;"	f	class:module	typeref:typename:uint8_t
+initialize	src/module_accelerometer.cpp	/^uint8_t MODULE_ACCELEROMETER::initialize(void){$/;"	f	class:MODULE_ACCELEROMETER	typeref:typename:uint8_t
+initialize	src/module_gps_ublox.cpp	/^uint8_t MODULE_GPS_UBLOX::initialize(void){$/;"	f	class:MODULE_GPS_UBLOX	typeref:typename:uint8_t
+initialize	src/module_pira.cpp	/^uint8_t MODULE_PIRA::initialize(void){$/;"	f	class:MODULE_PIRA	typeref:typename:uint8_t
+initialize	src/module_system.cpp	/^uint8_t MODULE_SYSTEM::initialize(void){$/;"	f	class:MODULE_SYSTEM	typeref:typename:uint8_t
+initializer_list	.vscode/settings.json	/^        "initializer_list": "cpp"$/;"	s	object:files.associations
+input_analog_avg	src/module_system.h	/^            uint8_t input_analog_avg; \/\/ average of readings during a period, maximally once a/;"	m	struct:MODULE_SYSTEM::module_readings_data_t	typeref:typename:uint8_t
+input_analog_max	src/module_system.h	/^            uint8_t input_analog_max; \/\/ max of readings during a period, maximally once a day$/;"	m	struct:MODULE_SYSTEM::module_readings_data_t	typeref:typename:uint8_t
+input_analog_min	src/module_system.h	/^            uint8_t input_analog_min; \/\/ min of readings during a period, maximally once a day$/;"	m	struct:MODULE_SYSTEM::module_readings_data_t	typeref:typename:uint8_t
+intelliSenseMode	.vscode/c_cpp_properties.json	/^            "intelliSenseMode": "msvc-x64",$/;"	s	object:configurations.0
+irnas-lorawan-base	README.md	/^# irnas-lorawan-base$/;"	c
+lat1	src/module_gps_ublox.h	/^            uint8_t lat1;$/;"	m	struct:MODULE_GPS_UBLOX::module_readings_data_t	typeref:typename:uint8_t
+lat2	src/module_gps_ublox.h	/^            uint8_t lat2;$/;"	m	struct:MODULE_GPS_UBLOX::module_readings_data_t	typeref:typename:uint8_t
+lat3	src/module_gps_ublox.h	/^            uint8_t lat3;$/;"	m	struct:MODULE_GPS_UBLOX::module_readings_data_t	typeref:typename:uint8_t
+length	encoded_settings_template.json	/^        "length": {"value": 10, "size": 1, "order": 1},$/;"	o	object:module_accelerometer
+length	encoded_settings_template.json	/^        "length": {"value": 20, "size": 1, "order": 1},$/;"	o	object:module_gps_ublox
+length	encoded_settings_template.json	/^        "length": {"value": 24, "size": 1, "order": 1},$/;"	o	object:module_pira
+length	encoded_settings_template.json	/^        "length": {"value": 6, "size": 1, "order": 1},$/;"	o	object:module_system
+length	encoded_settings_template.json	/^        "length": {"value": 8, "size": 1, "order": 1},$/;"	o	object:basic_settings
+length	src/module_accelerometer.h	/^            uint8_t length;$/;"	m	struct:MODULE_ACCELEROMETER::module_settings_data_t	typeref:typename:uint8_t
+length	src/module_gps_ublox.h	/^            uint8_t  length;$/;"	m	struct:MODULE_GPS_UBLOX::module_settings_data_t	typeref:typename:uint8_t
+length	src/module_pira.h	/^            uint8_t  length;$/;"	m	struct:MODULE_PIRA::module_settings_data_t	typeref:typename:uint8_t
+length	src/module_system.h	/^            uint8_t  length;$/;"	m	struct:MODULE_SYSTEM::module_settings_data_t	typeref:typename:uint8_t
+length	src/settings.h	/^  uint8_t   length;$/;"	m	struct:settingsData_t	typeref:typename:uint8_t
+lis	src/module_accelerometer.h	/^        LIS2DW12CLASS lis;$/;"	m	class:MODULE_ACCELEROMETER	typeref:typename:LIS2DW12CLASS
+lis2dw_event_t	src/LIS2DW12.h	/^enum lis2dw_event_t { WAKEUP, DOUBLE_TAP, SINGLE_TAP, FREE_FALL, NO_EVENT};$/;"	g
+lon1	src/module_gps_ublox.h	/^            uint8_t lon1;$/;"	m	struct:MODULE_GPS_UBLOX::module_readings_data_t	typeref:typename:uint8_t
+lon2	src/module_gps_ublox.h	/^            uint8_t lon2;$/;"	m	struct:MODULE_GPS_UBLOX::module_readings_data_t	typeref:typename:uint8_t
+lon3	src/module_gps_ublox.h	/^            uint8_t lon3;$/;"	m	struct:MODULE_GPS_UBLOX::module_readings_data_t	typeref:typename:uint8_t
+lorawan_adr	encoded_settings_template.json	/^        "lorawan_adr": {"value": 0, "size": 1, "order": 3},$/;"	o	object:basic_settings
+lorawan_adr	src/settings.h	/^  uint8_t   lorawan_adr;$/;"	m	struct:settingsData_t	typeref:typename:uint8_t
+lorawan_checkCallback	src/lorawan.cpp	/^void lorawan_checkCallback(void)$/;"	f	typeref:typename:void
+lorawan_datarate	encoded_settings_template.json	/^        "lorawan_datarate": {"value": 0, "size": 1, "order": 2},$/;"	o	object:basic_settings
+lorawan_datarate	src/settings.h	/^  uint8_t   lorawan_datarate;$/;"	m	struct:settingsData_t	typeref:typename:uint8_t
+lorawan_doneCallback	src/lorawan.cpp	/^void lorawan_doneCallback(void)$/;"	f	typeref:typename:void
+lorawan_init	src/lorawan.cpp	/^boolean lorawan_init(void)$/;"	f	typeref:typename:boolean
+lorawan_joinCallback	src/lorawan.cpp	/^void lorawan_joinCallback(void)$/;"	f	typeref:typename:void
+lorawan_joined	src/lorawan.cpp	/^boolean lorawan_joined(void)$/;"	f	typeref:typename:boolean
+lorawan_receiveCallback	src/lorawan.cpp	/^void lorawan_receiveCallback(void)$/;"	f	typeref:typename:void
+lorawan_reg	encoded_settings_template.json	/^        "lorawan_reg": {"value": 0, "size": 1, "order": 5},$/;"	o	object:basic_settings
+lorawan_reg	src/settings.h	/^  uint8_t   lorawan_reg;$/;"	m	struct:settingsData_t	typeref:typename:uint8_t
+lorawan_send	src/lorawan.cpp	/^boolean lorawan_send(uint8_t port, const uint8_t * buffer, size_t size)$/;"	f	typeref:typename:boolean
+lorawan_send_successful	src/lorawan.cpp	/^boolean lorawan_send_successful = false; \/\/ flags sending has been successful to the FSM$/;"	v	typeref:typename:boolean
+lorawan_settings_buffer	src/lorawan.cpp	/^uint8_t lorawan_settings_buffer[256];$/;"	v	typeref:typename:uint8_t[256]
+lorawan_settings_length	src/lorawan.cpp	/^size_t lorawan_settings_length=0;$/;"	v	typeref:typename:size_t
+lorawan_settings_new	src/lorawan.cpp	/^boolean lorawan_settings_new = false;$/;"	v	typeref:typename:boolean
+lorawan_txp	encoded_settings_template.json	/^        "lorawan_txp": {"value": 0, "size": 1, "order": 4},$/;"	o	object:basic_settings
+lorawan_txp	src/settings.h	/^  uint8_t   lorawan_txp;$/;"	m	struct:settingsData_t	typeref:typename:uint8_t
+manual_decode	manual_decoder.js	/^function manual_decode(filename) {$/;"	f
+mapfloat	src/project_utils.cpp	/^float mapfloat(float x, float in_min, float in_max, float out_min, float out_max){$/;"	f	typeref:typename:float
+module	src/module.h	/^	myModuleType module;$/;"	m	class:myModule	typeref:typename:myModuleType
+module	src/module.h	/^class module {$/;"	c
+module_accelerometer	encoded_settings_template.json	/^    "module_accelerometer": {$/;"	o
+module_accelerometer	encoder_generator.py	/^module_accelerometer=create_array_from_settings(settings)$/;"	v
+module_flags_e	src/module.h	/^enum module_flags_e {$/;"	g
+module_gps_ublox	encoded_settings_template.json	/^    "module_gps_ublox": {$/;"	o
+module_gps_ublox	encoder_generator.py	/^module_gps_ublox=create_array_from_settings(settings)$/;"	v
+module_h	src/module.h	/^#define module_h$/;"	d
+module_pira	encoded_settings_template.json	/^    "module_pira": {$/;"	o
+module_pira	encoder_generator.py	/^module_pira=create_array_from_settings(settings)$/;"	v
+module_readings_data_t	src/module_accelerometer.h	/^        struct module_readings_data_t{$/;"	s	class:MODULE_ACCELEROMETER
+module_readings_data_t	src/module_gps_ublox.h	/^        struct module_readings_data_t{$/;"	s	class:MODULE_GPS_UBLOX
+module_readings_data_t	src/module_pira.h	/^        struct module_readings_data_t{$/;"	s	class:MODULE_PIRA
+module_readings_data_t	src/module_system.h	/^        struct module_readings_data_t{$/;"	s	class:MODULE_SYSTEM
+module_readings_packet_t	src/module_accelerometer.h	/^        union module_readings_packet_t{$/;"	u	class:MODULE_ACCELEROMETER
+module_readings_packet_t	src/module_gps_ublox.h	/^        union module_readings_packet_t{$/;"	u	class:MODULE_GPS_UBLOX
+module_readings_packet_t	src/module_pira.h	/^        union module_readings_packet_t{$/;"	u	class:MODULE_PIRA
+module_readings_packet_t	src/module_system.h	/^        union module_readings_packet_t{$/;"	u	class:MODULE_SYSTEM
+module_settings_data_t	src/module_accelerometer.h	/^        struct module_settings_data_t{$/;"	s	class:MODULE_ACCELEROMETER
+module_settings_data_t	src/module_gps_ublox.h	/^        struct module_settings_data_t{$/;"	s	class:MODULE_GPS_UBLOX
+module_settings_data_t	src/module_pira.h	/^        struct module_settings_data_t{$/;"	s	class:MODULE_PIRA
+module_settings_data_t	src/module_system.h	/^        struct module_settings_data_t{$/;"	s	class:MODULE_SYSTEM
+module_settings_packet_t	src/module_accelerometer.h	/^        union module_settings_packet_t{$/;"	u	class:MODULE_ACCELEROMETER
+module_settings_packet_t	src/module_gps_ublox.h	/^        union module_settings_packet_t{$/;"	u	class:MODULE_GPS_UBLOX
+module_settings_packet_t	src/module_pira.h	/^        union module_settings_packet_t{$/;"	u	class:MODULE_PIRA
+module_settings_packet_t	src/module_system.h	/^        union module_settings_packet_t{$/;"	u	class:MODULE_SYSTEM
+module_system	encoded_settings_template.json	/^    "module_system": {$/;"	o
+module_system	encoder_generator.py	/^module_system=create_array_from_settings(settings)$/;"	v
+modules	src/project.cpp	/^module *modules[] = {s_SYSTEM,s_GPS,s_ACCEL};/;"	v	typeref:typename:module * []
+motion	src/module_gps_ublox.h	/^            uint8_t motion;$/;"	m	struct:MODULE_GPS_UBLOX::module_readings_data_t	typeref:typename:uint8_t
+myModule	src/module.h	/^	myModule(uint8_t id, uint8_t param_a = 0, uint8_t param_b = 0, uint8_t param_c = 0) {$/;"	f	class:myModule
+myModule	src/module.h	/^class myModule : public module {$/;"	c
+name	.vscode/c_cpp_properties.json	/^            "name": "Win32",$/;"	s	object:configurations.0
+name	.vscode/launch.json	/^            "name": "Python: Current File",$/;"	s	object:configurations.0
+name	.vscode/launch.json	/^            "name": "Python: Current File",$/;"	s	object:configurations.1
+name	src/module_accelerometer.h	/^        String name = "accelerometer";$/;"	m	class:MODULE_ACCELEROMETER	typeref:typename:String
+name	src/module_gps_ublox.h	/^        String name = "gps";$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:String
+name	src/module_pira.h	/^        String name = "pira";$/;"	m	class:MODULE_PIRA	typeref:typename:String
+name	src/module_system.h	/^        String name = "system";$/;"	m	class:MODULE_SYSTEM	typeref:typename:String
+ns21c8cc350101	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/2000/svg
+ns21c8cc350201	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc350301	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc350401	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc350501	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc350601	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc350701	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc350801	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc350901	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc350a01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc350b01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc350c01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc350d01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc350e01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc350f01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc351001	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc351101	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc351201	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc351301	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc351401	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc351501	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc351601	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc351701	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc351801	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc351901	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc351a01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc351b01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc351c01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc351d01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc351e01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc351f01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc352001	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc352101	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc352201	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc352301	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc352401	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc352501	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc352601	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc352701	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc352801	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc352901	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc352a01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc352b01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc352c01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc352d01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc352e01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc352f01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc353001	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc353101	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc353201	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc353301	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc353401	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc353501	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc353601	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc353701	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc353801	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc353901	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc353a01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc353b01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc353c01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc353d01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc353e01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc353f01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc354001	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc354101	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc354201	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc354301	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc354401	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc354501	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc354601	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc354701	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc354801	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc354901	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc354a01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc354b01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc354c01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc354d01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc354e01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc354f01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc355001	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc355101	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc355201	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc355301	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc355401	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc355501	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc355601	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc355701	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc355801	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc355901	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc355a01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc355b01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc355c01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc355d01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc355e01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc355f01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc356001	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc356101	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc356201	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc356301	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc356401	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc356501	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc356601	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc356701	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc356801	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc356901	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc356a01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc356b01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc356c01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc356d01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc356e01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc356f01	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc357001	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+ns21c8cc357101	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xhtml
+nwkSKey	src/lorawan.cpp	/^const char *nwkSKey = "675F9B8777AB66EF3B967B3FC4FC7527";$/;"	v	typeref:typename:const char *
+operational_wakeup	encoded_settings_template.json	/^        "operational_wakeup": {"value": 0, "size": 4, "order": 8}$/;"	o	object:module_pira
+operational_wakeup	src/module_pira.h	/^            uint32_t operational_wakeup;$/;"	m	struct:MODULE_PIRA::module_settings_data_t	typeref:typename:uint32_t
+order	encoded_settings_template.json	/^        "dummy": {"value": 0, "size": 1, "order": 7}$/;"	n	object:module_accelerometer.dummy
+order	encoded_settings_template.json	/^        "free_fall": {"value": 0, "size": 1, "order": 6},$/;"	n	object:module_accelerometer.free_fall
+order	encoded_settings_template.json	/^        "global_id": {"value": 1, "size": 1, "order": 0},$/;"	n	object:basic_settings.global_id
+order	encoded_settings_template.json	/^        "global_id": {"value": 2, "size": 1, "order": 0},$/;"	n	object:module_system.global_id
+order	encoded_settings_template.json	/^        "global_id": {"value": 3, "size": 1, "order": 0},$/;"	n	object:module_gps_ublox.global_id
+order	encoded_settings_template.json	/^        "global_id": {"value": 4, "size": 1, "order": 0},$/;"	n	object:module_pira.global_id
+order	encoded_settings_template.json	/^        "global_id": {"value": 5, "size": 1, "order": 0},$/;"	n	object:module_accelerometer.global_id
+order	encoded_settings_template.json	/^        "gps_cold_fix_retry": {"value": 0, "size": 1, "order": 12},$/;"	n	object:module_gps_ublox.gps_cold_fix_retry
+order	encoded_settings_template.json	/^        "gps_cold_fix_timeout": {"value": 0, "size": 2, "order": 7},$/;"	n	object:module_gps_ublox.gps_cold_fix_timeout
+order	encoded_settings_template.json	/^        "gps_fail_retry": {"value": 0, "size": 1, "order": 13},$/;"	n	object:module_gps_ublox.gps_fail_retry
+order	encoded_settings_template.json	/^        "gps_hot_fix_retry": {"value": 0, "size": 1, "order": 11},$/;"	n	object:module_gps_ublox.gps_hot_fix_retry
+order	encoded_settings_template.json	/^        "gps_hot_fix_timeout": {"value": 0, "size": 2, "order": 8},$/;"	n	object:module_gps_ublox.gps_hot_fix_timeout
+order	encoded_settings_template.json	/^        "gps_min_ehpe": {"value": 0, "size": 1, "order": 10},$/;"	n	object:module_gps_ublox.gps_min_ehpe
+order	encoded_settings_template.json	/^        "gps_min_fix_time": {"value": 0, "size": 1, "order": 9},$/;"	n	object:module_gps_ublox.gps_min_fix_time
+order	encoded_settings_template.json	/^        "gps_settings": {"value": 0, "size": 1, "order": 14}$/;"	n	object:module_gps_ublox.gps_settings
+order	encoded_settings_template.json	/^        "gps_triggered_duration": {"value": 0, "size": 1, "order": 6},$/;"	n	object:module_gps_ublox.gps_triggered_duration
+order	encoded_settings_template.json	/^        "gps_triggered_threshold": {"value": 0, "size": 1, "order": 5},$/;"	n	object:module_gps_ublox.gps_triggered_threshold
+order	encoded_settings_template.json	/^        "length": {"value": 10, "size": 1, "order": 1},$/;"	n	object:module_accelerometer.length
+order	encoded_settings_template.json	/^        "length": {"value": 20, "size": 1, "order": 1},$/;"	n	object:module_gps_ublox.length
+order	encoded_settings_template.json	/^        "length": {"value": 24, "size": 1, "order": 1},$/;"	n	object:module_pira.length
+order	encoded_settings_template.json	/^        "length": {"value": 6, "size": 1, "order": 1},$/;"	n	object:module_system.length
+order	encoded_settings_template.json	/^        "length": {"value": 8, "size": 1, "order": 1},$/;"	n	object:basic_settings.length
+order	encoded_settings_template.json	/^        "lorawan_adr": {"value": 0, "size": 1, "order": 3},$/;"	n	object:basic_settings.lorawan_adr
+order	encoded_settings_template.json	/^        "lorawan_datarate": {"value": 0, "size": 1, "order": 2},$/;"	n	object:basic_settings.lorawan_datarate
+order	encoded_settings_template.json	/^        "lorawan_reg": {"value": 0, "size": 1, "order": 5},$/;"	n	object:basic_settings.lorawan_reg
+order	encoded_settings_template.json	/^        "lorawan_txp": {"value": 0, "size": 1, "order": 4},$/;"	n	object:basic_settings.lorawan_txp
+order	encoded_settings_template.json	/^        "operational_wakeup": {"value": 0, "size": 4, "order": 8}$/;"	n	object:module_pira.operational_wakeup
+order	encoded_settings_template.json	/^        "periodic_interval": {"value": 0, "size": 2, "order": 3},$/;"	n	object:module_gps_ublox.periodic_interval
+order	encoded_settings_template.json	/^        "read_interval": {"value": 0, "size": 2, "order": 2},$/;"	n	object:module_accelerometer.read_interval
+order	encoded_settings_template.json	/^        "read_interval": {"value": 0, "size": 2, "order": 2},$/;"	n	object:module_pira.read_interval
+order	encoded_settings_template.json	/^        "read_interval": {"value": 0, "size": 2, "order": 2},$/;"	n	object:module_system.read_interval
+order	encoded_settings_template.json	/^        "resend_count": {"value": 0, "size": 1, "order": 7}$/;"	n	object:basic_settings.resend_count
+order	encoded_settings_template.json	/^        "resend_delay": {"value": 0, "size": 1, "order": 6},$/;"	n	object:basic_settings.resend_delay
+order	encoded_settings_template.json	/^        "safety_power_period": {"value": 0, "size": 4, "order": 5},$/;"	n	object:module_pira.safety_power_period
+order	encoded_settings_template.json	/^        "safety_reboot": {"value": 0, "size": 4, "order": 7},$/;"	n	object:module_pira.safety_reboot
+order	encoded_settings_template.json	/^        "safety_sleep_period": {"value": 0, "size": 4, "order": 6},$/;"	n	object:module_pira.safety_sleep_period
+order	encoded_settings_template.json	/^        "send_interval": {"value": 0, "size": 2, "order": 2},$/;"	n	object:module_gps_ublox.send_interval
+order	encoded_settings_template.json	/^        "send_interval": {"value": 0, "size": 2, "order": 3}$/;"	n	object:module_system.send_interval
+order	encoded_settings_template.json	/^        "send_interval": {"value": 0, "size": 2, "order": 3},$/;"	n	object:module_accelerometer.send_interval
+order	encoded_settings_template.json	/^        "send_interval": {"value": 0, "size": 2, "order": 3},$/;"	n	object:module_pira.send_interval
+order	encoded_settings_template.json	/^        "status_battery": {"value": 0, "size": 2, "order": 4},$/;"	n	object:module_pira.status_battery
+order	encoded_settings_template.json	/^        "triggered_duration": {"value": 0, "size": 1, "order": 5},$/;"	n	object:module_accelerometer.triggered_duration
+order	encoded_settings_template.json	/^        "triggered_interval": {"value": 0, "size": 2, "order": 4},$/;"	n	object:module_gps_ublox.triggered_interval
+order	encoded_settings_template.json	/^        "triggered_threshold": {"value": 0, "size": 1, "order": 4},$/;"	n	object:module_accelerometer.triggered_threshold
+param_a	src/module_accelerometer.h	/^        uint8_t param_a = 0;$/;"	m	class:MODULE_ACCELEROMETER	typeref:typename:uint8_t
+param_a	src/module_gps_ublox.h	/^        uint8_t param_a = 0;$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:uint8_t
+param_a	src/module_pira.h	/^        uint8_t param_a = 0;$/;"	m	class:MODULE_PIRA	typeref:typename:uint8_t
+param_a	src/module_system.h	/^        uint8_t param_a = 0;$/;"	m	class:MODULE_SYSTEM	typeref:typename:uint8_t
+param_b	src/module_accelerometer.h	/^        uint8_t param_b = 0;$/;"	m	class:MODULE_ACCELEROMETER	typeref:typename:uint8_t
+param_b	src/module_gps_ublox.h	/^        uint8_t param_b = 0;$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:uint8_t
+param_b	src/module_pira.h	/^        uint8_t param_b = 0;$/;"	m	class:MODULE_PIRA	typeref:typename:uint8_t
+param_b	src/module_system.h	/^        uint8_t param_b = 0;$/;"	m	class:MODULE_SYSTEM	typeref:typename:uint8_t
+param_c	src/module_accelerometer.h	/^        uint8_t param_c = 0;$/;"	m	class:MODULE_ACCELEROMETER	typeref:typename:uint8_t
+param_c	src/module_gps_ublox.h	/^        uint8_t param_c = 0;$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:uint8_t
+param_c	src/module_pira.h	/^        uint8_t param_c = 0;$/;"	m	class:MODULE_PIRA	typeref:typename:uint8_t
+param_c	src/module_system.h	/^        uint8_t param_c = 0;$/;"	m	class:MODULE_SYSTEM	typeref:typename:uint8_t
+periodic_interval	encoded_settings_template.json	/^        "periodic_interval": {"value": 0, "size": 2, "order": 3},$/;"	o	object:module_gps_ublox
+periodic_interval	src/module_gps_ublox.h	/^            uint16_t periodic_interval;    \/\/ in seconds$/;"	m	struct:MODULE_GPS_UBLOX::module_settings_data_t	typeref:typename:uint16_t
+photo_count	src/module_pira.h	/^            uint16_t photo_count; \/\/ RPi photo count$/;"	m	struct:MODULE_PIRA::module_readings_data_t	typeref:typename:uint16_t
+pira_elapsed	src/module_pira.h	/^        uint32_t pira_elapsed;$/;"	m	class:MODULE_PIRA	typeref:typename:uint32_t
+pira_state_check_timeout	src/module_pira.cpp	/^bool MODULE_PIRA::pira_state_check_timeout(void)$/;"	f	class:MODULE_PIRA	typeref:typename:bool
+pira_state_machine	src/module_pira.cpp	/^void MODULE_PIRA::pira_state_machine()$/;"	f	class:MODULE_PIRA	typeref:typename:void
+pira_state_transition	src/module_pira.cpp	/^void MODULE_PIRA::pira_state_transition(state_pira_e next)$/;"	f	class:MODULE_PIRA	typeref:typename:void
+print_data	src/module.h	/^	virtual void print_data(void){};$/;"	f	class:module	typeref:typename:void
+print_data	src/module.h	/^	void print_data(void){$/;"	f	class:myModule	typeref:typename:void
+print_data	src/module_accelerometer.cpp	/^void MODULE_ACCELEROMETER::print_data(void){$/;"	f	class:MODULE_ACCELEROMETER	typeref:typename:void
+print_data	src/module_gps_ublox.cpp	/^void MODULE_GPS_UBLOX::print_data(void){$/;"	f	class:MODULE_GPS_UBLOX	typeref:typename:void
+print_data	src/module_pira.cpp	/^void MODULE_PIRA::print_data(void){$/;"	f	class:MODULE_PIRA	typeref:typename:void
+print_data	src/module_system.cpp	/^void MODULE_SYSTEM::print_data(void){$/;"	f	class:MODULE_SYSTEM	typeref:typename:void
+print_status_values	src/module_pira.cpp	/^void MODULE_PIRA::print_status_values(void)$/;"	f	class:MODULE_PIRA	typeref:typename:void
+program	.vscode/launch.json	/^            "program": "${file}",$/;"	s	object:configurations.0
+program	.vscode/launch.json	/^            "program": "${file}",$/;"	s	object:configurations.1
+push_value	src/project_utils.cpp	/^void push_value(float value,reading_structure_t *values){$/;"	f	typeref:typename:void
+r_accel_x	src/module_accelerometer.h	/^        reading_structure_t r_accel_x;$/;"	m	class:MODULE_ACCELEROMETER	typeref:typename:reading_structure_t
+r_accel_y	src/module_accelerometer.h	/^        reading_structure_t r_accel_y;$/;"	m	class:MODULE_ACCELEROMETER	typeref:typename:reading_structure_t
+r_accel_z	src/module_accelerometer.h	/^        reading_structure_t r_accel_z;$/;"	m	class:MODULE_ACCELEROMETER	typeref:typename:reading_structure_t
+r_analog_input	src/module_system.h	/^        reading_structure_t r_analog_input;$/;"	m	class:MODULE_SYSTEM	typeref:typename:reading_structure_t
+r_battery	src/module_system.h	/^        reading_structure_t r_battery;$/;"	m	class:MODULE_SYSTEM	typeref:typename:reading_structure_t
+r_count	src/project_utils.h	/^    float r_count;$/;"	m	struct:reading_structure_t	typeref:typename:float
+r_m2	src/project_utils.h	/^    float r_m2;$/;"	m	struct:reading_structure_t	typeref:typename:float
+r_max	src/project_utils.h	/^    float r_max;$/;"	m	struct:reading_structure_t	typeref:typename:float
+r_mean	src/project_utils.h	/^    float r_mean;$/;"	m	struct:reading_structure_t	typeref:typename:float
+r_min	src/project_utils.h	/^    float r_min;$/;"	m	struct:reading_structure_t	typeref:typename:float
+r_temperature	src/module_system.h	/^        reading_structure_t r_temperature;$/;"	m	class:MODULE_SYSTEM	typeref:typename:reading_structure_t
+raw_to_mg_2g_range	src/LIS2DW12.cpp	/^float LIS2DW12CLASS::raw_to_mg_2g_range(int16_t x)$/;"	f	class:LIS2DW12CLASS	typeref:typename:float
+read	src/module.h	/^	uint8_t read(void){$/;"	f	class:myModule	typeref:typename:uint8_t
+read	src/module.h	/^	virtual uint8_t read(void){};$/;"	f	class:module	typeref:typename:uint8_t
+read	src/module_accelerometer.cpp	/^uint8_t MODULE_ACCELEROMETER::read(void){$/;"	f	class:MODULE_ACCELEROMETER	typeref:typename:uint8_t
+read	src/module_gps_ublox.cpp	/^uint8_t MODULE_GPS_UBLOX::read(void){$/;"	f	class:MODULE_GPS_UBLOX	typeref:typename:uint8_t
+read	src/module_pira.cpp	/^uint8_t MODULE_PIRA::read(void){$/;"	f	class:MODULE_PIRA	typeref:typename:uint8_t
+read	src/module_system.cpp	/^uint8_t MODULE_SYSTEM::read(void){$/;"	f	class:MODULE_SYSTEM	typeref:typename:uint8_t
+read8	src/rtc.cpp	/^char read8(char addr, char reg)$/;"	f	typeref:typename:char
+read_accel_values	src/LIS2DW12.cpp	/^accel_data LIS2DW12CLASS::read_accel_values()$/;"	f	class:LIS2DW12CLASS	typeref:typename:accel_data
+read_interval	encoded_settings_template.json	/^        "read_interval": {"value": 0, "size": 2, "order": 2},$/;"	o	object:module_accelerometer
+read_interval	encoded_settings_template.json	/^        "read_interval": {"value": 0, "size": 2, "order": 2},$/;"	o	object:module_pira
+read_interval	encoded_settings_template.json	/^        "read_interval": {"value": 0, "size": 2, "order": 2},$/;"	o	object:module_system
+read_interval	src/module_accelerometer.h	/^            uint16_t read_interval;$/;"	m	struct:MODULE_ACCELEROMETER::module_settings_data_t	typeref:typename:uint16_t
+read_interval	src/module_pira.h	/^            uint16_t read_interval; \/\/ in seconds$/;"	m	struct:MODULE_PIRA::module_settings_data_t	typeref:typename:uint16_t
+read_interval	src/module_system.h	/^            uint16_t read_interval; \/\/ in seconds$/;"	m	struct:MODULE_SYSTEM::module_settings_data_t	typeref:typename:uint16_t
+read_reg	src/LIS2DW12.cpp	/^uint8_t LIS2DW12CLASS::read_reg(uint8_t reg)$/;"	f	class:LIS2DW12CLASS	typeref:typename:uint8_t
+read_temp	src/LIS2DW12.cpp	/^uint8_t LIS2DW12CLASS::read_temp()$/;"	f	class:LIS2DW12CLASS	typeref:typename:uint8_t
+read_timestamp	src/module_accelerometer.h	/^        unsigned long read_timestamp;$/;"	m	class:MODULE_ACCELEROMETER	typeref:typename:unsigned long
+read_timestamp	src/module_gps_ublox.h	/^        unsigned long read_timestamp;$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:unsigned long
+read_timestamp	src/module_pira.h	/^        unsigned long read_timestamp;$/;"	m	class:MODULE_PIRA	typeref:typename:unsigned long
+read_timestamp	src/module_system.h	/^        unsigned long read_timestamp;$/;"	m	class:MODULE_SYSTEM	typeref:typename:unsigned long
+reading_structure_t	src/project_utils.h	/^struct reading_structure_t$/;"	s
+readings_packet	src/module_accelerometer.h	/^        module_readings_packet_t readings_packet;$/;"	m	class:MODULE_ACCELEROMETER	typeref:typename:module_readings_packet_t
+readings_packet	src/module_gps_ublox.h	/^        module_readings_packet_t readings_packet;$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:module_readings_packet_t
+readings_packet	src/module_pira.h	/^        module_readings_packet_t readings_packet;$/;"	m	class:MODULE_PIRA	typeref:typename:module_readings_packet_t
+readings_packet	src/module_system.h	/^        module_readings_packet_t readings_packet;$/;"	m	class:MODULE_SYSTEM	typeref:typename:module_readings_packet_t
+request	.vscode/launch.json	/^            "request": "launch",$/;"	s	object:configurations.0
+request	.vscode/launch.json	/^            "request": "launch",$/;"	s	object:configurations.1
+resend_count	encoded_settings_template.json	/^        "resend_count": {"value": 0, "size": 1, "order": 7}$/;"	o	object:basic_settings
+resend_count	src/settings.h	/^  uint8_t   resend_count; \/\/ in times to be resent, 0 disables it$/;"	m	struct:settingsData_t	typeref:typename:uint8_t
+resend_delay	encoded_settings_template.json	/^        "resend_delay": {"value": 0, "size": 1, "order": 6},$/;"	o	object:basic_settings
+resend_delay	src/settings.h	/^  uint8_t   resend_delay; \/\/ in minutes, 0 disables it$/;"	m	struct:settingsData_t	typeref:typename:uint8_t
+resetCause_dict	decoder.js	/^  var resetCause_dict = {$/;"	c	class:Decoder
+reset_cause	src/module_system.h	/^            uint8_t reset_cause; \/\/ simple value expected to never change unless watchdog even/;"	m	struct:MODULE_SYSTEM::module_readings_data_t	typeref:typename:uint8_t
+return_state	src/module_pira.cpp	/^char* MODULE_PIRA::return_state(state_pira_e status_pira_state_machine)$/;"	f	class:MODULE_PIRA	typeref:typename:char *
+rtc_init	src/rtc.cpp	/^void rtc_init(){$/;"	f	typeref:typename:void
+rtc_present	src/rtc.cpp	/^bool rtc_present() {$/;"	f	typeref:typename:bool
+rtc_time_read	src/rtc.cpp	/^time_t rtc_time_read(){$/;"	f	typeref:typename:time_t
+rtc_time_sync	src/rtc.cpp	/^boolean rtc_time_sync(time_t time_received, boolean force){$/;"	f	typeref:typename:boolean
+rtc_time_write	src/rtc.cpp	/^void rtc_time_write(time_t t){$/;"	f	typeref:typename:void
+running	src/module.h	/^	virtual void running(void){};$/;"	f	class:module	typeref:typename:void
+running	src/module.h	/^	void running(void){$/;"	f	class:myModule	typeref:typename:void
+running	src/module_accelerometer.cpp	/^uint8_t MODULE_ACCELEROMETER::running(void){$/;"	f	class:MODULE_ACCELEROMETER	typeref:typename:uint8_t
+running	src/module_gps_ublox.cpp	/^void MODULE_GPS_UBLOX::running(void){$/;"	f	class:MODULE_GPS_UBLOX	typeref:typename:void
+running	src/module_pira.cpp	/^uint8_t MODULE_PIRA::running(void){$/;"	f	class:MODULE_PIRA	typeref:typename:uint8_t
+running	src/module_system.cpp	/^uint8_t MODULE_SYSTEM::running(void){$/;"	f	class:MODULE_SYSTEM	typeref:typename:uint8_t
+s_ACCEL	src/project.cpp	/^module *s_ACCEL = new myModule<MODULE_ACCELEROMETER>(5); \/\/ global id 5$/;"	v	typeref:typename:module *
+s_GPS	src/project.cpp	/^module *s_GPS = new myModule<MODULE_GPS_UBLOX>(3); \/\/ global id 3$/;"	v	typeref:typename:module *
+s_PIRA	src/project.cpp	/^module *s_PIRA = new myModule<MODULE_PIRA>(4); \/\/ global id 4$/;"	v	typeref:typename:module *
+s_SYSTEM	src/project.cpp	/^module *s_SYSTEM = new myModule<MODULE_SYSTEM>(2); \/\/ global id 2$/;"	v	typeref:typename:module *
+safety_power_period	encoded_settings_template.json	/^        "safety_power_period": {"value": 0, "size": 4, "order": 5},$/;"	o	object:module_pira
+safety_power_period	src/module_pira.h	/^            uint32_t safety_power_period;$/;"	m	struct:MODULE_PIRA::module_settings_data_t	typeref:typename:uint32_t
+safety_reboot	encoded_settings_template.json	/^        "safety_reboot": {"value": 0, "size": 4, "order": 7},$/;"	o	object:module_pira
+safety_reboot	src/module_pira.h	/^            uint32_t safety_reboot;$/;"	m	struct:MODULE_PIRA::module_settings_data_t	typeref:typename:uint32_t
+safety_sleep_period	encoded_settings_template.json	/^        "safety_sleep_period": {"value": 0, "size": 4, "order": 6},$/;"	o	object:module_pira
+safety_sleep_period	src/module_pira.h	/^            uint32_t safety_sleep_period;$/;"	m	struct:MODULE_PIRA::module_settings_data_t	typeref:typename:uint32_t
+satellites_hdop	src/module_gps_ublox.h	/^            uint8_t satellites_hdop;$/;"	m	struct:MODULE_GPS_UBLOX::module_readings_data_t	typeref:typename:uint8_t
+scheduler	src/module.h	/^	module_flags_e scheduler(void) {$/;"	f	class:myModule	typeref:typename:module_flags_e
+scheduler	src/module.h	/^	virtual module_flags_e scheduler(void){};$/;"	f	class:module	typeref:typename:module_flags_e
+scheduler	src/module_accelerometer.cpp	/^module_flags_e MODULE_ACCELEROMETER::scheduler(void){$/;"	f	class:MODULE_ACCELEROMETER	typeref:typename:module_flags_e
+scheduler	src/module_gps_ublox.cpp	/^module_flags_e MODULE_GPS_UBLOX::scheduler(void){$/;"	f	class:MODULE_GPS_UBLOX	typeref:typename:module_flags_e
+scheduler	src/module_pira.cpp	/^module_flags_e MODULE_PIRA::scheduler(void){$/;"	f	class:MODULE_PIRA	typeref:typename:module_flags_e
+scheduler	src/module_system.cpp	/^module_flags_e MODULE_SYSTEM::scheduler(void){$/;"	f	class:MODULE_SYSTEM	typeref:typename:module_flags_e
+send	src/module.h	/^	uint8_t send(uint8_t *data, size_t *size){$/;"	f	class:myModule	typeref:typename:uint8_t
+send	src/module.h	/^	virtual uint8_t send(uint8_t *data, size_t *size){};$/;"	f	class:module	typeref:typename:uint8_t
+send	src/module_accelerometer.cpp	/^uint8_t MODULE_ACCELEROMETER::send(uint8_t *data, size_t *size){$/;"	f	class:MODULE_ACCELEROMETER	typeref:typename:uint8_t
+send	src/module_gps_ublox.cpp	/^uint8_t MODULE_GPS_UBLOX::send(uint8_t *data, size_t *size){$/;"	f	class:MODULE_GPS_UBLOX	typeref:typename:uint8_t
+send	src/module_pira.cpp	/^uint8_t MODULE_PIRA::send(uint8_t *data, size_t *size){$/;"	f	class:MODULE_PIRA	typeref:typename:uint8_t
+send	src/module_system.cpp	/^uint8_t MODULE_SYSTEM::send(uint8_t *data, size_t *size){$/;"	f	class:MODULE_SYSTEM	typeref:typename:uint8_t
+send_interval	encoded_settings_template.json	/^        "send_interval": {"value": 0, "size": 2, "order": 2},$/;"	o	object:module_gps_ublox
+send_interval	encoded_settings_template.json	/^        "send_interval": {"value": 0, "size": 2, "order": 3}$/;"	o	object:module_system
+send_interval	encoded_settings_template.json	/^        "send_interval": {"value": 0, "size": 2, "order": 3},$/;"	o	object:module_accelerometer
+send_interval	encoded_settings_template.json	/^        "send_interval": {"value": 0, "size": 2, "order": 3},$/;"	o	object:module_pira
+send_interval	src/module_accelerometer.h	/^            uint16_t send_interval;$/;"	m	struct:MODULE_ACCELEROMETER::module_settings_data_t	typeref:typename:uint16_t
+send_interval	src/module_gps_ublox.h	/^            uint16_t send_interval;         \/\/ in minutes$/;"	m	struct:MODULE_GPS_UBLOX::module_settings_data_t	typeref:typename:uint16_t
+send_interval	src/module_pira.h	/^            uint16_t send_interval; \/\/ in minutes$/;"	m	struct:MODULE_PIRA::module_settings_data_t	typeref:typename:uint16_t
+send_interval	src/module_system.h	/^            uint16_t send_interval; \/\/ in minutes$/;"	m	struct:MODULE_SYSTEM::module_settings_data_t	typeref:typename:uint16_t
+send_status_values	src/module_pira.cpp	/^void MODULE_PIRA::send_status_values(void)$/;"	f	class:MODULE_PIRA	typeref:typename:void
+send_timestamp	src/module_accelerometer.h	/^        unsigned long send_timestamp;$/;"	m	class:MODULE_ACCELEROMETER	typeref:typename:unsigned long
+send_timestamp	src/module_gps_ublox.h	/^        unsigned long send_timestamp;$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:unsigned long
+send_timestamp	src/module_pira.h	/^        unsigned long send_timestamp;$/;"	m	class:MODULE_PIRA	typeref:typename:unsigned long
+send_timestamp	src/module_system.h	/^        unsigned long send_timestamp;$/;"	m	class:MODULE_SYSTEM	typeref:typename:unsigned long
+serial_debug	src/lorawan.cpp	/^#define serial_debug /;"	d	file:
+serial_debug	src/module_accelerometer.cpp	/^#define serial_debug /;"	d	file:
+serial_debug	src/module_gps_ublox.cpp	/^#define serial_debug /;"	d	file:
+serial_debug	src/module_pira.cpp	/^#define serial_debug /;"	d	file:
+serial_debug	src/module_system.cpp	/^#define serial_debug /;"	d	file:
+serial_debug	src/project_utils.cpp	/^#define serial_debug /;"	d	file:
+serial_debug	src/rtc.cpp	/^#define serial_debug /;"	d	file:
+serial_debug	src/settings.cpp	/^#define serial_debug /;"	d	file:
+set_downlink_data	src/module.h	/^	uint8_t set_downlink_data(uint16_t *data, size_t *size){$/;"	f	class:myModule	typeref:typename:uint8_t
+set_downlink_data	src/module.h	/^	virtual uint8_t set_downlink_data(uint8_t *data, size_t *size){};$/;"	f	class:module	typeref:typename:uint8_t
+set_downlink_data	src/module_accelerometer.cpp	/^uint8_t MODULE_ACCELEROMETER::set_downlink_data(uint8_t *data, size_t *size){$/;"	f	class:MODULE_ACCELEROMETER	typeref:typename:uint8_t
+set_downlink_data	src/module_gps_ublox.cpp	/^uint8_t MODULE_GPS_UBLOX::set_downlink_data(uint8_t *data, size_t *size){$/;"	f	class:MODULE_GPS_UBLOX	typeref:typename:uint8_t
+set_downlink_data	src/module_pira.cpp	/^uint8_t MODULE_PIRA::set_downlink_data(uint8_t *data, size_t *size){$/;"	f	class:MODULE_PIRA	typeref:typename:uint8_t
+set_downlink_data	src/module_system.cpp	/^uint8_t MODULE_SYSTEM::set_downlink_data(uint8_t *data, size_t *size){$/;"	f	class:MODULE_SYSTEM	typeref:typename:uint8_t
+settings	encoder_generator.py	/^settings = fetch_settings_struct_from_header("src\/module_accelerometer.h","MODULE_ACCELEROMETER/;"	v
+settings	encoder_generator.py	/^settings = fetch_settings_struct_from_header("src\/module_gps_ublox.h","MODULE_GPS_UBLOX::module/;"	v
+settings	encoder_generator.py	/^settings = fetch_settings_struct_from_header("src\/module_pira.h","MODULE_PIRA::module_settings_/;"	v
+settings	encoder_generator.py	/^settings = fetch_settings_struct_from_header("src\/module_system.h","MODULE_SYSTEM::module_setti/;"	v
+settings	encoder_generator.py	/^settings = fetch_settings_struct_from_header("src\/settings.h","settingsData_t")$/;"	v
+settingsData_t	src/settings.h	/^struct settingsData_t{$/;"	s
+settingsPacket_t	src/settings.h	/^union settingsPacket_t{$/;"	u
+settings_buffer	src/settings.cpp	/^static uint8_t settings_buffer[1024]; \/\/ Note that at 0x1400 EEPROm LoraWAN things start, so m/;"	v	typeref:typename:uint8_t[1024]	file:
+settings_buffer_tlv_length	src/settings.cpp	/^size_t settings_buffer_tlv_length[N_MODULES_TOTAL]; \/\/ all modules + basic settings$/;"	v	typeref:typename:size_t[]
+settings_buffer_tlv_ptr	src/settings.cpp	/^uint8_t *settings_buffer_tlv_ptr[N_MODULES_TOTAL]; \/\/ all modules + basic settings$/;"	v	typeref:typename:uint8_t * []
+settings_buffer_tlv_type	src/settings.cpp	/^uint8_t settings_buffer_tlv_type[N_MODULES_TOTAL]; \/\/ all modules + basic settings$/;"	v	typeref:typename:uint8_t[]
+settings_buffer_total_length	src/settings.cpp	/^uint16_t settings_buffer_total_length=0;$/;"	v	typeref:typename:uint16_t
+settings_from_downlink	src/settings.cpp	/^void settings_from_downlink(uint8_t* data, size_t length){$/;"	f	typeref:typename:void
+settings_get_packet_port	src/settings.cpp	/^uint8_t settings_get_packet_port(void){$/;"	f	typeref:typename:uint8_t
+settings_init	src/settings.cpp	/^void settings_init(void){$/;"	f	typeref:typename:void
+settings_packet	src/module_accelerometer.h	/^        module_settings_packet_t settings_packet;$/;"	m	class:MODULE_ACCELEROMETER	typeref:typename:module_settings_packet_t
+settings_packet	src/module_gps_ublox.h	/^        module_settings_packet_t settings_packet;$/;"	m	class:MODULE_GPS_UBLOX	typeref:typename:module_settings_packet_t
+settings_packet	src/module_pira.h	/^        module_settings_packet_t settings_packet;$/;"	m	class:MODULE_PIRA	typeref:typename:module_settings_packet_t
+settings_packet	src/module_system.h	/^        module_settings_packet_t settings_packet;$/;"	m	class:MODULE_SYSTEM	typeref:typename:module_settings_packet_t
+settings_packet	src/settings.cpp	/^settingsPacket_t settings_packet;$/;"	v	typeref:typename:settingsPacket_t
+settings_packet_downlink	src/settings.cpp	/^settingsPacket_t settings_packet_downlink;$/;"	v	typeref:typename:settingsPacket_t
+settings_packet_port	src/settings.cpp	/^static const uint8_t settings_packet_port = 100;$/;"	v	typeref:typename:const uint8_t	file:
+settings_send	src/settings.cpp	/^boolean settings_send(void){$/;"	f	typeref:typename:boolean
+settings_set_settings	src/settings.cpp	/^uint8_t settings_set_settings(uint8_t *data, size_t *size){$/;"	f	typeref:typename:uint8_t
+single_double_tap_setup	src/LIS2DW12.cpp	/^void LIS2DW12CLASS::single_double_tap_setup()$/;"	f	class:LIS2DW12CLASS	typeref:typename:void
+single_read_setup	src/LIS2DW12.cpp	/^void LIS2DW12CLASS::single_read_setup()$/;"	f	class:LIS2DW12CLASS	typeref:typename:void
+size	encoded_settings_template.json	/^        "dummy": {"value": 0, "size": 1, "order": 7}$/;"	n	object:module_accelerometer.dummy
+size	encoded_settings_template.json	/^        "free_fall": {"value": 0, "size": 1, "order": 6},$/;"	n	object:module_accelerometer.free_fall
+size	encoded_settings_template.json	/^        "global_id": {"value": 1, "size": 1, "order": 0},$/;"	n	object:basic_settings.global_id
+size	encoded_settings_template.json	/^        "global_id": {"value": 2, "size": 1, "order": 0},$/;"	n	object:module_system.global_id
+size	encoded_settings_template.json	/^        "global_id": {"value": 3, "size": 1, "order": 0},$/;"	n	object:module_gps_ublox.global_id
+size	encoded_settings_template.json	/^        "global_id": {"value": 4, "size": 1, "order": 0},$/;"	n	object:module_pira.global_id
+size	encoded_settings_template.json	/^        "global_id": {"value": 5, "size": 1, "order": 0},$/;"	n	object:module_accelerometer.global_id
+size	encoded_settings_template.json	/^        "gps_cold_fix_retry": {"value": 0, "size": 1, "order": 12},$/;"	n	object:module_gps_ublox.gps_cold_fix_retry
+size	encoded_settings_template.json	/^        "gps_cold_fix_timeout": {"value": 0, "size": 2, "order": 7},$/;"	n	object:module_gps_ublox.gps_cold_fix_timeout
+size	encoded_settings_template.json	/^        "gps_fail_retry": {"value": 0, "size": 1, "order": 13},$/;"	n	object:module_gps_ublox.gps_fail_retry
+size	encoded_settings_template.json	/^        "gps_hot_fix_retry": {"value": 0, "size": 1, "order": 11},$/;"	n	object:module_gps_ublox.gps_hot_fix_retry
+size	encoded_settings_template.json	/^        "gps_hot_fix_timeout": {"value": 0, "size": 2, "order": 8},$/;"	n	object:module_gps_ublox.gps_hot_fix_timeout
+size	encoded_settings_template.json	/^        "gps_min_ehpe": {"value": 0, "size": 1, "order": 10},$/;"	n	object:module_gps_ublox.gps_min_ehpe
+size	encoded_settings_template.json	/^        "gps_min_fix_time": {"value": 0, "size": 1, "order": 9},$/;"	n	object:module_gps_ublox.gps_min_fix_time
+size	encoded_settings_template.json	/^        "gps_settings": {"value": 0, "size": 1, "order": 14}$/;"	n	object:module_gps_ublox.gps_settings
+size	encoded_settings_template.json	/^        "gps_triggered_duration": {"value": 0, "size": 1, "order": 6},$/;"	n	object:module_gps_ublox.gps_triggered_duration
+size	encoded_settings_template.json	/^        "gps_triggered_threshold": {"value": 0, "size": 1, "order": 5},$/;"	n	object:module_gps_ublox.gps_triggered_threshold
+size	encoded_settings_template.json	/^        "length": {"value": 10, "size": 1, "order": 1},$/;"	n	object:module_accelerometer.length
+size	encoded_settings_template.json	/^        "length": {"value": 20, "size": 1, "order": 1},$/;"	n	object:module_gps_ublox.length
+size	encoded_settings_template.json	/^        "length": {"value": 24, "size": 1, "order": 1},$/;"	n	object:module_pira.length
+size	encoded_settings_template.json	/^        "length": {"value": 6, "size": 1, "order": 1},$/;"	n	object:module_system.length
+size	encoded_settings_template.json	/^        "length": {"value": 8, "size": 1, "order": 1},$/;"	n	object:basic_settings.length
+size	encoded_settings_template.json	/^        "lorawan_adr": {"value": 0, "size": 1, "order": 3},$/;"	n	object:basic_settings.lorawan_adr
+size	encoded_settings_template.json	/^        "lorawan_datarate": {"value": 0, "size": 1, "order": 2},$/;"	n	object:basic_settings.lorawan_datarate
+size	encoded_settings_template.json	/^        "lorawan_reg": {"value": 0, "size": 1, "order": 5},$/;"	n	object:basic_settings.lorawan_reg
+size	encoded_settings_template.json	/^        "lorawan_txp": {"value": 0, "size": 1, "order": 4},$/;"	n	object:basic_settings.lorawan_txp
+size	encoded_settings_template.json	/^        "operational_wakeup": {"value": 0, "size": 4, "order": 8}$/;"	n	object:module_pira.operational_wakeup
+size	encoded_settings_template.json	/^        "periodic_interval": {"value": 0, "size": 2, "order": 3},$/;"	n	object:module_gps_ublox.periodic_interval
+size	encoded_settings_template.json	/^        "read_interval": {"value": 0, "size": 2, "order": 2},$/;"	n	object:module_accelerometer.read_interval
+size	encoded_settings_template.json	/^        "read_interval": {"value": 0, "size": 2, "order": 2},$/;"	n	object:module_pira.read_interval
+size	encoded_settings_template.json	/^        "read_interval": {"value": 0, "size": 2, "order": 2},$/;"	n	object:module_system.read_interval
+size	encoded_settings_template.json	/^        "resend_count": {"value": 0, "size": 1, "order": 7}$/;"	n	object:basic_settings.resend_count
+size	encoded_settings_template.json	/^        "resend_delay": {"value": 0, "size": 1, "order": 6},$/;"	n	object:basic_settings.resend_delay
+size	encoded_settings_template.json	/^        "safety_power_period": {"value": 0, "size": 4, "order": 5},$/;"	n	object:module_pira.safety_power_period
+size	encoded_settings_template.json	/^        "safety_reboot": {"value": 0, "size": 4, "order": 7},$/;"	n	object:module_pira.safety_reboot
+size	encoded_settings_template.json	/^        "safety_sleep_period": {"value": 0, "size": 4, "order": 6},$/;"	n	object:module_pira.safety_sleep_period
+size	encoded_settings_template.json	/^        "send_interval": {"value": 0, "size": 2, "order": 2},$/;"	n	object:module_gps_ublox.send_interval
+size	encoded_settings_template.json	/^        "send_interval": {"value": 0, "size": 2, "order": 3}$/;"	n	object:module_system.send_interval
+size	encoded_settings_template.json	/^        "send_interval": {"value": 0, "size": 2, "order": 3},$/;"	n	object:module_accelerometer.send_interval
+size	encoded_settings_template.json	/^        "send_interval": {"value": 0, "size": 2, "order": 3},$/;"	n	object:module_pira.send_interval
+size	encoded_settings_template.json	/^        "status_battery": {"value": 0, "size": 2, "order": 4},$/;"	n	object:module_pira.status_battery
+size	encoded_settings_template.json	/^        "triggered_duration": {"value": 0, "size": 1, "order": 5},$/;"	n	object:module_accelerometer.triggered_duration
+size	encoded_settings_template.json	/^        "triggered_interval": {"value": 0, "size": 2, "order": 4},$/;"	n	object:module_gps_ublox.triggered_interval
+size	encoded_settings_template.json	/^        "triggered_threshold": {"value": 0, "size": 1, "order": 4},$/;"	n	object:module_accelerometer.triggered_threshold
+sketch	.vscode/arduino.json	/^    "sketch": "src\\\\main.ino"$/;"	s
+snr	src/module_gps_ublox.h	/^            uint8_t snr;$/;"	m	struct:MODULE_GPS_UBLOX::module_readings_data_t	typeref:typename:uint8_t
+stateTimeoutDuration	src/module_pira.h	/^        uint32_t stateTimeoutDuration;$/;"	m	class:MODULE_PIRA	typeref:typename:uint32_t
+stateTimeoutStart	src/module_pira.h	/^        uint32_t stateTimeoutStart;$/;"	m	class:MODULE_PIRA	typeref:typename:uint32_t
+state_goto_timeout	src/module_pira.h	/^        state_pira_e state_goto_timeout;$/;"	m	class:MODULE_PIRA	typeref:typename:state_pira_e
+state_pira_e	src/module_pira.h	/^        enum state_pira_e$/;"	g	class:MODULE_PIRA
+state_prev	src/module_pira.h	/^        state_pira_e state_prev;$/;"	m	class:MODULE_PIRA	typeref:typename:state_pira_e
+status	src/module_gps_ublox.h	/^            uint8_t status;$/;"	m	struct:MODULE_GPS_UBLOX::module_readings_data_t	typeref:typename:uint8_t
+status_battery	encoded_settings_template.json	/^        "status_battery": {"value": 0, "size": 2, "order": 4},$/;"	o	object:module_pira
+status_battery	src/module_pira.h	/^            uint16_t status_battery;$/;"	m	struct:MODULE_PIRA::module_settings_data_t	typeref:typename:uint16_t
+status_pira_state_machine	src/module_pira.h	/^        state_pira_e status_pira_state_machine;$/;"	m	class:MODULE_PIRA	typeref:typename:state_pira_e
+status_time	src/module_pira.h	/^            uint64_t status_time; \/\/ system time$/;"	m	struct:MODULE_PIRA::module_readings_data_t	typeref:typename:uint64_t
+string_view	.vscode/settings.json	/^        "string_view": "cpp",$/;"	s	object:files.associations
+temperature_avg	src/module_system.h	/^            uint8_t temperature_avg; \/\/ average of readings during a period, maximally once a /;"	m	struct:MODULE_SYSTEM::module_readings_data_t	typeref:typename:uint8_t
+temperature_max	src/module_system.h	/^            uint8_t temperature_max; \/\/ max of readings during a period, maximally once a day$/;"	m	struct:MODULE_SYSTEM::module_readings_data_t	typeref:typename:uint8_t
+temperature_min	src/module_system.h	/^            uint8_t temperature_min; \/\/ min of readings during a period, maximally once a day$/;"	m	struct:MODULE_SYSTEM::module_readings_data_t	typeref:typename:uint8_t
+template_settings	encoder_generator.py	/^template_settings={}$/;"	v
+time_to_fix	src/module_gps_ublox.h	/^            uint8_t time_to_fix;$/;"	m	struct:MODULE_GPS_UBLOX::module_readings_data_t	typeref:typename:uint8_t
+trig	src/module_accelerometer.h	/^            uint8_t trig;$/;"	m	struct:MODULE_ACCELEROMETER::module_readings_data_t	typeref:typename:uint8_t
+triggered_duration	encoded_settings_template.json	/^        "triggered_duration": {"value": 0, "size": 1, "order": 5},$/;"	o	object:module_accelerometer
+triggered_duration	src/module_accelerometer.h	/^            uint8_t triggered_duration;$/;"	m	struct:MODULE_ACCELEROMETER::module_settings_data_t	typeref:typename:uint8_t
+triggered_interval	encoded_settings_template.json	/^        "triggered_interval": {"value": 0, "size": 2, "order": 4},$/;"	o	object:module_gps_ublox
+triggered_interval	src/module_gps_ublox.h	/^            uint16_t triggered_interval;    \/\/ in seconds$/;"	m	struct:MODULE_GPS_UBLOX::module_settings_data_t	typeref:typename:uint16_t
+triggered_threshold	encoded_settings_template.json	/^        "triggered_threshold": {"value": 0, "size": 1, "order": 4},$/;"	o	object:module_accelerometer
+triggered_threshold	src/module_accelerometer.h	/^            uint8_t triggered_threshold;$/;"	m	struct:MODULE_ACCELEROMETER::module_settings_data_t	typeref:typename:uint8_t
+twos_comp_to_signed_int	src/LIS2DW12.cpp	/^int16_t LIS2DW12CLASS::twos_comp_to_signed_int(uint16_t x)$/;"	f	class:LIS2DW12CLASS	typeref:typename:int16_t
+type	.vscode/launch.json	/^            "type": "python",$/;"	s	object:configurations.0
+type	.vscode/launch.json	/^            "type": "python",$/;"	s	object:configurations.1
+typeindex	.vscode/settings.json	/^        "typeindex": "cpp",$/;"	s	object:files.associations
+typeinfo	.vscode/settings.json	/^        "typeinfo": "cpp",$/;"	s	object:files.associations
+uart_command_parse	src/module_pira.cpp	/^void MODULE_PIRA::uart_command_parse(uint8_t *rxBuffer)$/;"	f	class:MODULE_PIRA	typeref:typename:void
+uart_command_receive	src/module_pira.cpp	/^void MODULE_PIRA::uart_command_receive(void)$/;"	f	class:MODULE_PIRA	typeref:typename:void
+uart_command_send	src/module_pira.cpp	/^void MODULE_PIRA::uart_command_send(char command, uint32_t data)$/;"	f	class:MODULE_PIRA	typeref:typename:void
+uart_receive	src/module_pira.cpp	/^void MODULE_PIRA::uart_receive()$/;"	f	class:MODULE_PIRA	typeref:typename:void
+validate_decode_variable_type	encoder_generator.py	/^def validate_decode_variable_type(type):$/;"	f
+value	encoded_settings_template.json	/^        "dummy": {"value": 0, "size": 1, "order": 7}$/;"	n	object:module_accelerometer.dummy
+value	encoded_settings_template.json	/^        "free_fall": {"value": 0, "size": 1, "order": 6},$/;"	n	object:module_accelerometer.free_fall
+value	encoded_settings_template.json	/^        "global_id": {"value": 1, "size": 1, "order": 0},$/;"	n	object:basic_settings.global_id
+value	encoded_settings_template.json	/^        "global_id": {"value": 2, "size": 1, "order": 0},$/;"	n	object:module_system.global_id
+value	encoded_settings_template.json	/^        "global_id": {"value": 3, "size": 1, "order": 0},$/;"	n	object:module_gps_ublox.global_id
+value	encoded_settings_template.json	/^        "global_id": {"value": 4, "size": 1, "order": 0},$/;"	n	object:module_pira.global_id
+value	encoded_settings_template.json	/^        "global_id": {"value": 5, "size": 1, "order": 0},$/;"	n	object:module_accelerometer.global_id
+value	encoded_settings_template.json	/^        "gps_cold_fix_retry": {"value": 0, "size": 1, "order": 12},$/;"	n	object:module_gps_ublox.gps_cold_fix_retry
+value	encoded_settings_template.json	/^        "gps_cold_fix_timeout": {"value": 0, "size": 2, "order": 7},$/;"	n	object:module_gps_ublox.gps_cold_fix_timeout
+value	encoded_settings_template.json	/^        "gps_fail_retry": {"value": 0, "size": 1, "order": 13},$/;"	n	object:module_gps_ublox.gps_fail_retry
+value	encoded_settings_template.json	/^        "gps_hot_fix_retry": {"value": 0, "size": 1, "order": 11},$/;"	n	object:module_gps_ublox.gps_hot_fix_retry
+value	encoded_settings_template.json	/^        "gps_hot_fix_timeout": {"value": 0, "size": 2, "order": 8},$/;"	n	object:module_gps_ublox.gps_hot_fix_timeout
+value	encoded_settings_template.json	/^        "gps_min_ehpe": {"value": 0, "size": 1, "order": 10},$/;"	n	object:module_gps_ublox.gps_min_ehpe
+value	encoded_settings_template.json	/^        "gps_min_fix_time": {"value": 0, "size": 1, "order": 9},$/;"	n	object:module_gps_ublox.gps_min_fix_time
+value	encoded_settings_template.json	/^        "gps_settings": {"value": 0, "size": 1, "order": 14}$/;"	n	object:module_gps_ublox.gps_settings
+value	encoded_settings_template.json	/^        "gps_triggered_duration": {"value": 0, "size": 1, "order": 6},$/;"	n	object:module_gps_ublox.gps_triggered_duration
+value	encoded_settings_template.json	/^        "gps_triggered_threshold": {"value": 0, "size": 1, "order": 5},$/;"	n	object:module_gps_ublox.gps_triggered_threshold
+value	encoded_settings_template.json	/^        "length": {"value": 10, "size": 1, "order": 1},$/;"	n	object:module_accelerometer.length
+value	encoded_settings_template.json	/^        "length": {"value": 20, "size": 1, "order": 1},$/;"	n	object:module_gps_ublox.length
+value	encoded_settings_template.json	/^        "length": {"value": 24, "size": 1, "order": 1},$/;"	n	object:module_pira.length
+value	encoded_settings_template.json	/^        "length": {"value": 6, "size": 1, "order": 1},$/;"	n	object:module_system.length
+value	encoded_settings_template.json	/^        "length": {"value": 8, "size": 1, "order": 1},$/;"	n	object:basic_settings.length
+value	encoded_settings_template.json	/^        "lorawan_adr": {"value": 0, "size": 1, "order": 3},$/;"	n	object:basic_settings.lorawan_adr
+value	encoded_settings_template.json	/^        "lorawan_datarate": {"value": 0, "size": 1, "order": 2},$/;"	n	object:basic_settings.lorawan_datarate
+value	encoded_settings_template.json	/^        "lorawan_reg": {"value": 0, "size": 1, "order": 5},$/;"	n	object:basic_settings.lorawan_reg
+value	encoded_settings_template.json	/^        "lorawan_txp": {"value": 0, "size": 1, "order": 4},$/;"	n	object:basic_settings.lorawan_txp
+value	encoded_settings_template.json	/^        "operational_wakeup": {"value": 0, "size": 4, "order": 8}$/;"	n	object:module_pira.operational_wakeup
+value	encoded_settings_template.json	/^        "periodic_interval": {"value": 0, "size": 2, "order": 3},$/;"	n	object:module_gps_ublox.periodic_interval
+value	encoded_settings_template.json	/^        "read_interval": {"value": 0, "size": 2, "order": 2},$/;"	n	object:module_accelerometer.read_interval
+value	encoded_settings_template.json	/^        "read_interval": {"value": 0, "size": 2, "order": 2},$/;"	n	object:module_pira.read_interval
+value	encoded_settings_template.json	/^        "read_interval": {"value": 0, "size": 2, "order": 2},$/;"	n	object:module_system.read_interval
+value	encoded_settings_template.json	/^        "resend_count": {"value": 0, "size": 1, "order": 7}$/;"	n	object:basic_settings.resend_count
+value	encoded_settings_template.json	/^        "resend_delay": {"value": 0, "size": 1, "order": 6},$/;"	n	object:basic_settings.resend_delay
+value	encoded_settings_template.json	/^        "safety_power_period": {"value": 0, "size": 4, "order": 5},$/;"	n	object:module_pira.safety_power_period
+value	encoded_settings_template.json	/^        "safety_reboot": {"value": 0, "size": 4, "order": 7},$/;"	n	object:module_pira.safety_reboot
+value	encoded_settings_template.json	/^        "safety_sleep_period": {"value": 0, "size": 4, "order": 6},$/;"	n	object:module_pira.safety_sleep_period
+value	encoded_settings_template.json	/^        "send_interval": {"value": 0, "size": 2, "order": 2},$/;"	n	object:module_gps_ublox.send_interval
+value	encoded_settings_template.json	/^        "send_interval": {"value": 0, "size": 2, "order": 3}$/;"	n	object:module_system.send_interval
+value	encoded_settings_template.json	/^        "send_interval": {"value": 0, "size": 2, "order": 3},$/;"	n	object:module_accelerometer.send_interval
+value	encoded_settings_template.json	/^        "send_interval": {"value": 0, "size": 2, "order": 3},$/;"	n	object:module_pira.send_interval
+value	encoded_settings_template.json	/^        "status_battery": {"value": 0, "size": 2, "order": 4},$/;"	n	object:module_pira.status_battery
+value	encoded_settings_template.json	/^        "triggered_duration": {"value": 0, "size": 1, "order": 5},$/;"	n	object:module_accelerometer.triggered_duration
+value	encoded_settings_template.json	/^        "triggered_interval": {"value": 0, "size": 2, "order": 4},$/;"	n	object:module_gps_ublox.triggered_interval
+value	encoded_settings_template.json	/^        "triggered_threshold": {"value": 0, "size": 1, "order": 4},$/;"	n	object:module_accelerometer.triggered_threshold
+vbus	src/module_system.h	/^            uint8_t vbus; \/\/ should be always the same, we can drop it$/;"	m	struct:MODULE_SYSTEM::module_readings_data_t	typeref:typename:uint8_t
+version	.vscode/c_cpp_properties.json	/^    "version": 4$/;"	n
+wake_up_free_fall_setup	src/LIS2DW12.cpp	/^void LIS2DW12CLASS::wake_up_free_fall_setup(uint8_t wake_up_thr, uint8_t wake_up_dur,uint8_t fre/;"	f	class:LIS2DW12CLASS	typeref:typename:void
+wake_up_setup	src/LIS2DW12.cpp	/^void LIS2DW12CLASS::wake_up_setup()$/;"	f	class:LIS2DW12CLASS	typeref:typename:void
+wire	src/LIS2DW12.h	/^        TwoWire *wire;$/;"	m	class:LIS2DW12CLASS	typeref:typename:TwoWire *
+write8	src/rtc.cpp	/^void write8(char addr, char reg, char data)$/;"	f	typeref:typename:void
+write_reg	src/LIS2DW12.cpp	/^void LIS2DW12CLASS::write_reg(uint8_t reg, uint8_t val)$/;"	f	class:LIS2DW12CLASS	typeref:typename:void
+x_axis	src/LIS2DW12.h	/^    float x_axis;$/;"	m	struct:accel_data	typeref:typename:float
+xlink	docs/fsm_diagram.svg	/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" xmlns:xlink="http:\/\/www.w3.org\/1999\/xlink" versi/;"	n	uri:http://www.w3.org/1999/xlink
+y_axis	src/LIS2DW12.h	/^    float y_axis;$/;"	m	struct:accel_data	typeref:typename:float
+z_axis	src/LIS2DW12.h	/^    float z_axis;$/;"	m	struct:accel_data	typeref:typename:float
+~module	src/module.h	/^	virtual ~module() {};$/;"	f	class:module
