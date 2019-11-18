@@ -1,7 +1,41 @@
 # Documentation
 
 ## Overview of projects directory
-
+```bash
+├── decoder.js
+├── docs
+|  ├── DOCS.md                      // documentation in md file
+|  └── fsm_diagram.svg  
+├── encoded_settings_template.json
+├── encoder.js
+├── encoder_generator.py        
+├── manual_decoder.js
+├── README.md
+└── src
+   ├── LIS2DW12.cpp                 // Driver for accelerometer
+   ├── LIS2DW12.h                   
+   ├── lorawan.cpp                  // Lorawan library
+   ├── lorawan.h
+   ├── main.ino                     // Main program
+   ├── module.cpp                   
+   ├── module.h                     // Module prototype
+   ├── module_accelerometer.cpp     // Module file for accelerometer
+   ├── module_accelerometer.h
+   ├── module_gps_ublox.cpp
+   ├── module_gps_ublox.h           // Module file for gps
+   ├── module_pira.cpp
+   ├── module_pira.h                // Module file for PIRA functionality
+   ├── module_system.cpp
+   ├── module_system.h              // Module file for whole system
+   ├── project.cpp
+   ├── project.h                    
+   ├── project_utils.cpp
+   ├── project_utils.h
+   ├── rtc.cpp                     
+   ├── rtc.h
+   ├── settings.cpp
+   └── settings.h
+```
 ## Overview of main.ino file
 
 **void setup()**
@@ -36,3 +70,7 @@
 
 ## Flow diagram of finite state machine
 ![fsm_diagram](fsm_diagram.svg)
+
+## Explanation of modules
+
+
