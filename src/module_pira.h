@@ -20,20 +20,19 @@ class MODULE_PIRA
     public:
 
         // functions
-        uint8_t configure(uint8_t *data, size_t *size);
+        uint8_t configure(uint8_t * data, size_t * size);
         uint8_t get_settings_length();
-        uint8_t set_downlink_data(uint8_t *data, size_t *size);
+        uint8_t set_downlink_data(uint8_t * data, size_t * size);
         module_flags_e scheduler(void);
         uint8_t initialize(void);
-        uint8_t send(uint8_t *buffer, size_t *size);
+        uint8_t send(uint8_t * buffer, size_t * size);
         uint8_t read(void);
         uint8_t running(void);
         void event(event_e event);
         void print_data(void);
 
         // variables
-        String name = "pira";
-        module_flags_e flags=M_ERROR;
+        module_flags_e flags = M_ERROR;
 
         // parameters
         uint8_t param_a = 0;
@@ -42,7 +41,8 @@ class MODULE_PIRA
     private:
 
         // add
-        struct module_settings_data_t{
+        struct module_settings_data_t
+        {
             uint8_t  global_id;
             uint8_t  length;
             uint16_t read_interval; // in seconds
@@ -54,28 +54,31 @@ class MODULE_PIRA
             uint32_t operational_wakeup;
         }__attribute__((packed));
 
-        union module_settings_packet_t{
+        union module_settings_packet_t
+        {
             module_settings_data_t data;
             uint8_t bytes[sizeof(module_settings_data_t)];
         };
 
         // we are sending 13 bytes anyhow as header, filling up the packet does not matter too much
-        struct module_readings_data_t{
+        struct module_readings_data_t
+        {
             uint16_t empty_space; // RPi disk space value
             uint16_t photo_count; // RPi photo count
             uint64_t status_time; // system time
             uint16_t error_values;
         }__attribute__((packed));
 
-        union module_readings_packet_t{
+        union module_readings_packet_t
+        {
             module_readings_data_t data;
             uint8_t bytes[sizeof(module_readings_data_t)];
         };
 
         module_settings_packet_t settings_packet;
         module_readings_packet_t readings_packet;
-        unsigned long read_timestamp;
-        unsigned long send_timestamp;
+        uint32_t read_timestamp;
+        uint32_t send_timestamp;
 
         // Pira enumerated state variable
         enum state_pira_e
@@ -115,7 +118,7 @@ class MODULE_PIRA
 
         // Uart related functions
         void uart_receive();
-        void uart_command_parse(uint8_t *rxBuffer);
+        void uart_command_parse(uint8_t * rxBuffer);
         void uart_command_send(char command, uint32_t data);
         void uart_command_receive(void);
         void send_status_values(void);
@@ -123,7 +126,7 @@ class MODULE_PIRA
         uint32_t get_overview_value(void);
         void pira_state_transition(state_pira_e next);
         bool pira_state_check_timeout(void);
-        char* return_state(state_pira_e state);
+        char * return_state(state_pira_e state);
         void pira_state_machine();
 };
 

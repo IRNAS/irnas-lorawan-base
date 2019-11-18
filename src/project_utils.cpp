@@ -3,7 +3,6 @@
 // Define debug if required
 #define serial_debug  Serial
 
-
 /**
  * @brief Maps the variable with the given minimum and maximum value to the value with specified min, max
  * 
@@ -14,8 +13,9 @@
  * @param out_max - maximum value of the output
  * @return float
  */
-float mapfloat(float x, float in_min, float in_max, float out_min, float out_max){
- return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+float mapfloat(float x, float in_min, float in_max, float out_min, float out_max)
+{
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
 /**
@@ -27,48 +27,57 @@ float mapfloat(float x, float in_min, float in_max, float out_min, float out_max
  * @param precision 
  * @return uint32_t 
  */
-uint32_t get_bits(float x, float min, float max, int precision){
-  int range = max - min;
-  if (x <= min) {
-    x = 0;
-  }
-  else if (x >= max) {
-    x = max - min;
-  }
-  else {
-    x -= min;
-  }
-  double new_range = (pow(2, precision) - 1) / range;
-  uint32_t out_x = x * new_range;
-  return out_x;
+uint32_t get_bits(float x, float min, float max, int precision)
+{
+    int range = max - min;
+    if (x <= min) 
+    {
+        x = 0;
+    }
+    else if (x >= max) 
+    {
+        x = max - min;
+    }
+    else 
+    {
+        x -= min;
+    }
+    uint32_t new_range = (pow(2, precision) - 1) / range;
+    uint32_t out_x = x * new_range;
+    return out_x;
 }
 
 // Implemented based on https://stackoverflow.com/questions/15638612/calculating-mean-and-standard-deviation-of-the-data-which-does-not-fit-in-memory
 
-void push_value(float value,reading_structure_t *values){
-  // special case if the array is empty, opulate both min and max
-  if(values->r_count==0){
-    values->r_min=value;
-    values->r_max=value;
-  }
-  values->r_count++;
-  float delta = value - values->r_mean;
-  values->r_mean += delta/values->r_count;
-  values->r_m2+= delta*(value - values->r_mean);
-  values->r_min=min(values->r_min,value);
-  values->r_max=max(values->r_max,value);
+void push_value(float value, reading_structure_t * values)
+{
+    // special case if the array is empty, opulate both min and max
+    if(0 == values->r_count)
+    {
+        values->r_min = value;
+        values->r_max = value;
+    }
+    values->r_count++;
+
+    float delta = value - values->r_mean;
+    values->r_mean += delta/values->r_count;
+    values->r_m2 += delta * (value - values->r_mean);
+    values->r_min = min(values->r_min, value);
+    values->r_max = max(values->r_max, value);
 }
 
-float get_variance(reading_structure_t *values){
-  return values->r_m2/(values->r_count-1);
+float get_variance(reading_structure_t * values)
+{
+    return values->r_m2 / (values->r_count - 1);
 }
 
-void clear_value(reading_structure_t *values){
-  values->r_min=0;
-  values->r_max=0;
-  values->r_mean=0;
-  values->r_count=0;
-  values->r_m2=0;
+void clear_value(reading_structure_t * values)
+{
+    values->r_min = 0;
+    values->r_max = 0;
+    values->r_mean = 0;
+    values->r_count = 0;
+    values->r_m2 = 0;
 }
 
 /**
@@ -78,7 +87,7 @@ void clear_value(reading_structure_t *values){
  *
  * @return unsinged int
  */
-unsigned int bcd2bin(unsigned char val)
+uint16_t bcd2bin(unsigned char val)
 {
     return (val & 0x0F) + (val >> 4) * 10;
 }
@@ -90,7 +99,7 @@ unsigned int bcd2bin(unsigned char val)
  *
  * @return char
  */
-char bin2bcd(unsigned int val)
+char bin2bcd(uint16_t val)
 {
     return ((val / 10) << 4) + val % 10;
 }
@@ -100,25 +109,29 @@ char bin2bcd(unsigned int val)
  * 
  * @return boolean 
  */
-boolean check_i2c(){
-  boolean fail=false;
-  pinMode(PIN_WIRE_SCL,INPUT);
-  pinMode(PIN_WIRE_SDA,INPUT);
-  if(digitalRead(PIN_WIRE_SCL)==LOW){
-    //no I2C pull-up detected
-    #ifdef serial_debug
-      serial_debug.print("i2c pull-up error(");
-      serial_debug.println("scl)");
-    #endif
-    fail=true;
-  }
-  if(digitalRead(PIN_WIRE_SDA)==LOW){
-    //no I2C pull-up detected
-    #ifdef serial_debug
-      serial_debug.print("i2c pull-up error(");
-      serial_debug.println("sda)");
-    #endif
-    fail=true;
-  }
-  return fail;
+boolean check_i2c()
+{
+    boolean fail = false;
+    pinMode(PIN_WIRE_SCL, INPUT);
+    pinMode(PIN_WIRE_SDA, INPUT);
+
+    if(LOW == digitalRead(PIN_WIRE_SCL))
+    {
+        //no I2C pull-up detected
+#ifdef serial_debug
+        serial_debug.print("i2c pull-up error(");
+        serial_debug.println("scl)");
+#endif
+        fail = true;
+    }
+    if(LOW == digitalRead(PIN_WIRE_SDA))
+    {
+        //no I2C pull-up detected
+#ifdef serial_debug
+        serial_debug.print("i2c pull-up error(");
+        serial_debug.println("sda)");
+#endif
+        fail = true;
+    }
+    return fail;
 }

@@ -13,12 +13,12 @@ class MODULE_ACCELEROMETER
     public:
 
         // functions
-        uint8_t configure(uint8_t *data, size_t *size);
+        uint8_t configure(uint8_t * data, size_t * size);
         uint8_t get_settings_length();
-        uint8_t set_downlink_data(uint8_t *data, size_t *size);
+        uint8_t set_downlink_data(uint8_t * data, size_t * size);
         module_flags_e scheduler(void);
         uint8_t initialize(void);
-        uint8_t send(uint8_t *buffer, size_t *size);
+        uint8_t send(uint8_t * buffer, size_t * size);
         uint8_t read(void);
         uint8_t running(void);
         void event(event_e event);

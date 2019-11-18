@@ -154,7 +154,7 @@ uint8_t MODULE_ACCELEROMETER::send(uint8_t *data, size_t *size)
 
 void MODULE_ACCELEROMETER::event(event_e event)
 {
-    if(event==EVENT_MOTION)
+    if(EVENT_MOTION == event)
     {
 #ifdef serial_debug
         serial_debug.print(name);

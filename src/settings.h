@@ -11,7 +11,7 @@
 #define EEPROM_DATA_START_SETTINGS 0
 
 extern boolean settings_updated;
-extern module *modules[];
+extern module * modules[];
 
 /*
 storage of settings is somewhat complex in this case, to allow certain parts of settings to be sent independently
@@ -25,7 +25,8 @@ V - array of values of given length, mathing the settings struct/union length of
 /**
  * @brief LoraWAN settings packet setup - port 100
  */
-struct settingsData_t{
+struct settingsData_t
+{
   uint8_t   global_id;
   uint8_t   length;
   uint8_t   lorawan_datarate;
@@ -36,7 +37,8 @@ struct settingsData_t{
   uint8_t   resend_count; // in times to be resent, 0 disables it
 }__attribute__((packed));
 
-union settingsPacket_t{
+union settingsPacket_t
+{
   settingsData_t data;
   byte bytes[sizeof(settingsData_t)];
 };
@@ -44,9 +46,9 @@ union settingsPacket_t{
 extern settingsPacket_t settings_packet;
 
 uint8_t settings_get_packet_port(void);
-uint8_t settings_set_settings(uint8_t *data, size_t *size);
+uint8_t settings_set_settings(uint8_t * data, size_t * size);
 void settings_init(void);
-void settings_from_downlink(uint8_t* data, size_t length);
+void settings_from_downlink(uint8_t * data, size_t length);
 boolean settings_send(void);
 
 #endif

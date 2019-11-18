@@ -1,6 +1,5 @@
 #include "project.h"
 
-
 // Default system module
 // core settings global id 1
 //module *s_CORE = new myModule<MODULE_CORE>(1); // global id 1

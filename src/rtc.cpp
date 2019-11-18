@@ -12,13 +12,14 @@
  *
  * @return none (void)
  */
-void rtc_init(){
-    #ifdef serial_debug
-        serial_debug.println("rtc_init()");
-    #endif
+void rtc_init()
+{
+#ifdef serial_debug
+    serial_debug.println("rtc_init()");
+#endif
     time_t t = TIME_INIT_VALUE;
     Wire.begin();
-    //rtc.begin();
+    
     //set the WRTC (Write RTC Enable Bit) bit to 1 to enable the RTC
     //only then the RTC start counting
     Wire.beginTransmission(ISL1208_ADDRESS);
@@ -27,30 +28,33 @@ void rtc_init(){
     Wire.endTransmission();
 
     //Try to open the ISL1208,checks if the RTC is available on the I2C bus
-    if(rtc_present()){
-        #ifdef serial_debug
+    if (rtc_present())
+    {
+#ifdef serial_debug
         serial_debug.println("RTC detected!");
-        #endif
+#endif
         //Check if we need to reset the time
         uint8_t powerFailed = read8(ISL1208_ADDRESS, ISL1208_SR); 
-        if(powerFailed & 0x01){
-            #ifdef serial_debug
+        if (powerFailed & 0x01)
+        {
+#ifdef serial_debug
             //The time has been lost due to a power complete power failure
             serial_debug.println("RTC has lost power! Resetting time...");
-            #endif
+#endif
             //Set RTC time to Mon, 1 Jan 2018 00:00:00
             rtc_time_write(t);
         }
-        #ifdef serial_debug
-            time_t time = rtc_time_read();
-            Serial.println(ctime(&time));
-            Serial.println(time);
-        #endif
+#ifdef serial_debug
+        time_t time = rtc_time_read();
+        Serial.println(ctime(&time));
+        Serial.println(time);
+#endif
     }
-    else{
-        #ifdef serial_debug
+    else
+    {
+#ifdef serial_debug
         serial_debug.println("RTC not detected!");
-        #endif
+#endif
     }
 }
 
@@ -60,20 +64,22 @@ void rtc_init(){
  * @param time_received 
  * @return boolean 
  */
-boolean rtc_time_sync(time_t time_received, boolean force){
+boolean rtc_time_sync(time_t time_received, boolean force)
+{
     // if local time is greater then received time, reject unless forced
-    if(rtc_time_read()>(time_received)&force==false){
+    if (rtc_time_read() > time_received && (false == force))
+    {
         return false;
     }
     rtc_time_write(time_received);
-    #ifdef serial_debug
-        time_t time = rtc_time_read();
-        Serial.print("rtc_time_updated(");
-        Serial.print(ctime(&time));
-        Serial.print(" ");
-        Serial.print(time);
-        Serial.println(")");
-    #endif
+#ifdef serial_debug
+    time_t time = rtc_time_read();
+    Serial.print("rtc_time_updated(");
+    Serial.print(ctime(&time));
+    Serial.print(" ");
+    Serial.print(time);
+    Serial.println(")");
+#endif
     return true;
 }
 
@@ -82,7 +88,8 @@ boolean rtc_time_sync(time_t time_received, boolean force){
  *
  * @return time_t
  */
-time_t rtc_time_read(){
+time_t rtc_time_read()
+{
     //Setup a tm structure based on the RTC
     struct tm timeinfo;
     timeinfo.tm_sec = bcd2bin(read8(ISL1208_ADDRESS, ISL1208_SC));
@@ -91,6 +98,7 @@ time_t rtc_time_read(){
     //Make sure we get the proper hour regardless of the mode
     char hours = read8(ISL1208_ADDRESS, ISL1208_HR);
     if (hours & (1 << 7))
+    
     {
         //RTC is in 24-hour mode
         timeinfo.tm_hour = bcd2bin(hours & 0x3F);
@@ -122,7 +130,8 @@ time_t rtc_time_read(){
  *
  * @return none (void)
  */
-void rtc_time_write(time_t t){
+void rtc_time_write(time_t t)
+{
     //Convert the time to a tm
     struct tm *timeinfo = localtime(&t);
 
@@ -160,14 +169,17 @@ void rtc_time_write(time_t t){
  * @return true 
  * @return false 
  */
-bool rtc_present() {
-  Wire.beginTransmission(ISL1208_ADDRESS); //send the address
-  byte error = Wire.endTransmission(); //read ACK
+bool rtc_present() 
+{
+    Wire.beginTransmission(ISL1208_ADDRESS); //send the address
+    byte error = Wire.endTransmission(); //read ACK
 
-  if(error == 0) { //if RTC is available
-    return true;
-  }
-  return false;
+    if (error == 0) 
+    { 
+        //if RTC is available
+        return true;
+    }
+    return false;
 }
 
 

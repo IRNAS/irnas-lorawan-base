@@ -1,45 +1,52 @@
 #include "module_pira.h"
 
+// Before this was declared as Arduino String
+#define NAME "pira"
 #define serial_debug Serial
 
-uint8_t MODULE_PIRA::configure(uint8_t *data, size_t *size){
-    #ifdef serial_debug
-        serial_debug.print(name);
-        serial_debug.print(":configure(");
-        serial_debug.println(")");;
-    #endif
+uint8_t MODULE_PIRA::configure(uint8_t * data, size_t * size)
+{
+#ifdef serial_debug
+    serial_debug.print(NAME);
+    serial_debug.print(":configure(");
+    serial_debug.println(")");;
+#endif
 }
 
-uint8_t MODULE_PIRA::get_settings_length(){
+uint8_t MODULE_PIRA::get_settings_length()
+{
     return sizeof(module_settings_data_t);
 }
 
-uint8_t MODULE_PIRA::set_downlink_data(uint8_t *data, size_t *size){
+uint8_t MODULE_PIRA::set_downlink_data(uint8_t * data, size_t * size)
+{
 
 }
 
-module_flags_e MODULE_PIRA::scheduler(void){
-
-    if(flags!=M_RUNNING){
+module_flags_e MODULE_PIRA::scheduler(void)
+{
+    if(flags != M_RUNNING)
+    {
         pira_state_machine();
     }
     //flags are updated in the state machine
     return flags;
 }
 
-uint8_t MODULE_PIRA::initialize(void){
-    settings_packet.data.read_interval=10;
-    settings_packet.data.send_interval=1;
-    settings_packet.data.status_battery=10;
-    settings_packet.data.safety_power_period=600;
-    settings_packet.data.safety_sleep_period=600;
-    settings_packet.data.safety_reboot=120;
-    settings_packet.data.operational_wakeup=300;
+uint8_t MODULE_PIRA::initialize(void)
+{
+    settings_packet.data.read_interval = 10;
+    settings_packet.data.send_interval = 1;
+    settings_packet.data.status_battery = 10;
+    settings_packet.data.safety_power_period = 600;
+    settings_packet.data.safety_sleep_period = 600;
+    settings_packet.data.safety_reboot = 120;
+    settings_packet.data.operational_wakeup = 300;
 
-    readings_packet.data.empty_space=0;
-    readings_packet.data.photo_count=0;
-    readings_packet.data.status_time=0;
-    readings_packet.data.error_values=0;
+    readings_packet.data.empty_space = 0;
+    readings_packet.data.photo_count = 0;
+    readings_packet.data.status_time = 0;
+    readings_packet.data.error_values = 0;
 
     MODULE_PIRA_SERIAL.begin(115200);
     MODULE_PIRA_SERIAL.setWakeup(1);
@@ -47,10 +54,10 @@ uint8_t MODULE_PIRA::initialize(void){
 
     // start the module in active state
     status_pira_state_machine = IDLE_PIRA;
-    stateTimeoutStart=0;
-    stateTimeoutDuration=0;
+    stateTimeoutStart = 0;
+    stateTimeoutDuration = 0;
     state_prev = IDLE_PIRA;
-    flags=M_IDLE;
+    flags = M_IDLE;
 
     // Initially enable RaspberryPi power
     
@@ -68,50 +75,53 @@ uint8_t MODULE_PIRA::initialize(void){
     MODULE_PIRA_SERIAL.begin(115200);
 }
 
-uint8_t MODULE_PIRA::send(uint8_t *data, size_t *size){
-    //form the readings_packet
+uint8_t MODULE_PIRA::send(uint8_t * data, size_t * size)
+{
+    //from the readings_packet
 
-    #ifdef serial_debug
-        serial_debug.print(name);
-        serial_debug.print(": send(");
-        serial_debug.println(")");
-    #endif
+#ifdef serial_debug
+    serial_debug.print(NAME);
+    serial_debug.print(": send(");
+    serial_debug.println(")");
+#endif
 
-    memcpy(data,&readings_packet.bytes[0], sizeof(module_readings_data_t));
-    *size=sizeof(module_readings_data_t);
-    flags=M_IDLE;
+    memcpy(data, &readings_packet.bytes[0], sizeof(module_readings_data_t));
+    *size = sizeof(module_readings_data_t);
+    flags = M_IDLE;
     return 1;
 }
 
-void MODULE_PIRA::event(event_e event){
+void MODULE_PIRA::event(event_e event)
+{
 
 }
 
-void MODULE_PIRA::print_data(void){
+void MODULE_PIRA::print_data(void)
+{
 
 }
 
-uint8_t MODULE_PIRA::read(void){
+uint8_t MODULE_PIRA::read(void)
+{
     #ifdef serial_debug
-        serial_debug.print(name);
+        serial_debug.print(NAME);
         serial_debug.print(": read(");
         serial_debug.println(")");
     #endif
 
-    flags=M_IDLE;
+    flags = M_IDLE;
     return 1;
 }
 
-uint8_t MODULE_PIRA::running(void){
+uint8_t MODULE_PIRA::running(void)
+{
   // Receive any command from raspberry
   uart_command_receive();
-  
   pira_state_machine();
 }
 
 void MODULE_PIRA::uart_receive()
 {
-
     while (MODULE_PIRA_SERIAL.available() > 0)
     {
       MODULE_PIRA_SERIAL.read();
@@ -127,7 +137,7 @@ void MODULE_PIRA::uart_receive()
  *
  * @return none (void)
  */
-void MODULE_PIRA::uart_command_parse(uint8_t *rxBuffer)
+void MODULE_PIRA::uart_command_parse(uint8_t * rxBuffer)
 {
     uint8_t firstChar = rxBuffer[0];
     uint8_t secondChar = rxBuffer[1];
@@ -186,12 +196,12 @@ void MODULE_PIRA::uart_command_parse(uint8_t *rxBuffer)
  */
 void MODULE_PIRA::uart_command_send(char command, uint32_t data)
 {
-    MODULE_PIRA_SERIAL.write((int)command);
+    MODULE_PIRA_SERIAL.write((int) command);
     MODULE_PIRA_SERIAL.write(':');
-    MODULE_PIRA_SERIAL.write((int)((data & 0xFF000000)>>24));
-    MODULE_PIRA_SERIAL.write((int)((data & 0x00FF0000)>>16));
-    MODULE_PIRA_SERIAL.write((int)((data & 0x0000FF00)>>8));
-    MODULE_PIRA_SERIAL.write((int)( data & 0x000000FF));
+    MODULE_PIRA_SERIAL.write((int) ((data & 0xFF000000) >> 24));
+    MODULE_PIRA_SERIAL.write((int) ((data & 0x00FF0000) >> 16));
+    MODULE_PIRA_SERIAL.write((int) ((data & 0x0000FF00) >> 8));
+    MODULE_PIRA_SERIAL.write((int) ( data & 0x000000FF));
     MODULE_PIRA_SERIAL.write('\n');
 }
 
@@ -311,7 +321,8 @@ void MODULE_PIRA::send_status_values(void)
 {
     uart_command_send('t', (uint32_t)readings_packet.data.status_time);
     uart_command_send('o', get_overview_value());
-    uart_command_send('b', (uint32_t)0);
+    //TODO battery currently not implemented?
+    uart_command_send('b', (uint32_t) 0);
     uart_command_send('p', settings_packet.data.safety_power_period);
     uart_command_send('s', settings_packet.data.safety_sleep_period);
     uart_command_send('r', settings_packet.data.safety_reboot);
@@ -328,6 +339,7 @@ void MODULE_PIRA::send_status_values(void)
 void MODULE_PIRA::print_status_values(void)
 {
     serial_debug.print("Battery level in V = ");
+    //TODO battery currently not implemented?
     serial_debug.println(0);
     serial_debug.print("safety_power_period =");
     serial_debug.println(settings_packet.data.safety_power_period);
@@ -351,12 +363,12 @@ void MODULE_PIRA::print_status_values(void)
 uint32_t MODULE_PIRA::get_overview_value(void)
 {
     // Calculate overview value
-    if(status_pira_state_machine == WAIT_STATUS_ON || 
-       status_pira_state_machine == WAKEUP)
+    if(WAIT_STATUS_ON == status_pira_state_machine 
+        || WAKEUP == status_pira_state_machine)
     {
         return settings_packet.data.safety_power_period - pira_elapsed;
     }
-    else if(status_pira_state_machine == REBOOT_DETECTION)
+    else if(REBOOT_DETECTION == status_pira_state_machine)
     { 
         return settings_packet.data.safety_reboot - pira_elapsed;
     }
@@ -395,7 +407,7 @@ bool MODULE_PIRA::pira_state_check_timeout(void)
     pira_elapsed = millis() - stateTimeoutStart;
 
     // All values come in seconds, so we also need pira_elapsed in seconds
-    pira_elapsed = pira_elapsed/1000; 
+    pira_elapsed = pira_elapsed / 1000; 
 
     //check if we have been in the current state too long
     if(pira_elapsed >= stateTimeoutDuration)
@@ -465,47 +477,34 @@ void MODULE_PIRA::pira_state_machine()
 
 #ifdef serial_debug
     pira_elapsed = millis() - stateTimeoutStart;
-    serial_debug.print(name);
+    serial_debug.print(NAME);
     serial_debug.print(":fsm(");
     serial_debug.print(return_state(state_prev));
     serial_debug.print(" -> ");
     serial_debug.print(return_state(status_pira_state_machine));
     serial_debug.print(" :e ");
-    serial_debug.print(pira_elapsed/1000);
+    serial_debug.print(pira_elapsed / 1000);
     serial_debug.print(" :t ");
     serial_debug.print(stateTimeoutDuration);
     serial_debug.println(")");;
 #endif
-/*#ifdef serial_debug
-    serial_debug.print("fsm(");
-    serial_debug.print(return_state(state_prev));
-    serial_debug.print(" -> ");
-    serial_debug.print(return_state(status_pira_state_machine));
-    serial_debug.print(",");
-    serial_debug.print(millis());
-    serial_debug.print(",");
-    serial_debug.print("Timeout = ");
-    serial_debug.print(get_overview_value());
-    serial_debug.println(")");
-    serial_debug.flush();
-#endif*/
 
     switch(status_pira_state_machine)
     {
         case IDLE_PIRA:
 
-            stateTimeoutDuration = min(settings_packet.data.operational_wakeup,settings_packet.data.safety_sleep_period);
+            stateTimeoutDuration = min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period);
             state_goto_timeout = WAIT_STATUS_ON;
-            //flags=M_IDLE;
 
             // wake up immediately after boot
-            if(stateTimeoutStart==0){
+            if(stateTimeoutStart == 0)
+            {
                 pira_state_transition(WAIT_STATUS_ON);
             }
         break;
 
         case START_PIRA:
-            flags=M_RUNNING;
+            flags = M_RUNNING;
             pira_state_transition(WAIT_STATUS_ON);
 
         break;
@@ -557,14 +556,14 @@ void MODULE_PIRA::pira_state_machine()
         break;
 
         case STOP_PIRA:
-            flags=M_SEND;
+            flags = M_SEND;
             digitalWrite(MODULE_5V_EN, LOW);
             digitalWrite(MODULE_PIRA_5V, LOW);
             pira_state_transition(IDLE_PIRA);
         break;
 
         default:
-            status_pira_state_machine=IDLE_PIRA;
+            status_pira_state_machine = IDLE_PIRA;
         break;
     }
 
