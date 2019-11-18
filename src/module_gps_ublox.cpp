@@ -204,9 +204,9 @@ void MODULE_GPS_UBLOX::gps_accelerometer_interrupt(void)
  * @brief Checks if GPS is busy and times out after the specified time
  * 
  * @param timeout 
- * @return boolean 
+ * @return bool 
  */
-boolean MODULE_GPS_UBLOX::gps_busy_timeout(uint16_t timeout)
+bool MODULE_GPS_UBLOX::gps_busy_timeout(uint16_t timeout)
 {
     for(uint16_t i = 0; i < timeout; i++)
     {
@@ -224,7 +224,7 @@ boolean MODULE_GPS_UBLOX::gps_busy_timeout(uint16_t timeout)
  * 
  * @param enable 
  */
-void MODULE_GPS_UBLOX::gps_power(boolean enable)
+void MODULE_GPS_UBLOX::gps_power(bool enable)
 {
     if (enable)
     {
@@ -244,7 +244,7 @@ void MODULE_GPS_UBLOX::gps_power(boolean enable)
  * 
  * @param enable 
  */
-void MODULE_GPS_UBLOX::gps_backup(boolean enable)
+void MODULE_GPS_UBLOX::gps_backup(bool enable)
 {
     if (enable)
     {
@@ -261,9 +261,9 @@ void MODULE_GPS_UBLOX::gps_backup(boolean enable)
 /**
  * @brief Initializes GPS - to be called upon boot or if no backup power is available
  * 
- * @return boolean - true if successful
+ * @return bool - true if successful
  */
-boolean MODULE_GPS_UBLOX::gps_begin(void)
+bool MODULE_GPS_UBLOX::gps_begin(void)
 {
 #ifdef serial_debug
     serial_debug.print("gps_begin(");
@@ -327,7 +327,7 @@ boolean MODULE_GPS_UBLOX::gps_begin(void)
 
     // Step 3: configure GPS
     // see default config https://github.com/GrumpyOldPizza/ArduinoCore-stm32l0/blob/18fb1cc81c6bc91b25e3346595f820985f2267e5/libraries/GNSS/src/utility/gnss_core.c#L2904
-    boolean error = false;
+    bool error = false;
     error |= gps_busy_timeout(1000);
 
     GNSS.setConstellation(GNSS.CONSTELLATION_GPS_AND_GLONASS);
@@ -375,9 +375,9 @@ boolean MODULE_GPS_UBLOX::gps_begin(void)
 /**
  * @brief Starts the GPS acquisition and sets up timeouts
  * 
- * @return boolean 
+ * @return bool 
  */
-boolean MODULE_GPS_UBLOX::gps_start(void)
+bool MODULE_GPS_UBLOX::gps_start(void)
 {
     flags = M_ERROR;
     bitSet(readings_packet.data.status, 2);
@@ -449,8 +449,8 @@ void MODULE_GPS_UBLOX::running(void)
     else if(GNSS.location(gps_location))
     {
         float ehpe = gps_location.ehpe();
-        boolean gps_3D_fix_required = bitRead(settings_packet.data.gps_settings,0);
-        boolean gps_fully_resolved_required = bitRead(settings_packet.data.gps_settings,3);
+        bool gps_3D_fix_required = bitRead(settings_packet.data.gps_settings,0);
+        bool gps_fully_resolved_required = bitRead(settings_packet.data.gps_settings,3);
         gps_response_fail_count = 0;
 
 #ifdef serial_debug

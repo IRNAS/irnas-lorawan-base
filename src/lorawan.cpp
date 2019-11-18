@@ -19,18 +19,18 @@ const char *appKey  = "5C430C71D8D7127D66B1AF0A2EE5DFF2";
 const char *devEui  = "00FD6DA8412EEE70";
 #endif
 
-boolean lorawan_send_successful = false; // flags sending has been successful to the FSM
+bool lorawan_send_successful = false; // flags sending has been successful to the FSM
 
-boolean lorawan_settings_new = false;
+bool lorawan_settings_new = false;
 uint8_t lorawan_settings_buffer[256];
 size_t lorawan_settings_length=0;
 
 /**
  * @brief Initialize LoraWAN communication, returns fales if fails
  * 
- * @return boolean 
+ * @return bool 
  */
-boolean lorawan_init(void)
+bool lorawan_init(void)
 {
     if ( 0 == LoRaWAN.begin(EU868))
     {
@@ -79,9 +79,9 @@ boolean lorawan_init(void)
  * @param port 
  * @param buffer 
  * @param size 
- * @return boolean 
+ * @return bool 
  */
-boolean lorawan_send(uint8_t port, const uint8_t * buffer, size_t size)
+bool lorawan_send(uint8_t port, const uint8_t * buffer, size_t size)
 {
 #ifdef serial_debug
     serial_debug.println("lorawan_send() init");
@@ -175,11 +175,11 @@ void lorawan_joinCallback(void)
 }
 
 /**
- * @brief returns the boolean status of the LoraWAN join
+ * @brief returns the bool status of the LoraWAN join
  * 
- * @return boolean 
+ * @return bool 
  */
-boolean lorawan_joined(void)
+bool lorawan_joined(void)
 {
     return LoRaWAN.joined();
 }

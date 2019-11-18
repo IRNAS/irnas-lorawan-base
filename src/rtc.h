@@ -33,7 +33,7 @@
 #define ISL1208_USR2    0x13  //user memory 2
 
 void rtc_init();
-boolean rtc_time_sync(time_t time_received, boolean force);
+bool rtc_time_sync(time_t time_received, bool force);
 time_t rtc_time_read();
 void rtc_time_write(time_t t);
 bool rtc_present();

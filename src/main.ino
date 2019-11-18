@@ -48,7 +48,7 @@ long sleep = -1; // reset the sleep after loop, set in every state if required
 long lora_join_fail_count=0;
 
 // function prototypes because Arduino failes if using enum otherwise
-boolean callback_periodic(void);
+bool callback_periodic(void);
 void state_transition(state_e next);
 bool state_check_timeout(void);
 
@@ -56,7 +56,7 @@ bool state_check_timeout(void);
  * @brief Callback ocurring periodically for triggering events and wdt
  * 
  */
-boolean callback_periodic(void)
+bool callback_periodic(void)
 {
     STM32L0.wdtReset();
     // if the main loop is running and not sleeping
@@ -70,7 +70,7 @@ boolean callback_periodic(void)
         }
     }
 
-    boolean wakeup_needed = false;
+    bool wakeup_needed = false;
 
     if (lorawan_settings_new == true)
     {

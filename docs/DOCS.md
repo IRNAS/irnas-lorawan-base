@@ -27,7 +27,7 @@
 * Otherwise it will keep repeating the while loop until `remaining_sleep` variable reaches 0, then it will exit and start main loop.
 * If `callback_periodic()` returns true that means that some event was generated which requires immediate action 
 
-**boolean callback_periodic()**
+**bool callback_periodic()**
 
 * Resets the watchdog
 * Iterates through each modules `event()` method in case system_event is different than `EVENT_NONE`

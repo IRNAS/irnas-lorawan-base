@@ -107,11 +107,11 @@ char bin2bcd(uint16_t val)
 /**
  * @brief function to check if i2c pull-up is present, call only once prior to init of Wire library
  * 
- * @return boolean 
+ * @return bool 
  */
-boolean check_i2c()
+bool check_i2c()
 {
-    boolean fail = false;
+    bool fail = false;
     pinMode(PIN_WIRE_SCL, INPUT);
     pinMode(PIN_WIRE_SDA, INPUT);
 

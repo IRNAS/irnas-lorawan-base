@@ -62,9 +62,9 @@ void rtc_init()
  * @brief sync rtc time to external source if new time is newer then existing or forced
  * 
  * @param time_received 
- * @return boolean 
+ * @return bool 
  */
-boolean rtc_time_sync(time_t time_received, boolean force)
+bool rtc_time_sync(time_t time_received, bool force)
 {
     // if local time is greater then received time, reject unless forced
     if (rtc_time_read() > time_received && (false == force))

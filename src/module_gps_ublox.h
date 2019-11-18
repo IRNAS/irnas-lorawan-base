@@ -91,13 +91,13 @@ class MODULE_GPS_UBLOX
         uint32_t read_timestamp;
         uint32_t send_timestamp;
 
-        boolean gps_send_flag = false; // extern
-        boolean gps_done = false; // extern
-        boolean gps_begin_happened = false;
+        bool gps_send_flag = false; // extern
+        bool gps_done = false; // extern
+        bool gps_begin_happened = false;
         uint8_t gps_fail_count = 0;
         uint8_t gps_fail_fix_count = 0;
         uint8_t gps_response_fail_count = 0;
-        boolean gps_hot_fix = false;
+        bool gps_hot_fix = false;
         uint32_t gps_accelerometer_last = 0;
         uint32_t gps_fix_start_time = 0;
         uint32_t gps_timeout = 0;
@@ -107,11 +107,11 @@ class MODULE_GPS_UBLOX
         GNSSSatellites gps_satellites;
 
         void gps_accelerometer_interrupt(void);
-        boolean gps_busy_timeout(uint16_t timeout);
-        void gps_power(boolean enable);
-        void gps_backup(boolean enable);
-        boolean gps_begin(void);
-        boolean gps_start(void);
+        bool gps_busy_timeout(uint16_t timeout);
+        void gps_power(bool enable);
+        void gps_backup(bool enable);
+        bool gps_begin(void);
+        bool gps_start(void);
         static void gps_acquiring_callback(void);
         void gps_stop(void);
         void gps_end(void);

@@ -10,7 +10,7 @@
 
 #define EEPROM_DATA_START_SETTINGS 0
 
-extern boolean settings_updated;
+extern bool settings_updated;
 extern module * modules[];
 
 /*
@@ -49,6 +49,6 @@ uint8_t settings_get_packet_port(void);
 uint8_t settings_set_settings(uint8_t * data, size_t * size);
 void settings_init(void);
 void settings_from_downlink(uint8_t * data, size_t length);
-boolean settings_send(void);
+bool settings_send(void);
 
 #endif
