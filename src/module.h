@@ -19,16 +19,16 @@ class module
 {
     public:
         virtual ~module(){};
-        virtual String getName(){};
-        virtual uint8_t get_global_id(){};
-        virtual module_flags_e get_flags(void){};
-        virtual uint8_t configure(uint8_t *data, size_t *size){};
-        virtual uint8_t get_settings_length(){};
-        virtual uint8_t set_downlink_data(uint8_t *data, size_t *size){};
-        virtual module_flags_e scheduler(void){};
-        virtual uint8_t initialize(void){};
-        virtual uint8_t send(uint8_t *data, size_t *size){};
-        virtual uint8_t read(void){};
+        virtual String getName(){ return ""; };
+        virtual uint8_t get_global_id(){ return 0; };
+        virtual module_flags_e get_flags(void){ return M_IDLE; };
+        virtual uint8_t configure(uint8_t * data, size_t * size){ return 0; };
+        virtual uint8_t get_settings_length(){ return 0; };
+        virtual uint8_t set_downlink_data(uint8_t * data, size_t * size){ return 0; };
+        virtual module_flags_e scheduler(void){ return M_IDLE; };
+        virtual uint8_t initialize(void){ return 0; };
+        virtual uint8_t send(uint8_t * data, size_t * size){ return 0; };
+        virtual uint8_t read(void){ return 0; };
         virtual void running(void){};
         virtual void event(event_e event){};
         virtual void print_data(void){};
@@ -39,11 +39,9 @@ template <class myModuleType>
 class myModule : public module 
 {
     public:
-
         myModuleType module;
-
         /**
-         * @brief Construct a new Module object wiht 3 general purpose parameters
+         * @brief Construct a new Module object with 3 general purpose parameters
          * 
          * @param id - global id of the module
          * @param param_a 
@@ -95,7 +93,7 @@ class myModule : public module
          * @param length 
          * @return uint8_t response
          */
-        uint8_t configure(uint8_t *data, size_t *size)
+        uint8_t configure(uint8_t * data, size_t * size)
         {
             return module.configure(data, size);
         }
@@ -117,7 +115,7 @@ class myModule : public module
          * @param length 
          * @return uint8_t response
          */
-        uint8_t set_downlink_data(uint16_t *data, size_t *size)
+        uint8_t set_downlink_data(uint16_t * data, size_t * size)
         {
             return module.set_downlink_data(data, size);
         }
@@ -147,7 +145,7 @@ class myModule : public module
          * 
          * @return uint8_t 
          */
-        uint8_t send(uint8_t *data, size_t *size)
+        uint8_t send(uint8_t * data, size_t * size)
         {
             return module.send(data, size);
         }

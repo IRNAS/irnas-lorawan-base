@@ -11,7 +11,6 @@
 class MODULE_ACCELEROMETER 
 {
     public:
-
         // functions
         uint8_t configure(uint8_t * data, size_t * size);
         uint8_t get_settings_length();
@@ -25,7 +24,6 @@ class MODULE_ACCELEROMETER
         void print_data(void);
 
         // variables
-        String name = "accelerometer";
         module_flags_e flags = M_ERROR;
 
         // parameters
@@ -77,8 +75,8 @@ class MODULE_ACCELEROMETER
 
         module_settings_packet_t settings_packet;
         module_readings_packet_t readings_packet;
-        unsigned long read_timestamp;
-        unsigned long send_timestamp;
+        uint32_t read_timestamp;
+        uint32_t  send_timestamp;
         reading_structure_t r_accel_x;
         reading_structure_t r_accel_y;
         reading_structure_t r_accel_z;

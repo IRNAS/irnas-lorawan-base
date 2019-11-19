@@ -27,7 +27,7 @@ enum event_e : uint8_t
 bool check_i2c();
 float mapfloat(float x, float in_min, float in_max, float out_min, float out_max);
 uint32_t get_bits(float x, float min, float max, int precision);
-void push_value(float value,reading_structure_t * values);
+void push_value(float value, reading_structure_t * values);
 float get_variance(reading_structure_t * values);
 void clear_value(reading_structure_t * values);
 uint16_t bcd2bin(unsigned char val);

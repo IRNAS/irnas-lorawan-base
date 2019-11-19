@@ -9,7 +9,7 @@ settingsPacket_t settings_packet_downlink;
 uint16_t settings_buffer_total_length = 0;
 uint8_t settings_buffer_tlv_type[N_MODULES_TOTAL]; // all modules + basic settings
 size_t settings_buffer_tlv_length[N_MODULES_TOTAL]; // all modules + basic settings
-uint8_t *settings_buffer_tlv_ptr[N_MODULES_TOTAL]; // all modules + basic settings
+uint8_t * settings_buffer_tlv_ptr[N_MODULES_TOTAL]; // all modules + basic settings
 
 static uint8_t settings_buffer[1024]; // Note that at 0x1400 EEPROm LoraWAN things start, so must not run into that
 
@@ -45,7 +45,7 @@ uint8_t settings_set_settings(uint8_t * data, size_t * size)
     settings_packet.data.lorawan_adr =      constrain(settings_packet_downlink.data.lorawan_adr, 0, 1);         // ADR enable/disable
     settings_packet.data.lorawan_txp =      constrain(settings_packet_downlink.data.lorawan_txp, 0, 30);        // Configure TX power
     settings_packet.data.lorawan_reg =      constrain(settings_packet_downlink.data.lorawan_reg, 0, 1);         // Enable the regulatory limit
-    settings_packet.data.resend_delay =     constrain(settings_packet_downlink.data.resend_delay, 0, 24*60);    // Resend delay in minutes
+    settings_packet.data.resend_delay =     constrain(settings_packet_downlink.data.resend_delay, 0, 24 * 60);    // Resend delay in minutes
     settings_packet.data.resend_count =     constrain(settings_packet_downlink.data.resend_count, 0, 10);       // Number of times for this to be resent
 
     // Default packet value: 01 07 05 00 0F 00 00 00

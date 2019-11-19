@@ -2,8 +2,8 @@
 """
 This code automatically fetches .h files which contain data structures representing binary data.
 A template json file is created with the deat structure representing bytes and values.
-User can then populate this tempalte with default values or otherwise and provide settings to the device.
-IMPORTANT: Tempalte must be rebuilt by running this script each time something changes.
+User can then populate this template with default values or otherwise and provide settings to the device.
+IMPORTANT: Template must be rebuilt by running this script each time something changes.
 """
 import sys
 import CppHeaderParser
@@ -11,7 +11,7 @@ import json
 
 # This just makes the output more human readable
 def collapse_json(text, indent=12):
-    """Compacts a string of json data by collapsing whitespace after the
+    """Compacts a string of json data by collapsing white space after the
     specified indent level
 
     NOTE: will not produce correct results when indent level is not a multiple

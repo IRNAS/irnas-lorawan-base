@@ -2,6 +2,9 @@
 
 #define serial_debug Serial
 
+// Before this was declared as Arduino String
+#define NAME  "accelerometer"
+
 extern event_e system_event;
 
 /**
@@ -14,7 +17,7 @@ void accelerometer_callback(void)
     STM32L0.wakeup();
 }
 
-uint8_t MODULE_ACCELEROMETER::configure(uint8_t *data, size_t *size)
+uint8_t MODULE_ACCELEROMETER::configure(uint8_t * data, size_t * size)
 {
     // copy to buffer
     module_settings_packet_t settings_packet_downlink;
@@ -29,7 +32,7 @@ uint8_t MODULE_ACCELEROMETER::configure(uint8_t *data, size_t *size)
     lis.wake_up_free_fall_setup(settings_packet.data.triggered_threshold, settings_packet.data.triggered_duration, settings_packet.data.free_fall);
 
 #ifdef serial_debug
-    serial_debug.print(name);
+    serial_debug.print(NAME);
     serial_debug.print(":configure(");
     serial_debug.print("s:");
     serial_debug.print(settings_packet.data.send_interval);
@@ -43,7 +46,7 @@ uint8_t MODULE_ACCELEROMETER::configure(uint8_t *data, size_t *size)
 uint8_t MODULE_ACCELEROMETER::get_settings_length()
 {
 #ifdef serial_debug
-    serial_debug.print(name);
+    serial_debug.print(NAME);
     serial_debug.print(":get_settings_length(");
     serial_debug.println(")");;
 #endif
@@ -51,14 +54,14 @@ uint8_t MODULE_ACCELEROMETER::get_settings_length()
 }
 
 //TODO not implemented yet
-uint8_t MODULE_ACCELEROMETER::set_downlink_data(uint8_t *data, size_t *size)
+uint8_t MODULE_ACCELEROMETER::set_downlink_data(uint8_t * data, size_t * size)
 {
-
+    return 0;
 }
 
 module_flags_e MODULE_ACCELEROMETER::scheduler(void)
 {
-    unsigned long elapsed = millis() - send_timestamp;
+    uint32_t elapsed = millis() - send_timestamp;
 
     if ((settings_packet.data.send_interval != 0) 
             && (elapsed >= (settings_packet.data.send_interval * 60 * 1000)))
@@ -70,7 +73,7 @@ module_flags_e MODULE_ACCELEROMETER::scheduler(void)
         }
 
 #ifdef serial_debug
-        serial_debug.print(name);
+        serial_debug.print(NAME);
         serial_debug.print(":scheduler(");
         serial_debug.println("send)");
 #endif
@@ -88,7 +91,7 @@ module_flags_e MODULE_ACCELEROMETER::scheduler(void)
         flags = M_READ;
 
 #ifdef serial_debug
-        serial_debug.print(name);
+        serial_debug.print(NAME);
         serial_debug.print(":scheduler(");
         serial_debug.println("_read_values)");
 #endif
@@ -115,18 +118,18 @@ uint8_t MODULE_ACCELEROMETER::initialize(void)
     }
 
     pinMode(MODULE_ACCELEROMETER_INT1, INPUT);
-    attachInterrupt(digitalPinToInterrupt(MODULE_ACCELEROMETER_INT1),accelerometer_callback,RISING);
+    attachInterrupt(digitalPinToInterrupt(MODULE_ACCELEROMETER_INT1), accelerometer_callback, RISING);
     lis.wake_up_free_fall_setup(settings_packet.data.triggered_threshold, settings_packet.data.triggered_duration, settings_packet.data.free_fall);
     flags = M_IDLE;
     return 1;
 }
 
-uint8_t MODULE_ACCELEROMETER::send(uint8_t *data, size_t *size)
+uint8_t MODULE_ACCELEROMETER::send(uint8_t * data, size_t * size)
 {
     //from the readings_packet
 
 #ifdef serial_debug
-    serial_debug.print(name);
+    serial_debug.print(NAME);
     serial_debug.print(": send(");
     serial_debug.println(")");
 #endif
@@ -157,7 +160,7 @@ void MODULE_ACCELEROMETER::event(event_e event)
     if(EVENT_MOTION == event)
     {
 #ifdef serial_debug
-        serial_debug.print(name);
+        serial_debug.print(NAME);
         serial_debug.print(": motion(");
         serial_debug.println(")");
 #endif
@@ -167,7 +170,7 @@ void MODULE_ACCELEROMETER::event(event_e event)
 void MODULE_ACCELEROMETER::print_data(void)
 {
 #ifdef serial_debug
-    serial_debug.print(name);
+    serial_debug.print(NAME);
     serial_debug.print(": print_data(");
     serial_debug.println(")");
 #endif
@@ -176,7 +179,7 @@ void MODULE_ACCELEROMETER::print_data(void)
 uint8_t MODULE_ACCELEROMETER::read(void)
 {
 #ifdef serial_debug
-    serial_debug.print(name);
+    serial_debug.print(NAME);
     serial_debug.print(": read(");
     serial_debug.println(")");
 #endif
@@ -193,4 +196,5 @@ uint8_t MODULE_ACCELEROMETER::read(void)
 
 uint8_t MODULE_ACCELEROMETER::running(void)
 {
+    return 0;
 }

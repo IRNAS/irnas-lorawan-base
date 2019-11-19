@@ -35,7 +35,6 @@ class MODULE_GPS_UBLOX
         uint8_t param_b = 0;
         uint8_t param_c = 0;
     private:
-
     // add
         struct module_settings_data_t
         {

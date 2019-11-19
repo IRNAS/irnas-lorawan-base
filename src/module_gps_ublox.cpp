@@ -48,7 +48,7 @@ uint8_t MODULE_GPS_UBLOX::get_settings_length()
 
 uint8_t MODULE_GPS_UBLOX::set_downlink_data(uint8_t * data, size_t * size)
 {
-
+    return 0;
 }
 
 module_flags_e MODULE_GPS_UBLOX::scheduler(void)
@@ -582,11 +582,13 @@ void MODULE_GPS_UBLOX::gps_stop(void)
     timeinfo.tm_mon  = gps_location.month() - 1;
     timeinfo.tm_year = gps_location.year() - 1900;
     time_t time = mktime(&timeinfo);
+
     // make sure to sync onliy valid time fix
     if (gps_location.fixType() >= GNSSLocation::TYPE_TIME)
     {
         rtc_time_sync(time, true);
     }
+
     float latitude, longitude, hdop, epe, satellites, altitude = 0;
     latitude = gps_location.latitude();
     longitude = gps_location.longitude();

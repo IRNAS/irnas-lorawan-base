@@ -6,21 +6,14 @@
 #include "settings.h"
 #include "LIS2DW12.h"
 
-// Define debug if required
 #define serial_debug  Serial
 
 // General system variables
+int8_t active_module = -1;
 
-int active_module = -1;
 
-// Last packet buffer
 
-uint8_t last_packet[51]; // 51 is the max packet size supported
-size_t last_packet_size;
-uint8_t last_packet_port;
-unsigned long last_packet_time;
-event_e system_event = EVENT_NONE;
-
+// All possible states in finite state machine
 enum state_e
 {
     INIT,
@@ -37,24 +30,41 @@ enum state_e
     HIBERNATION
 };
 
+// Variables dealing with FSM
 state_e state = INIT;
 state_e state_goto_timeout;
 state_e state_prev = INIT;
-unsigned long state_timeout_start;
-unsigned long state_timeout_duration;
-// Variable to monitor when the loop has been started
-unsigned long event_loop_start = 0;
-long sleep = -1; // reset the sleep after loop, set in every state if required
-long lora_join_fail_count=0;
+uint32_t state_timeout_start;
+uint32_t state_timeout_duration;
 
-// function prototypes because Arduino failes if using enum otherwise
-bool callback_periodic(void);
-void state_transition(state_e next);
-bool state_check_timeout(void);
+
+
+// Variable to monitor when the loop has been started
+uint32_t event_loop_start = 0;
+
+// sleep variable, if -1 then MCU does not go into deep sleep after loop(), 
+// otherwise it goes into deep sleep for milliseconds specified.
+// Reset the sleep after loop, set in every state if required.
+int32_t sleep = -1; 
+
+// Variable that keeps track of how many times lora failed to join, used in 
+// LORAWAN_JOIN_START and LORA_JOIN_DONE states
+int16_t lora_join_fail_count = 0;
+
+// Defined in project_utils.h, it is set only by interrupt, and reset to EVENT_NONE
+// in callback_periodic()
+event_e system_event = EVENT_NONE;
+
+// Last packet buffer
+uint8_t last_packet[51]; // 51 is the max packet size supported
+size_t last_packet_size;
+uint8_t last_packet_port;
+uint32_t last_packet_time;
 
 /**
  * @brief Callback ocurring periodically for triggering events and wdt
  * 
+ * @returns true if wakeup is needed, otherwise false
  */
 bool callback_periodic(void)
 {
@@ -62,9 +72,9 @@ bool callback_periodic(void)
     // if the main loop is running and not sleeping
     if (event_loop_start != 0)
     {
-        unsigned long elapsed = millis() - event_loop_start;
+        uint32_t  elapsed = millis() - event_loop_start;
         // if loop has been running for more then 60s, then reboot system
-        if(elapsed >= 60*1000)
+        if(elapsed >= 60 * 1000)
         {
             STM32L0.reset();
         }
@@ -91,7 +101,7 @@ bool callback_periodic(void)
     for (size_t count = 0; count < N_MODULES; count++)
     {
         module_flags_e flag = modules[count]->scheduler();
-        if ((flag != M_IDLE) && (flag!=M_ERROR))
+        if ((flag != M_IDLE) && (flag != M_ERROR))
         {
             wakeup_needed= true;
         }
@@ -109,18 +119,39 @@ bool callback_periodic(void)
 }
 
 /**
- * @brief change to next state and implement a timeout for each state
+ * @brief Puts MCU into deep sleep 
  * 
+ * @param sleep duration in ms
  */
-void state_transition(state_e next)
+void system_sleep(uint32_t sleep)
 {
-    state_timeout_start = millis();
-    state= next;
+    uint32_t remaining_sleep = sleep;
+    while(remaining_sleep > 0)
+    {
+        if(remaining_sleep > 5000)
+        {
+            remaining_sleep = remaining_sleep - 5000;
+            STM32L0.stop(5000);
+        }
+        else
+        {
+            STM32L0.stop(remaining_sleep);
+            remaining_sleep = 0;
+        }
+        // wake-up if event generated
+        if(callback_periodic())
+        {
+            return;
+        }
+    }
 }
+
 
 /**
  * @brief check if the state has timed out
  * 
+ * @ returns false if state_timeout_duration was set to zero or timeout was not
+ *  reached yet, otherwise returns true.
  */
 bool state_check_timeout(void)
 {
@@ -128,7 +159,7 @@ bool state_check_timeout(void)
     {
         return false;
     }
-    unsigned long elapsed = millis() - state_timeout_start;
+    uint32_t  elapsed = millis() - state_timeout_start;
     if (elapsed >= state_timeout_duration)
     {
         return true;
@@ -137,6 +168,20 @@ bool state_check_timeout(void)
     {
         return false;
     }
+}
+
+// If this prototype is not here, compiler throws an error
+// that state_e is not defined in this scope.
+void state_transition(state_e next);
+
+/**
+ * @brief Changes to next state
+ * 
+ */
+void state_transition(state_e next)
+{
+    state_timeout_start = millis();
+    state = next;
 }
 
 /**
@@ -158,7 +203,8 @@ void setup()
     serial_debug.print("resetCause: ");
     serial_debug.println(STM32L0.resetCause(),HEX);
 #endif
-
+    
+    // Starting state
     state = INIT;
 }
 
@@ -184,7 +230,7 @@ void loop()
     sleep = -1; // reset the sleep after loop, set in every state if required
     event_loop_start = millis(); // start the timer of the loop
     // update prevous state
-    state_prev=state;
+    state_prev = state;
 
     // FSM implementaiton for clarity of process loop
     switch (state)
@@ -277,7 +323,7 @@ void loop()
             // defaults for timing out
             state_timeout_duration = 10000;
             state_goto_timeout = IDLE;
-            settings_from_downlink(&lorawan_settings_buffer[0],lorawan_settings_length);
+            settings_from_downlink(&lorawan_settings_buffer[0], lorawan_settings_length);
             state_transition(SETTINGS_SEND);
         break;
 
@@ -288,9 +334,9 @@ void loop()
             sleep = -1;
 
             //LED status 
-            digitalWrite(BOARD_LED,HIGH);
+            digitalWrite(BOARD_LED, HIGH);
 
-            if(true == lorawan_settings_new )
+            if (true == lorawan_settings_new )
             {
                 lorawan_settings_new = false;
                 state_transition(APPLY_SETTINGS);
@@ -333,9 +379,9 @@ void loop()
                 //TODO handle other flags
             }
 
-            if(-1 == active_module)
+            if (-1 == active_module)
             {
-                // sleep until an event is generated
+                // No active module, sleep until an event is generated
                 sleep = 0;
             }
         break;
@@ -346,7 +392,7 @@ void loop()
             state_goto_timeout = IDLE;
             // action
             // transition
-            if(settings_send())
+            if (settings_send())
             {
                 state_transition(LORAWAN_TRANSMIT);
             }
@@ -362,7 +408,7 @@ void loop()
             state_goto_timeout = IDLE;
             // transition
             // TODO> prepare module for sending and do so if success
-            if(modules[active_module]->read())
+            if (modules[active_module]->read())
             {
                 state_transition(IDLE);
                 active_module = -1;
@@ -384,7 +430,7 @@ void loop()
 
                 last_packet_port = modules[active_module]->get_global_id();
                 last_packet_time = millis();
-                if(modules[active_module]->send(data,size))
+                if (modules[active_module]->send(data,size))
                 {
                     lorawan_send(last_packet_port, &last_packet[0], last_packet_size);
                     state_transition(LORAWAN_TRANSMIT);
@@ -403,7 +449,7 @@ void loop()
             state_goto_timeout = LORAWAN_INIT;
             // transition
             // if tx fails, reinit lorawan
-            if(lorawan_send_successful)
+            if (lorawan_send_successful)
             {
                 state_transition(IDLE);
             }
@@ -429,7 +475,7 @@ void loop()
     }
 
     // check if the existing state has timed out and transition to next state
-    if(state_check_timeout())
+    if (state_check_timeout())
     {
 #ifdef serial_debug
         serial_debug.print("timeout(");
@@ -441,40 +487,17 @@ void loop()
 
     // reset the event loop start to show the loop has finished
     event_loop_start = 0;
-    if(sleep > 0)
+    if (sleep > 0)
     {
         system_sleep(sleep);
         sleep = 0;
     }
-    else if(sleep == 0)
+    else if (sleep == 0)
     {
         sleep = -1;
         system_sleep(25 * 3600 * 1000); // max 25h
     }
     else{
         sleep = -1;
-    }
-}
-
-void system_sleep(unsigned long sleep)
-{
-    unsigned long remaining_sleep = sleep;
-    while(remaining_sleep > 0)
-    {
-        if(remaining_sleep > 5000)
-        {
-            remaining_sleep = remaining_sleep - 5000;
-            STM32L0.stop(5000);
-        }
-        else
-        {
-            STM32L0.stop(remaining_sleep);
-            remaining_sleep = 0;
-        }
-        // wake-up if event generated
-        if(callback_periodic())
-        {
-            return;
-        }
     }
 }
