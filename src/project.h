@@ -19,7 +19,7 @@ extern module *s_GPS;
 extern module *s_PIRA;
 extern module *modules[];
 
-#define  RHINO_2_4
+#define  PMP_v1
 
 
 #ifdef RHINO_2_4

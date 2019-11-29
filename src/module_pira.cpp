@@ -48,10 +48,6 @@ uint8_t MODULE_PIRA::initialize(void)
     readings_packet.data.status_time = 0;
     readings_packet.data.error_values = 0;
 
-    MODULE_PIRA_SERIAL.begin(115200);
-    MODULE_PIRA_SERIAL.setWakeup(1);
-    MODULE_PIRA_SERIAL.onReceive(Callback(&MODULE_PIRA::uart_receive, this));
-
     // start the module in active state
     status_pira_state_machine = IDLE_PIRA;
     stateTimeoutStart = 0;
@@ -65,8 +61,6 @@ uint8_t MODULE_PIRA::initialize(void)
     digitalWrite(MODULE_5V_EN, LOW);
     pinMode(MODULE_PIRA_5V, OUTPUT);
     digitalWrite(MODULE_PIRA_5V, LOW);
-
-
 
     // Prepare status pin
     pinMode(MODULE_PIRA_STATUS, INPUT_PULLDOWN);
@@ -116,16 +110,18 @@ uint8_t MODULE_PIRA::read(void)
 uint8_t MODULE_PIRA::running(void)
 {
   // Receive any command from raspberry
+  serial_debug.println("PIRA IS RUNNNING");
   uart_command_receive();
   pira_state_machine();
 }
 
 void MODULE_PIRA::uart_receive()
 {
-    while (MODULE_PIRA_SERIAL.available() > 0)
-    {
-      MODULE_PIRA_SERIAL.read();
-    }
+  //uart_command_receive();
+    //while (MODULE_PIRA_SERIAL.available() > 0)
+    //{
+      //MODULE_PIRA_SERIAL.read();
+    //}
 }
 
 
@@ -154,29 +150,38 @@ void MODULE_PIRA::uart_command_parse(uint8_t * rxBuffer)
         {
             //TODO: constrain values
             case 't':
-                //MODULE_PIRA_SERIAL.println("t: received");
+                serial_debug.println("t: received");
                 rtc_time_sync((time_t)data,false);
-                break;
+            break;
             case 'p':
-                //MODULE_PIRA_SERIAL.println("p: received");
+                serial_debug.println("p: received");
                 settings_packet.data.safety_power_period = data;
-                break;
+            break;
             case 's':
-                //MODULE_PIRA_SERIAL.println("s: received");
+                serial_debug.println("s: received");
                 settings_packet.data.safety_sleep_period = data;
-                break;
+            break;
             case 'c':
-                //MODULE_PIRA_SERIAL.println("c: received");
+                serial_debug.println("c: received");
                 //MODULE_PIRA_SERIAL.println("To be defined how to react on c: command");
-                break;
+            break;
             case 'r':
-                //MODULE_PIRA_SERIAL.println("r: received");
+                serial_debug.println("r: received");
                 settings_packet.data.safety_reboot = data;
-                break;
+            break;
             case 'w':
-                //MODULE_PIRA_SERIAL.println("w: received");
+                serial_debug.println("w: received");
                 settings_packet.data.operational_wakeup = data;
-                break;
+            break;
+            case 'f':
+                serial_debug.println("f: received!!!!!!!!!!!!");
+                readings_packet.data.empty_space = data;
+            break;
+            case 'i':
+                serial_debug.println("i: received!!!!!!!!!!!!");
+                serial_debug.println(data);
+                readings_packet.data.photo_count= data;
+            break;
             default:
                 break;
         }
@@ -235,7 +240,9 @@ void MODULE_PIRA::uart_command_receive(void)
                     rxBuffer[rxIndex] != 's' &&
                     rxBuffer[rxIndex] != 'c' &&
                     rxBuffer[rxIndex] != 'r' &&
-                    rxBuffer[rxIndex] != 'w')
+                    rxBuffer[rxIndex] != 'w' &&
+                    rxBuffer[rxIndex] != 'f' &&
+                    rxBuffer[rxIndex] != 'i')
                 {
                     // Anything received that is not by protocol is discarded!
                     rxIndex = 0;
@@ -482,9 +489,9 @@ void MODULE_PIRA::pira_state_machine()
     serial_debug.print(return_state(state_prev));
     serial_debug.print(" -> ");
     serial_debug.print(return_state(status_pira_state_machine));
-    serial_debug.print(" :e ");
+    serial_debug.print(" ");
     serial_debug.print(pira_elapsed / 1000);
-    serial_debug.print(" :t ");
+    serial_debug.print("/");
     serial_debug.print(stateTimeoutDuration);
     serial_debug.println(")");;
 #endif
@@ -499,7 +506,7 @@ void MODULE_PIRA::pira_state_machine()
             // wake up immediately after boot
             if(stateTimeoutStart == 0)
             {
-                pira_state_transition(WAIT_STATUS_ON);
+                pira_state_transition(START_PIRA);
             }
         break;
 
@@ -556,6 +563,7 @@ void MODULE_PIRA::pira_state_machine()
         break;
 
         case STOP_PIRA:
+            //We only get here if we timeout
             flags = M_SEND;
             digitalWrite(MODULE_5V_EN, LOW);
             digitalWrite(MODULE_PIRA_5V, LOW);

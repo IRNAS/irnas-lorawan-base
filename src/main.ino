@@ -131,11 +131,13 @@ void system_sleep(uint32_t sleep)
         if(remaining_sleep > 5000)
         {
             remaining_sleep = remaining_sleep - 5000;
-            STM32L0.stop(5000);
+            delay(5000);
+            //STM32L0.stop(5000);
         }
         else
         {
-            STM32L0.stop(remaining_sleep);
+            delay(remaining_sleep);
+            //STM32L0.stop(remaining_sleep);
             remaining_sleep = 0;
         }
         // wake-up if event generated
