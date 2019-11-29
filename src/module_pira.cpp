@@ -25,10 +25,10 @@ uint8_t MODULE_PIRA::set_downlink_data(uint8_t * data, size_t * size)
 
 module_flags_e MODULE_PIRA::scheduler(void)
 {
-    if(flags != M_RUNNING)
-    {
+    //if(M_IDLE == flags)
+    //{
         pira_state_machine();
-    }
+    //}
     //flags are updated in the state machine
     return flags;
 }
@@ -79,6 +79,7 @@ uint8_t MODULE_PIRA::send(uint8_t * data, size_t * size)
     serial_debug.println(")");
 #endif
 
+    readings_packet.data.status_time = rtc_time_read(); 
     memcpy(data, &readings_packet.bytes[0], sizeof(module_readings_data_t));
     *size = sizeof(module_readings_data_t);
     flags = M_IDLE;
@@ -110,7 +111,6 @@ uint8_t MODULE_PIRA::read(void)
 uint8_t MODULE_PIRA::running(void)
 {
   // Receive any command from raspberry
-  serial_debug.println("PIRA IS RUNNNING");
   uart_command_receive();
   pira_state_machine();
 }
@@ -174,13 +174,13 @@ void MODULE_PIRA::uart_command_parse(uint8_t * rxBuffer)
                 settings_packet.data.operational_wakeup = data;
             break;
             case 'f':
-                serial_debug.println("f: received!!!!!!!!!!!!");
+                serial_debug.println("f: received");
                 readings_packet.data.empty_space = data;
             break;
             case 'i':
-                serial_debug.println("i: received!!!!!!!!!!!!");
-                serial_debug.println(data);
-                readings_packet.data.photo_count= data;
+                serial_debug.println("i: received");
+                //serial_debug.println(data);
+                readings_packet.data.photo_count = data;
             break;
             default:
                 break;
@@ -326,7 +326,7 @@ void MODULE_PIRA::uart_command_receive(void)
  */
 void MODULE_PIRA::send_status_values(void)
 {
-    uart_command_send('t', (uint32_t)readings_packet.data.status_time);
+    uart_command_send('t', (uint32_t)rtc_time_read());
     uart_command_send('o', get_overview_value());
     //TODO battery currently not implemented?
     uart_command_send('b', (uint32_t) 0);
@@ -501,7 +501,7 @@ void MODULE_PIRA::pira_state_machine()
         case IDLE_PIRA:
 
             stateTimeoutDuration = min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period);
-            state_goto_timeout = WAIT_STATUS_ON;
+            state_goto_timeout = START_PIRA;
 
             // wake up immediately after boot
             if(stateTimeoutStart == 0)
@@ -511,9 +511,11 @@ void MODULE_PIRA::pira_state_machine()
         break;
 
         case START_PIRA:
-            flags = M_RUNNING;
-            pira_state_transition(WAIT_STATUS_ON);
-
+            if(M_IDLE == flags)
+            {
+                flags = M_RUNNING;
+                pira_state_transition(WAIT_STATUS_ON);
+            }
         break;
 
         case WAIT_STATUS_ON:
@@ -524,8 +526,6 @@ void MODULE_PIRA::pira_state_machine()
             // WAIT_STATUS_ON state reached, turn on power for raspberry pi
             digitalWrite(MODULE_5V_EN, HIGH);
             digitalWrite(MODULE_PIRA_5V, HIGH);
-
-            send_status_values();
 
             // If status pin is read as high go to WAKEUP state
             if(digitalRead(MODULE_PIRA_STATUS))
@@ -553,18 +553,17 @@ void MODULE_PIRA::pira_state_machine()
             stateTimeoutDuration = settings_packet.data.safety_reboot;
             state_goto_timeout = STOP_PIRA;
 
-            send_status_values();
-
             if(digitalRead(MODULE_PIRA_STATUS))
             {
                 // RPi rebooted, go back to wake up
-                pira_state_transition(WAKEUP);
+                pira_state_transition(WAIT_STATUS_ON);
             }
         break;
 
         case STOP_PIRA:
             //We only get here if we timeout
             flags = M_SEND;
+
             digitalWrite(MODULE_5V_EN, LOW);
             digitalWrite(MODULE_PIRA_5V, LOW);
             pira_state_transition(IDLE_PIRA);
@@ -572,6 +571,7 @@ void MODULE_PIRA::pira_state_machine()
 
         default:
             status_pira_state_machine = IDLE_PIRA;
+            flags = M_IDLE;
         break;
     }
 

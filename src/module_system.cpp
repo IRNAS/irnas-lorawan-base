@@ -1,7 +1,7 @@
 #include "module_system.h"
 
 // Before this was declared as Arduino String
-#define NAME  "gps"
+#define NAME  "system"
 #define serial_debug Serial
 
 uint8_t MODULE_SYSTEM::configure(uint8_t * data, size_t * size)

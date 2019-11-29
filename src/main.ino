@@ -131,13 +131,11 @@ void system_sleep(uint32_t sleep)
         if(remaining_sleep > 5000)
         {
             remaining_sleep = remaining_sleep - 5000;
-            delay(5000);
-            //STM32L0.stop(5000);
+            STM32L0.stop(5000);
         }
         else
         {
-            delay(remaining_sleep);
-            //STM32L0.stop(remaining_sleep);
+            STM32L0.stop(remaining_sleep);
             remaining_sleep = 0;
         }
         // wake-up if event generated
@@ -148,6 +146,34 @@ void system_sleep(uint32_t sleep)
     }
 }
 
+/**
+ * @brief Puts MCU into delay 
+ * 
+ * @param delay duration in ms
+ * @note Needed here for a bad workaround, musnt be in final version
+ */
+void system_delay(uint32_t sleep)
+{
+    uint32_t remaining_sleep = sleep;
+    while(remaining_sleep > 0)
+    {
+        if(remaining_sleep > 5000)
+        {
+            remaining_sleep = remaining_sleep - 5000;
+            delay(5000);
+        }
+        else
+        {
+            delay(remaining_sleep);
+            remaining_sleep = 0;
+        }
+        // wake-up if event generated
+        if(callback_periodic())
+        {
+            return;
+        }
+    }
+}
 
 /**
  * @brief check if the state has timed out
@@ -351,14 +377,19 @@ void loop()
 
                 // order is important as send has priority over read
                 active_module = -1;
-                if (M_RUNNING == flag )
+                if (M_RUNNING == flag)
                 {
                     //run the module
                     modules[count]->running();
                     sleep = 500; // keep iterating every 500s
                     // break; // Do not break and process running modules in parallel
                 }
-                else if (M_SEND == flag)
+            }
+            for (size_t count = 0; count < N_MODULES; count++)
+            {
+                module_flags_e flag = modules[count]->get_flags();
+
+                if (M_SEND == flag)
                 {
                     state_transition(MODULE_SEND);
                     active_module = count;
@@ -377,7 +408,7 @@ void loop()
                     //active_module = count;
                     break;
                 }
-                digitalWrite(BOARD_LED,LOW);
+                digitalWrite(BOARD_LED, LOW);
                 //TODO handle other flags
             }
 
@@ -491,15 +522,37 @@ void loop()
     event_loop_start = 0;
     if (sleep > 0)
     {
-        system_sleep(sleep);
+        // Very bad workaround for PIRA. We need to figure out how to receive 
+        // uart messages while in deep sleep, 
+        // for now we will delay when pira is running.
+        module_flags_e flag = modules[2]->get_flags(); //Get flag of Pira module
+        if(flag == M_RUNNING)
+        {
+            serial_debug.println("GOING INTO DELAY");
+            system_delay(sleep);
+        }
+        else
+        {
+            serial_debug.println("GOING INTO SLEEP");
+            system_sleep(sleep);
+        }
         sleep = 0;
     }
     else if (sleep == 0)
     {
         sleep = -1;
-        system_sleep(25 * 3600 * 1000); // max 25h
+        module_flags_e flag = modules[2]->get_flags(); //Get flag of Pira module
+        if(flag == M_RUNNING)
+        {
+            system_delay(25 * 3600 * 1000); // max 25h
+        }
+        else
+        {
+            system_sleep(25 * 3600 * 1000); // max 25h
+        }
     }
-    else{
+    else
+    {
         sleep = -1;
     }
 }
