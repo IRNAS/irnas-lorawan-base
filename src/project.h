@@ -21,8 +21,7 @@ extern module *modules[];
 
 #define  PMP_v1
 
-
-#ifdef RHINO_2_4
+#ifdef RHINO_v2_4
 #define MODULE_SYSTEM_BAN_MON_EN PH1
 #define MODULE_SYSTEM_BAN_MON_AN PA4
 #define MODULE_SYSTEM_LIGHT_EN PB14
@@ -64,4 +63,30 @@ extern module *modules[];
 #define BOARD_LED PH0
 #endif
 
+
+#ifdef LION_v2_3
+#define MODULE_SYSTEM_BAN_MON_EN PH1
+#define MODULE_SYSTEM_BAN_MON_AN PA4
+#define MODULE_SYSTEM_LIGHT_EN PB14
+
+#define MODULE_GPS_EN PB6
+#define MODULE_GPS_BCK PA8
+#define MODULE_GPS_SERIAL Serial1
+
+#define MODULE_5V_EN -1
+#define MODULE_PIRA_SERIAL Serial1
+#define MODULE_PIRA_5V -1
+#define MODULE_PIRA_STATUS -1
+
+#define MODULE_ACCELEROMETER_INT1 PB2
+#define MODULE_ACCELEROMETER_INT2 PB7
+
+#define MODULE_VSWR_ADC PA3
+#define MODULE_VSWR_EN PA5
+
+#define BOARD_LED PA0
+#define BOARD_REED PH0
+#define BOARD_CHG_DISABLE PA11
 #endif
+
+#endif //PROJECT_H_
