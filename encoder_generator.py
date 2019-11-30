@@ -6,7 +6,7 @@ User can then populate this template with default values or otherwise and provid
 IMPORTANT: Template must be rebuilt by running this script each time something changes.
 
 Two files are created: 
-encoded_settings_template.json - system file used for data encoding
+settings_template.json - system file used for data encoding
 settings_sample.json - sample file to edit and insert custom settings
 """
 import sys
@@ -143,7 +143,7 @@ module_accelerometer["global_id"]["value"]=5
 template_settings["module_accelerometer"]=module_accelerometer
 
 # creates the template with lengths and default values
-f = open('encoded_settings_template.json', 'w')
+f = open('settings_template.json', 'w')
 f.write(collapse_json(json.dumps(template_settings, indent=4),indent=8))
 f.close()
 
