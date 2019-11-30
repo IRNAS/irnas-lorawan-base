@@ -4,6 +4,10 @@ This code automatically fetches .h files which contain data structures represent
 A template json file is created with the deat structure representing bytes and values.
 User can then populate this template with default values or otherwise and provide settings to the device.
 IMPORTANT: Template must be rebuilt by running this script each time something changes.
+
+Two files are created: 
+encoded_settings_template.json - system file used for data encoding
+settings_sample.json - sample file to edit and insert custom settings
 """
 import sys
 import CppHeaderParser
@@ -138,7 +142,29 @@ module_accelerometer["global_id"]["value"]=5
 #append to the template
 template_settings["module_accelerometer"]=module_accelerometer
 
+# creates the template with lengths and default values
 f = open('encoded_settings_template.json', 'w')
+f.write(collapse_json(json.dumps(template_settings, indent=4),indent=8))
+f.close()
+
+# drop length and position from template
+for module in template_settings:
+    for setting in template_settings[module]:
+        print(template_settings[module][setting])
+        del template_settings[module][setting]["size"]
+        del template_settings[module][setting]["order"]
+        default_value=template_settings[module][setting]["value"]
+        # collapse the value
+        del template_settings[module][setting]["value"]
+        template_settings[module][setting]=default_value
+        # hide global id and lengths as they can not be user modified
+    del template_settings[module]["global_id"]
+    del template_settings[module]["length"]
+
+
+
+#creates the sample config which is user-editable
+f = open('settings_sample.json', 'w')
 f.write(collapse_json(json.dumps(template_settings, indent=4),indent=8))
 f.close()
 
