@@ -113,6 +113,7 @@ class MODULE_PIRA
         state_pira_e state_prev;
         state_pira_e state_goto_timeout;
         uint32_t pira_elapsed;
+        uint32_t run_timestamp;
         uint32_t stateTimeoutDuration;
         uint32_t stateTimeoutStart;
 

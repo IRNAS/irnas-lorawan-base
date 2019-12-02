@@ -25,11 +25,21 @@ uint8_t MODULE_PIRA::set_downlink_data(uint8_t * data, size_t * size)
 
 module_flags_e MODULE_PIRA::scheduler(void)
 {
-    //if(M_IDLE == flags)
-    //{
-        pira_state_machine();
-    //}
-    //flags are updated in the state machine
+
+    uint32_t elapsed = millis() - run_timestamp;
+    if (elapsed >= (min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period) * 1000 ||  0 == run_timestamp))
+    {
+        if (M_IDLE == flags)
+        {
+            run_timestamp = millis();
+            flags = M_RUNNING;
+#ifdef serial_debug
+        serial_debug.print(NAME);
+        serial_debug.print(":scheduler(");
+        serial_debug.println("run)");
+#endif
+        }
+    }
     return flags;
 }
 
@@ -111,7 +121,6 @@ uint8_t MODULE_PIRA::read(void)
 uint8_t MODULE_PIRA::running(void)
 {
   // Receive any command from raspberry
-  uart_command_receive();
   pira_state_machine();
 }
 
@@ -493,6 +502,8 @@ void MODULE_PIRA::pira_state_machine()
     serial_debug.print(pira_elapsed / 1000);
     serial_debug.print("/");
     serial_debug.print(stateTimeoutDuration);
+    serial_debug.print(" ");
+    serial_debug.print(flags);
     serial_debug.println(")");;
 #endif
 
@@ -500,22 +511,20 @@ void MODULE_PIRA::pira_state_machine()
     {
         case IDLE_PIRA:
 
-            stateTimeoutDuration = min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period);
+            /*stateTimeoutDuration = min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period);
             state_goto_timeout = START_PIRA;
 
             // wake up immediately after boot
             if(stateTimeoutStart == 0)
             {
                 pira_state_transition(START_PIRA);
-            }
+            }*/
+            pira_state_transition(START_PIRA);
         break;
 
         case START_PIRA:
-            if(M_IDLE == flags)
-            {
-                flags = M_RUNNING;
-                pira_state_transition(WAIT_STATUS_ON);
-            }
+            flags = M_RUNNING;
+            pira_state_transition(WAIT_STATUS_ON);
         break;
 
         case WAIT_STATUS_ON:
@@ -538,7 +547,7 @@ void MODULE_PIRA::pira_state_machine()
 
             stateTimeoutDuration = settings_packet.data.safety_power_period;
             state_goto_timeout = STOP_PIRA;
-
+            uart_command_receive();
             send_status_values();
 
             //Check status pin, if low then turn off power supply.
