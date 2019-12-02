@@ -545,7 +545,8 @@ void MODULE_GPS_UBLOX::gps_stop(void)
             gps_hot_fix = false;
             gps_fail_fix_count = 0;
         }
-        else if (gps_fail_fix_count >= settings_packet.data.gps_cold_fix_retry)
+        else if ((gps_fail_fix_count >= settings_packet.data.gps_cold_fix_retry)
+                && (255 != settings_packet.data.gps_cold_fix_retry))
         {
             gps_fail_count++;
         }
