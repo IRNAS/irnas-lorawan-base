@@ -76,7 +76,7 @@ class MODULE_ACCELEROMETER
         module_settings_packet_t settings_packet;
         module_readings_packet_t readings_packet;
         uint32_t read_timestamp;
-        uint32_t  send_timestamp;
+        uint32_t send_timestamp;
         reading_structure_t r_accel_x;
         reading_structure_t r_accel_y;
         reading_structure_t r_accel_z;
