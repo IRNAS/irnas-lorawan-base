@@ -405,7 +405,7 @@ void loop()
                 {
                     //do nothing for now
                     //state_transition(MODULE_READ);
-                    //active_module = count;
+                    active_module = count;
                     //break; // must not break here as it otherwise blocks the modules with higher counter value indefinitely
                 }
                 digitalWrite(BOARD_LED, LOW);
