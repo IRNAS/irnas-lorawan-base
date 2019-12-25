@@ -66,6 +66,7 @@ class MODULE_PIRA
             uint16_t empty_space; // RPi disk space value
             uint16_t photo_count; // RPi photo count
             uint64_t status_time; // system time
+            uint16_t cycle_count;
             uint16_t error_values;
         }__attribute__((packed));
 

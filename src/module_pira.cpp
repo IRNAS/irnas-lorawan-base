@@ -56,6 +56,7 @@ uint8_t MODULE_PIRA::initialize(void)
     readings_packet.data.empty_space = 0;
     readings_packet.data.photo_count = 0;
     readings_packet.data.status_time = 0;
+    readings_packet.data.cycle_count = 0;
     readings_packet.data.error_values = 0;
 
     // start the module in active state
@@ -540,6 +541,7 @@ void MODULE_PIRA::pira_state_machine()
             if(digitalRead(MODULE_PIRA_STATUS))
             {
                 pira_state_transition(WAKEUP);
+                readings_packet.data.cycle_count++;
             }
         break;
 
