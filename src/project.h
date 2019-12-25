@@ -10,6 +10,7 @@
 #include "module_gps_ublox.h"
 #include "module_pira.h"
 #include "module_accelerometer.h"
+#include "module_microclimate.h"
 
 #define N_MODULES 3
 #define N_MODULES_TOTAL N_MODULES+1
@@ -17,9 +18,11 @@
 extern module *s_SYSTEM;
 extern module *s_GPS;
 extern module *s_PIRA;
+extern module *s_ACCEL;
+extern module *s_MICROCLIMATE;
 extern module *modules[];
 
-#define  PMP_v1
+#define  MICROCLIMATE_v2
 
 #ifdef RHINO_v2_4
 #define MODULE_SYSTEM_BAN_MON_EN PH1
@@ -89,4 +92,29 @@ extern module *modules[];
 #define BOARD_CHG_DISABLE PA11
 #endif
 
+#ifdef MICROCLIMATE_v2
+#define MODULE_SYSTEM_BAN_MON_EN PH1
+#define MODULE_SYSTEM_BAN_MON_AN PA4
+#define MODULE_SYSTEM_LIGHT_EN PB14
+
+#define MODULE_GPS_EN PB6
+#define MODULE_GPS_BCK PA8
+#define MODULE_GPS_SERIAL Serial1
+
+#define MODULE_5V_EN -1
+#define MODULE_PIRA_SERIAL Serial1
+#define MODULE_PIRA_5V -1
+#define MODULE_PIRA_STATUS -1
+
+#define MODULE_ACCELEROMETER_INT1 PB2
+#define MODULE_ACCELEROMETER_INT2 PB7
+
+#define MODULE_VSWR_ADC PA3
+#define MODULE_VSWR_EN PA5
+
+#define BOARD_LED PA0
+#define BOARD_REED PH0
+#endif
+
 #endif //PROJECT_H_
+
