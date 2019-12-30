@@ -388,13 +388,7 @@ void loop()
             for (size_t count = 0; count < N_MODULES; count++)
             {
                 module_flags_e flag = modules[count]->get_flags();
-#ifdef serial_debug
-                serial_debug.print("module(");
-                serial_debug.print(count);
-                serial_debug.print(">");
-                serial_debug.print(flag);
-                serial_debug.println(")");
-#endif
+
                 if (M_SEND == flag)
                 {
                     state_transition(MODULE_SEND);
