@@ -22,7 +22,7 @@ extern module *s_ACCEL;
 extern module *s_MICROCLIMATE;
 extern module *modules[];
 
-#define  MICROCLIMATE_v2
+#define  RHINO_v2_2
 
 #ifdef RHINO_v2_4
 #define MODULE_SYSTEM_BAN_MON_EN PH1
@@ -43,6 +43,30 @@ extern module *modules[];
 
 #define MODULE_VSWR_ADC PA3
 #define MODULE_VSWR_EN PA5
+
+#define BOARD_LED PA0
+#define BOARD_REED PH0
+#endif
+
+#ifdef RHINO_v2_2
+#define MODULE_SYSTEM_BAN_MON_EN PB12
+#define MODULE_SYSTEM_BAN_MON_AN PA4
+#define MODULE_SYSTEM_LIGHT_EN PB15
+
+#define MODULE_GPS_EN PB14
+#define MODULE_GPS_BCK PA8
+#define MODULE_GPS_SERIAL Serial1
+
+#define MODULE_5V_EN -1
+#define MODULE_PIRA_SERIAL Serial1
+#define MODULE_PIRA_5V -1
+#define MODULE_PIRA_STATUS -1
+
+#define MODULE_ACCELEROMETER_INT1 PB2
+#define MODULE_ACCELEROMETER_INT2 PB7
+
+#define MODULE_VSWR_ADC -1
+#define MODULE_VSWR_EN -1
 
 #define BOARD_LED PA0
 #define BOARD_REED PH0

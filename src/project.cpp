@@ -14,7 +14,7 @@ module *s_MICROCLIMATE = new myModule<MODULE_MICROCLIMATE>(6); // global id 6
 module *modules[] = {s_SYSTEM, s_GPS, s_PIRA};
 #endif
 
-#ifdef RHINO_v2_4
+#if defined(RHINO_v2_4) || defined(RHINO_v2_2)
 // Array of modules to be loaded - project specific
 module *modules[] = {s_SYSTEM, s_GPS, s_ACCEL};
 #endif
