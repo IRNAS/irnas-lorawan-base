@@ -544,10 +544,12 @@ void loop()
         module_flags_e flag = modules[2]->get_flags(); //Get flag of Pira module
         if(flag == M_RUNNING)
         {
+            serial_debug.println("GOING INTO DELAY");
             system_delay(25 * 3600 * 1000); // max 25h
         }
         else
         {
+            serial_debug.println("GOING INTO SLEEP");
             system_sleep(25 * 3600 * 1000); // max 25h
         }
     }

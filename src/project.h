@@ -10,15 +10,18 @@
 #include "module_gps_ublox.h"
 #include "module_pira.h"
 #include "module_accelerometer.h"
+#include "module_lacuna.h"
 
-#define N_MODULES 3
+#define N_MODULES 4
 #define N_MODULES_TOTAL N_MODULES+1
 
 extern module *s_SYSTEM;
 extern module *s_GPS;
 extern module *s_PIRA;
+extern module *s_LACUNA;
 extern module *modules[];
 
+// Set here the project
 #define  PMP_v1
 
 #ifdef RHINO_v2_4
