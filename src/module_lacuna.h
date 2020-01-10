@@ -58,12 +58,26 @@ class MODULE_LACUNA
             uint8_t bytes[sizeof(module_readings_data_t)];
         };
 
+        typedef struct
+        {
+            uint8_t hour;
+            uint8_t min;
+        }time_window_t;
+        
+        void setup_lacuna();
+        void send_lacuna();
+
         module_settings_packet_t settings_packet;
         module_readings_packet_t readings_packet;
 
         lsLoraWANParams loraWANParams;
         lsLoraSatTxParams SattxParams;
         lsLoraTxParams txParams;
+
+        time_window_t start_tx;
+        time_window_t end_tx;
+
+        bool lacuna_init_done;
 };
 
 #endif /* MODULE_LACUNA_h */
