@@ -19,7 +19,7 @@ class MODULE_LACUNA
         uint8_t initialize(void);
         uint8_t send(uint8_t * buffer, size_t * size);
         uint8_t read(void);
-        uint8_t running(void);
+        void running(void);
         void event(event_e event);
         void print_data(void);
 
@@ -36,9 +36,6 @@ class MODULE_LACUNA
         struct module_settings_data_t
         {
             uint8_t global_id;
-            uint8_t length;
-            uint16_t read_interval;
-            uint16_t send_interval;
         }__attribute__((packed));
 
         union module_settings_packet_t
@@ -73,9 +70,14 @@ class MODULE_LACUNA
         lsLoraWANParams loraWANParams;
         lsLoraSatTxParams SattxParams;
         lsLoraTxParams txParams;
-
+//
         time_window_t start_tx;
         time_window_t end_tx;
+        //char payload[255];
+
+        static byte networkKeyLacuna[];
+        static byte appKeyLacuna[];
+        static byte deviceAddressLacuna[];
 
         bool lacuna_init_done;
 };

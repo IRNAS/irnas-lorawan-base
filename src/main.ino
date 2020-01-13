@@ -221,8 +221,8 @@ void setup()
     STM32L0.wdtEnable(18000);
     analogReadResolution(12);
 
-    pinMode(BOARD_LED,OUTPUT);
-    digitalWrite(BOARD_LED,HIGH);
+    //pinMode(BOARD_LED,OUTPUT);
+    //digitalWrite(BOARD_LED,HIGH);
 
     // Serial port debug setup
 #ifdef serial_debug
@@ -362,7 +362,7 @@ void loop()
             sleep = -1;
 
             //LED status 
-            digitalWrite(BOARD_LED, HIGH);
+            //digitalWrite(BOARD_LED, HIGH);
 
             if (true == lorawan_settings_new )
             {
@@ -408,7 +408,7 @@ void loop()
                     active_module = count;
                     //break; // must not break here as it otherwise blocks the modules with higher counter value indefinitely
                 }
-                digitalWrite(BOARD_LED, LOW);
+                //digitalWrite(BOARD_LED, LOW);
                 //TODO handle other flags
             }
 
@@ -529,12 +529,10 @@ void loop()
         module_flags_e flag = modules[2]->get_flags(); //Get flag of Pira module
         if(flag == M_RUNNING)
         {
-            serial_debug.println("GOING INTO DELAY");
             system_delay(sleep);
         }
         else
         {
-            serial_debug.println("GOING INTO SLEEP");
             system_sleep(sleep);
         }
         sleep = 0;
@@ -545,12 +543,10 @@ void loop()
         module_flags_e flag = modules[2]->get_flags(); //Get flag of Pira module
         if(flag == M_RUNNING)
         {
-            serial_debug.println("GOING INTO DELAY");
             system_delay(25 * 3600 * 1000); // max 25h
         }
         else
         {
-            serial_debug.println("GOING INTO SLEEP");
             system_sleep(25 * 3600 * 1000); // max 25h
         }
     }

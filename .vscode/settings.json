@@ -1,9 +1,3 @@
 {
-    "files.associations": {
-        "*.tcc": "cpp",
-        "typeindex": "cpp",
-        "typeinfo": "cpp",
-        "string_view": "cpp",
-        "initializer_list": "cpp"
-    }
+    "C_Cpp.errorSquiggles": "Disabled"
 }
