@@ -68,10 +68,12 @@ module_flags_e MODULE_LACUNA::scheduler(void)
 
     timeinfo->tm_hour = start_tx.hour;
     timeinfo->tm_min = start_tx.min;
+    timeinfo->tm_sec =  0;
     time_t start_window_tx = mktime(timeinfo);
 
     timeinfo->tm_hour = end_tx.hour;
     timeinfo->tm_min = end_tx.min;
+    timeinfo->tm_sec =  0;
     time_t end_window_tx = mktime(timeinfo);
 
     serial_debug.print("Window start: ");
@@ -106,7 +108,7 @@ uint8_t MODULE_LACUNA::initialize(void)
 {
     //Our timewindow in which we want Lacuna to operate
     start_tx = { 0, 0 };
-    end_tx = { 23, 59 };
+    end_tx = { 19, 21 };
     
     // lora_init_done should be false at the start to ensure that setup_lacuna
     // is called first time 
@@ -238,24 +240,24 @@ void MODULE_LACUNA::setup_lacuna(void)
     lsCreateDefaultLoraSatTxParams(&SattxParams);
 
     // Override default Lacuna satellite parameters
-    SattxParams.frequency = 863000000;
+    SattxParams.frequency = 862750000;
+    SattxParams.power = 21;
     SattxParams.grid = lsLoraEGrid_3_9_khz;
     SattxParams.codingRate = lsLoraECodingRate_1_3;
-    SattxParams.bandwidth = lsLoraEBandwidth_187_5_khz;
+    SattxParams.bandwidth = lsLoraEBandwidth_335_9_khz;;
     SattxParams.nbSync = 4;
-    SattxParams.power = 14;
     SattxParams.hopping = 1;
 
     // transmission parameters for terrestrial LoRa
     lsCreateDefaultLoraTxParams(&txParams);
     
     // Override defult LoRa parameters
-    txParams.power = 14;
-    txParams.spreadingFactor = lsLoraSpreadingFactor_11;
-    txParams.codingRate = lsLoraCodingRate_4_5;
-    txParams.invertIq = false;
     txParams.frequency = 868300000;
+    txParams.power = 14;
+    txParams.codingRate = lsLoraCodingRate_4_5;
     txParams.bandwidth = lsLoraBandwidth_125_khz;
+    txParams.spreadingFactor = lsLoraSpreadingFactor_11;
+    txParams.invertIq = false;
     txParams.syncWord = LS_LORA_SYNCWORD_PUBLIC;
     txParams.preambleLength = 8;
 

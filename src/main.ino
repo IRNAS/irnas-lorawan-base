@@ -460,8 +460,6 @@ void loop()
                 // transition
                 uint8_t * data = &last_packet[0];
                 size_t * size = &last_packet_size;
-                serial_debug.print("Active module is : ");
-                serial_debug.println(active_module);
                 last_packet_port = modules[active_module]->get_global_id();
                 last_packet_time = millis();
                 if (modules[active_module]->send(data,size))
