@@ -2,17 +2,18 @@
 
 #define serial_debug  Serial
 
-//#define LORAWAN_ABP
-#define LORAWAN_OTAA
+#define LORAWAN_ABP
+//#define LORAWAN_OTAA
 
 #ifdef LORAWAN_ABP
 // LoraWAN ABP configuration
-const char *devAddr = "260118C5";
-const char *nwkSKey = "675F9B8777AB66EF3B967B3FC4FC7527";
-const char *appSKey = "74A22F5287DAA0A6AA9639B32A721190";
+const char *devAddr = "26011485";
+const char *nwkSKey = "55BF65D73A10870F55CCBF32A314B582";
+const char *appSKey = "0A180E518BCD1E4EE60C0122F3D6EE8D";
 #endif
 
 #ifdef LORAWAN_OTAA
+
 // LoraWAN ABP configuration
 const char *appEui  = "70B3D57ED0025459";
 const char *appKey  = "5C430C71D8D7127D66B1AF0A2EE5DFF2";

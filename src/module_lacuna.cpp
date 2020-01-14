@@ -107,8 +107,8 @@ module_flags_e MODULE_LACUNA::scheduler(void)
 uint8_t MODULE_LACUNA::initialize(void)
 {
     //Our timewindow in which we want Lacuna to operate
-    start_tx = { 0, 0 };
-    end_tx = { 19, 21 };
+    start_tx = { 12, 0 };
+    end_tx = { 12, 20 };
     
     // lora_init_done should be false at the start to ensure that setup_lacuna
     // is called first time 
