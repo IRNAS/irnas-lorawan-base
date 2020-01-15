@@ -6,10 +6,11 @@
 static const uint8_t settings_packet_port = 100;
 settingsPacket_t settings_packet;
 settingsPacket_t settings_packet_downlink;
-uint16_t settings_buffer_total_length = 0;
+
 uint8_t settings_buffer_tlv_type[N_MODULES_TOTAL]; // all modules + basic settings
 size_t settings_buffer_tlv_length[N_MODULES_TOTAL]; // all modules + basic settings
 uint8_t * settings_buffer_tlv_ptr[N_MODULES_TOTAL]; // all modules + basic settings
+uint16_t settings_buffer_total_length = 0;
 
 static uint8_t settings_buffer[1024]; // Note that at 0x1400 EEPROm LoraWAN things start, so must not run into that
 
@@ -244,7 +245,7 @@ void settings_from_downlink(uint8_t * data, size_t length)
     // Store to EEPROM
     uint8_t eeprom_settings_address = EEPROM_DATA_START_SETTINGS;
     EEPROM.write(eeprom_settings_address, 0xac);
-    for (int i = 0; i<settings_buffer_total_length; i++)
+    for (int i = 0; i < settings_buffer_total_length; i++)
     {
         EEPROM.write(eeprom_settings_address + 1 + i , settings_buffer[i]);
     }

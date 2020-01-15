@@ -19,7 +19,7 @@ settings port can receive information in the following configuration:
 TLV
 T - 1 byte type - corresponds to port
 L - 1 byte length value - corresponds to the number of bytes in the settings
-V - array of values of given length, mathing the settings struct/union length of a particular module
+V - array of values of given length, matching the settings struct/union length of a particular module
  */
 
 /**

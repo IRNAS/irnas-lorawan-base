@@ -1,7 +1,5 @@
 #include "module_gps_ublox.h"
 
-
-// Before this was declared as Arduino String
 #define NAME  "gps"
 #define serial_debug Serial
 

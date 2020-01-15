@@ -1,24 +1,14 @@
 #include "lorawan.h"
+#include "avr/eeprom.h"
 
 #define serial_debug  Serial
 
-#define LORAWAN_ABP
-//#define LORAWAN_OTAA
-
-#ifdef LORAWAN_ABP
-// LoraWAN ABP configuration
+// This is FALLBACK only:
+// LoraWAN ABP configuration - Keys are stored in program memory - this is fallback
 const char *devAddr = "26011485";
 const char *nwkSKey = "55BF65D73A10870F55CCBF32A314B582";
 const char *appSKey = "0A180E518BCD1E4EE60C0122F3D6EE8D";
-#endif
 
-#ifdef LORAWAN_OTAA
-
-// LoraWAN ABP configuration
-const char *appEui  = "70B3D57ED0025459";
-const char *appKey  = "5C430C71D8D7127D66B1AF0A2EE5DFF2";
-const char *devEui  = "00FD6DA8412EEE70";
-#endif
 
 bool lorawan_send_successful = false; // flags sending has been successful to the FSM
 
@@ -55,19 +45,49 @@ bool lorawan_init(void)
     LoRaWAN.onTransmit(lorawan_doneCallback);
     LoRaWAN.onReceive(lorawan_receiveCallback);
 
-#ifdef LORAWAN_OTAA
-    //Get the device ID
-    //LoRaWAN.getDevEui(devEui, 18);
     LoRaWAN.setSaveSession(true); // this will save the session for reboot, useful if reboot happens with in poor signal conditons
-    //LoRaWAN.setLinkCheckLimit(48); // number of uplinks link check is sent, 5 for experimenting, 48 otherwise
-    //LoRaWAN.setLinkCheckDelay(4); // number of uplinks waiting for an answer, 2 for experimenting, 4 otherwise
-    //LoRaWAN.setLinkCheckThreshold(4); // number of times link check fails to assert link failed, 1 for experimenting, 4 otherwise
-    LoRaWAN.joinOTAA(appEui, appKey, devEui);
-#endif
 
-#ifdef LORAWAN_ABP
-    LoRaWAN.joinABP(devAddr, nwkSKey, appSKey);
+    // We read LoRaWAN configuration from EEPROM, otherwise we will go to fallback configuration
+    int join_success = 0;
+    uint8_t key = 0;
+    for (uint32_t i = 0; i < 8; i++)
+    {
+        key |= EEPROM.read(EEPROM_OFFSET_COMMISSIONING + 4 + i);
+    }
+    // if OTAA AppEUi is defined, try to join OTAA
+    if (0x01 != key)
+    {
+        join_success = LoRaWAN.joinOTAA();
+#ifdef serial_debug
+        serial_debug.print("joinOTAA:");
+        serial_debug.println(join_success);
 #endif
+    }
+    else
+    { 
+        // try ABP
+        key = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            key |= EEPROM.read(EEPROM_OFFSET_COMMISSIONING + 32 + i);
+        }
+        // if ABP DevAddr is defined, try to join ABP
+        if (0 != key)
+        {
+            join_success = LoRaWAN.joinABP();
+#ifdef serial_debug
+            serial_debug.print("joinABP:");
+            serial_debug.println(join_success);
+#endif
+        }
+    }
+
+    // fallback to default ABP keys
+    if (0 == join_success)
+    {
+        serial_debug.println("We are doing fallback!");
+        return LoRaWAN.joinABP(devAddr, nwkSKey, appSKey);
+    }
 
     //moving to main loop
     //lorawan_joinCallback(); // call join callback manually to execute all the steps, necessary for ABP or OTAA with saved session

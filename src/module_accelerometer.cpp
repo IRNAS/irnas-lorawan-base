@@ -1,8 +1,6 @@
 #include "module_accelerometer.h"
 
 #define serial_debug Serial
-
-// Before this was declared as Arduino String
 #define NAME  "accelerometer"
 
 extern event_e system_event;

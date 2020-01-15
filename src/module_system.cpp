@@ -1,6 +1,5 @@
 #include "module_system.h"
 
-// Before this was declared as Arduino String
 #define NAME  "system"
 #define serial_debug Serial
 
