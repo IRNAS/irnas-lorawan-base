@@ -142,6 +142,14 @@ module_accelerometer["global_id"]["value"]=5
 #append to the template
 template_settings["module_accelerometer"]=module_accelerometer
 
+### module_accelerometer settings
+settings = fetch_settings_struct_from_header("src/module_lacuna.h","MODULE_LACUNA::module_settings_data_t")
+module_lacuna=create_array_from_settings(settings)
+# add some data manually
+module_lacuna["global_id"]["value"]=6
+#append to the template
+template_settings["module_lacuna"]=module_lacuna
+
 # creates the template with lengths and default values
 f = open('settings_template.json', 'w')
 f.write(collapse_json(json.dumps(template_settings, indent=4),indent=8))
