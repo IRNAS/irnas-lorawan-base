@@ -30,11 +30,6 @@ uint8_t MODULE_SYSTEM::configure(uint8_t * data, size_t * size)
 
 uint8_t MODULE_SYSTEM::get_settings_length()
 {
-#ifdef serial_debug
-    serial_debug.print(NAME);
-    serial_debug.print(":get_settings_length(");
-    serial_debug.println(")");
-#endif
     return sizeof(module_settings_data_t);
 }
 
