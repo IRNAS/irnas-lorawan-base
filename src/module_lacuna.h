@@ -36,6 +36,8 @@ class MODULE_LACUNA
         struct module_settings_data_t
         {
             uint8_t global_id;
+            uint8_t length;
+
         }__attribute__((packed));
 
         union module_settings_packet_t
