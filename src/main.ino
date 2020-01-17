@@ -12,7 +12,6 @@
 int8_t active_module = -1;
 
 
-
 // All possible states in finite state machine
 enum state_e
 {
@@ -231,7 +230,7 @@ void setup()
     serial_debug.print("resetCause: ");
     serial_debug.println(STM32L0.resetCause(),HEX);
 #endif
-    
+
     // Starting state
     state = INIT;
 }
