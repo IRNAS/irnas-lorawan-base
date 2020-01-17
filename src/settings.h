@@ -35,6 +35,7 @@ struct settingsData_t
   uint8_t   lorawan_reg;
   uint8_t   resend_delay; // in minutes, 0 disables it
   uint8_t   resend_count; // in times to be resent, 0 disables it
+  uint8_t   version; 
 }__attribute__((packed));
 
 union settingsPacket_t

@@ -15,7 +15,7 @@ uint16_t settings_buffer_total_length = 0;
 static uint8_t settings_buffer[1024]; // Note that at 0x1400 EEPROm LoraWAN things start, so must not run into that
 
 /**
- * @brief Setttings get lorawan settings port
+ * @brief Settings get lorawan settings port
  * 
  * @return uint8_t port
  */
@@ -46,8 +46,9 @@ uint8_t settings_set_settings(uint8_t * data, size_t * size)
     settings_packet.data.lorawan_adr =      constrain(settings_packet_downlink.data.lorawan_adr, 0, 1);         // ADR enable/disable
     settings_packet.data.lorawan_txp =      constrain(settings_packet_downlink.data.lorawan_txp, 0, 30);        // Configure TX power
     settings_packet.data.lorawan_reg =      constrain(settings_packet_downlink.data.lorawan_reg, 0, 1);         // Enable the regulatory limit
-    settings_packet.data.resend_delay =     constrain(settings_packet_downlink.data.resend_delay, 0, 24 * 60);    // Resend delay in minutes
+    settings_packet.data.resend_delay =     constrain(settings_packet_downlink.data.resend_delay, 0, 24 * 60);  // Resend delay in minutes
     settings_packet.data.resend_count =     constrain(settings_packet_downlink.data.resend_count, 0, 10);       // Number of times for this to be resent
+    settings_packet.data.version =          constrain(settings_packet_downlink.data.version, 0, 10);            // Version of firmware
 
     // Default packet value: 01 07 05 00 0F 00 00 00
 
@@ -64,6 +65,8 @@ uint8_t settings_set_settings(uint8_t * data, size_t * size)
     serial_debug.print(settings_packet.data.resend_delay);
     serial_debug.print(" res_c:");
     serial_debug.print(settings_packet.data.resend_count);
+    serial_debug.print(" version:");
+    serial_debug.print(settings_packet.data.version);
     serial_debug.println(")");;
 #endif
     return 0;
@@ -148,6 +151,7 @@ void settings_init(void)
 #ifndef FORCE_DEFAULT_SETTINGS
     // basic settings
     settings_set_settings(settings_buffer_tlv_ptr[0], &settings_buffer_tlv_length[0]);
+
     // modules
     for (size_t count = 0; count < N_MODULES; count++)
     {
