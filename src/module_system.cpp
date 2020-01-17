@@ -148,6 +148,7 @@ uint8_t MODULE_SYSTEM::read(void)
     pinMode(MODULE_SYSTEM_BAN_MON_EN, OUTPUT);
     digitalWrite(MODULE_SYSTEM_BAN_MON_EN, HIGH);
     delay(10);
+
     for (uint8_t i = 0; i < 16; i++)
     {
         voltage += analogRead(MODULE_SYSTEM_BAN_MON_AN);
@@ -155,10 +156,17 @@ uint8_t MODULE_SYSTEM::read(void)
     }
 
     voltage = voltage / 16; // TODO: calibrate
+    float v_ref = STM32L0.getVDDA();
+    voltage = (v_ref/4095.0f) * voltage;
+    voltage = ((219.4f + 99.4f)/99.4f) * voltage;
+    voltage = 1.064f * voltage; // Calibration value 
+    voltage = 1000 * voltage; // Move from V to mV
+
     digitalWrite(MODULE_SYSTEM_BAN_MON_EN, LOW);
     pinMode(MODULE_SYSTEM_BAN_MON_EN, INPUT_PULLDOWN);
 
     push_value(voltage, &r_battery);
+
 #endif /* MODULE_SYSTEM_BAN_MON_AN */
 
     float analog_input = 0;
@@ -184,6 +192,12 @@ uint8_t MODULE_SYSTEM::read(void)
     serial_debug.print(": read(");
     serial_debug.print("temperature_mean: ");
     serial_debug.print(r_temperature.r_mean);
+    serial_debug.println(")");
+
+    serial_debug.print(NAME);
+    serial_debug.print(": read(");
+    serial_debug.print("voltage_mean: ");
+    serial_debug.print(r_battery.r_mean);
     serial_debug.println(")");
 #endif
 
