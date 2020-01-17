@@ -226,7 +226,7 @@ void lorawan_checkCallback(void)
 }
 
 /**
- * @brief Callback when the data is received via LoraWAN - procecssing various content
+ * @brief Callback when the data is received via LoraWAN - processing various content
  * 
  */
 void lorawan_receiveCallback(void)
