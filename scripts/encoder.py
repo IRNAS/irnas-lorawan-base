@@ -14,11 +14,11 @@ Output:
 binary encoded payload - copy paste to TTN
 """
 
-with open('settings_sample.json') as json_file:
+with open('../settings_sample.json') as json_file:
     settings = json.load(json_file)
     #print(settings)
 
-with open('settings_template.json') as json_file:
+with open('../settings_template.json') as json_file:
     template = json.load(json_file)
     #print(template)
 

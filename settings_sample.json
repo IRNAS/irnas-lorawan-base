@@ -5,7 +5,8 @@
         "lorawan_txp": 0,
         "lorawan_reg": 0,
         "resend_delay": 0,
-        "resend_count": 0
+        "resend_count": 0,
+        "version": 0
     },
     "module_system": {
         "read_interval": 0,
@@ -42,5 +43,6 @@
         "triggered_duration": 0,
         "free_fall": 0,
         "dummy": 0
-    }
+    },
+    "module_lacuna": {}
 }

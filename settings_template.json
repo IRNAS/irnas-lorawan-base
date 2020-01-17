@@ -1,13 +1,14 @@
 {
     "basic_settings": {
         "global_id": {"value": 1, "size": 1, "order": 0},
-        "length": {"value": 8, "size": 1, "order": 1},
+        "length": {"value": 9, "size": 1, "order": 1},
         "lorawan_datarate": {"value": 0, "size": 1, "order": 2},
         "lorawan_adr": {"value": 0, "size": 1, "order": 3},
         "lorawan_txp": {"value": 0, "size": 1, "order": 4},
         "lorawan_reg": {"value": 0, "size": 1, "order": 5},
         "resend_delay": {"value": 0, "size": 1, "order": 6},
-        "resend_count": {"value": 0, "size": 1, "order": 7}
+        "resend_count": {"value": 0, "size": 1, "order": 7},
+        "version": {"value": 0, "size": 1, "order": 8}
     },
     "module_system": {
         "global_id": {"value": 2, "size": 1, "order": 0},
@@ -52,5 +53,9 @@
         "triggered_duration": {"value": 0, "size": 1, "order": 5},
         "free_fall": {"value": 0, "size": 1, "order": 6},
         "dummy": {"value": 0, "size": 1, "order": 7}
+    },
+    "module_lacuna": {
+        "global_id": {"value": 6, "size": 1, "order": 0},
+        "length": {"value": 2, "size": 1, "order": 1}
     }
 }

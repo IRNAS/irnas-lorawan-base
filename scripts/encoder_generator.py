@@ -103,7 +103,7 @@ def validate_decode_variable_type(type):
 template_settings={}
 
 ### basic device settings
-settings = fetch_settings_struct_from_header("src/settings.h","settingsData_t")
+settings = fetch_settings_struct_from_header("../src/settings.h","settingsData_t")
 basic_settings=create_array_from_settings(settings)
 # add some data manually
 basic_settings["global_id"]["value"]=1
@@ -111,7 +111,7 @@ basic_settings["global_id"]["value"]=1
 template_settings["basic_settings"]=basic_settings
 
 ### module_system settings
-settings = fetch_settings_struct_from_header("src/module_system.h","MODULE_SYSTEM::module_settings_data_t")
+settings = fetch_settings_struct_from_header("../src/module_system.h","MODULE_SYSTEM::module_settings_data_t")
 module_system=create_array_from_settings(settings)
 # add some data manually
 module_system["global_id"]["value"]=2
@@ -119,7 +119,7 @@ module_system["global_id"]["value"]=2
 template_settings["module_system"]=module_system
 
 ### module_gps_ublox settings
-settings = fetch_settings_struct_from_header("src/module_gps_ublox.h","MODULE_GPS_UBLOX::module_settings_data_t")
+settings = fetch_settings_struct_from_header("../src/module_gps_ublox.h","MODULE_GPS_UBLOX::module_settings_data_t")
 module_gps_ublox=create_array_from_settings(settings)
 # add some data manually
 module_gps_ublox["global_id"]["value"]=3
@@ -127,7 +127,7 @@ module_gps_ublox["global_id"]["value"]=3
 template_settings["module_gps_ublox"]=module_gps_ublox
 
 ### module_pira settings
-settings = fetch_settings_struct_from_header("src/module_pira.h","MODULE_PIRA::module_settings_data_t")
+settings = fetch_settings_struct_from_header("../src/module_pira.h","MODULE_PIRA::module_settings_data_t")
 module_pira=create_array_from_settings(settings)
 # add some data manually
 module_pira["global_id"]["value"]=4
@@ -135,7 +135,7 @@ module_pira["global_id"]["value"]=4
 template_settings["module_pira"]=module_pira
 
 ### module_accelerometer settings
-settings = fetch_settings_struct_from_header("src/module_accelerometer.h","MODULE_ACCELEROMETER::module_settings_data_t")
+settings = fetch_settings_struct_from_header("../src/module_accelerometer.h","MODULE_ACCELEROMETER::module_settings_data_t")
 module_accelerometer=create_array_from_settings(settings)
 # add some data manually
 module_accelerometer["global_id"]["value"]=5
@@ -143,7 +143,7 @@ module_accelerometer["global_id"]["value"]=5
 template_settings["module_accelerometer"]=module_accelerometer
 
 ### module_accelerometer settings
-settings = fetch_settings_struct_from_header("src/module_lacuna.h","MODULE_LACUNA::module_settings_data_t")
+settings = fetch_settings_struct_from_header("../src/module_lacuna.h","MODULE_LACUNA::module_settings_data_t")
 module_lacuna=create_array_from_settings(settings)
 # add some data manually
 module_lacuna["global_id"]["value"]=6
@@ -151,7 +151,7 @@ module_lacuna["global_id"]["value"]=6
 template_settings["module_lacuna"]=module_lacuna
 
 # creates the template with lengths and default values
-f = open('settings_template.json', 'w')
+f = open('../settings_template.json', 'w')
 f.write(collapse_json(json.dumps(template_settings, indent=4),indent=8))
 f.close()
 
@@ -172,7 +172,7 @@ for module in template_settings:
 
 
 #creates the sample config which is user-editable
-f = open('settings_sample.json', 'w')
+f = open('../settings_sample.json', 'w')
 f.write(collapse_json(json.dumps(template_settings, indent=4),indent=8))
 f.close()
 
