@@ -42,7 +42,7 @@ uint32_t get_bits(float x, float min, float max, int precision)
     {
         x -= min;
     }
-    uint32_t new_range = (pow(2, precision) - 1) / range;
+    float new_range = (pow(2, precision) - 1) / range;
     uint32_t out_x = x * new_range;
     return out_x;
 }
