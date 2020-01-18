@@ -92,6 +92,10 @@ uint8_t MODULE_MICROCLIMATE::initialize(void)
 {
     settings_packet.data.read_interval = 10;
     settings_packet.data.send_interval = 1;
+#ifdef MODULE_MICROCLIMATE_EN
+    pinMode(MODULE_MICROCLIMATE_EN, OUTPUT);
+    digitalWrite(MODULE_MICROCLIMATE_EN, HIGH);
+#endif /* MODULE_MICROCLIMATE_EN */
 
      //DSO130 sensor
     Dps310PressureSensor.begin(Wire);
@@ -168,8 +172,8 @@ uint8_t MODULE_MICROCLIMATE::read(void)
     float hdc2080_temp = hdc2080.getTemp();
     float hdc2080_hum = hdc2080.getHum();
 
-    push_value(dsp310_pres,&r_temperature);
-    push_value(dsp310_pres,&r_humidity);
+    push_value(hdc2080_temp,&r_temperature);
+    push_value(hdc2080_hum,&r_humidity);
 
 
 #ifdef serial_debug

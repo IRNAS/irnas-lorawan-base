@@ -65,6 +65,8 @@ extern module *modules[];
 #define MODULE_ACCELEROMETER_INT1 PB2
 #define MODULE_ACCELEROMETER_INT2 PB7
 
+#define MODULE_MICROCLIMATE_EN PA5
+
 #define MODULE_VSWR_ADC -1
 #define MODULE_VSWR_EN -1
 
