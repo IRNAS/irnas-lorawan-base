@@ -51,7 +51,7 @@ uint32_t get_bits(float x, float min, float max, int precision)
 
 void push_value(float value, reading_structure_t * values)
 {
-    // special case if the array is empty, opulate both min and max
+    // special case if the array is empty, populate both min and max
     if(0 == values->r_count)
     {
         values->r_min = value;
