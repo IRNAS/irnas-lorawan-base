@@ -107,8 +107,8 @@ module_flags_e MODULE_LACUNA::scheduler(void)
 uint8_t MODULE_LACUNA::initialize(void)
 {
     //Our timewindow in which we want Lacuna to operate
-    start_tx = { 12, 0 };
-    end_tx = { 12, 20 };
+    start_tx = { 20, 10 };
+    end_tx = { 20, 50 };
     
     // lora_init_done should be false at the start to ensure that setup_lacuna
     // is called first time 
@@ -253,7 +253,7 @@ void MODULE_LACUNA::setup_lacuna(void)
     
     // Override defult LoRa parameters
     txParams.frequency = 868300000;
-    txParams.power = 14;
+    txParams.power = 21;
     txParams.codingRate = lsLoraCodingRate_4_5;
     txParams.bandwidth = lsLoraBandwidth_125_khz;
     txParams.spreadingFactor = lsLoraSpreadingFactor_11;

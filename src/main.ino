@@ -456,9 +456,11 @@ void loop()
                 // defaults for timing out
                 state_timeout_duration = 2000;
                 state_goto_timeout = IDLE;
+
                 // transition
                 uint8_t * data = &last_packet[0];
                 size_t * size = &last_packet_size;
+
                 last_packet_port = modules[active_module]->get_global_id();
                 last_packet_time = millis();
                 if (modules[active_module]->send(data,size))

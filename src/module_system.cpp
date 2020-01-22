@@ -56,7 +56,6 @@ module_flags_e MODULE_SYSTEM::scheduler(void)
 #endif
         return flags;
     }
-
     elapsed = millis() - read_timestamp;
     if ((settings_packet.data.read_interval != 0)
             &&  (elapsed >= (settings_packet.data.read_interval * 1000)))
@@ -85,8 +84,6 @@ uint8_t MODULE_SYSTEM::initialize(void)
 
 uint8_t MODULE_SYSTEM::send(uint8_t *data, size_t *size)
 {
-    //from the readings_packet
-
 #ifdef serial_debug
     serial_debug.print(NAME);
     serial_debug.print(": send(");
@@ -97,9 +94,9 @@ uint8_t MODULE_SYSTEM::send(uint8_t *data, size_t *size)
 
     readings_packet.data.vbus = (uint8_t) get_bits(STM32L0.getVDDA(), 0, 3.6, 8);
 
-    readings_packet.data.battery_avg = (uint8_t) get_bits(r_battery.r_mean, 0, 4000, 8);
-    readings_packet.data.battery_min = (uint8_t) get_bits(r_battery.r_min, 0, 4000, 8);
-    readings_packet.data.battery_max = (uint8_t) get_bits(r_battery.r_max, 0, 4000, 8);
+    readings_packet.data.battery_avg = (r_battery.r_mean - 2000) / 10.0;
+    readings_packet.data.battery_min = (r_battery.r_min - 2000) / 10.0;
+    readings_packet.data.battery_max = (r_battery.r_max - 2000) / 10.0;
     clear_value(&r_battery);
 
     readings_packet.data.input_analog_avg = (uint8_t) get_bits(r_analog_input.r_mean, 0, 32000, 8);
@@ -112,7 +109,7 @@ uint8_t MODULE_SYSTEM::send(uint8_t *data, size_t *size)
     readings_packet.data.temperature_max = (uint8_t) get_bits(r_temperature.r_max, -20, 80, 8);
     clear_value(&r_temperature);
 
-    memcpy(data,&readings_packet.bytes[0], sizeof(module_readings_data_t));
+    memcpy(data, &readings_packet.bytes[0], sizeof(module_readings_data_t));
     *size = sizeof(module_readings_data_t);
     flags = M_IDLE;
     return 1;

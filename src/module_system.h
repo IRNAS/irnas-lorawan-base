@@ -60,7 +60,7 @@ class MODULE_SYSTEM
             uint8_t temperature_avg; // average of readings during a period, maximally once a day
             uint8_t temperature_min; // min of readings during a period, maximally once a day
             uint8_t temperature_max; // max of readings during a period, maximally once a day
-            uint8_t errors[10];
+            //uint8_t errors[10];
         }__attribute__((packed));
 
         union module_readings_packet_t
