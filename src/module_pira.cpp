@@ -56,6 +56,7 @@ uint8_t MODULE_PIRA::initialize(void)
     readings_packet.data.empty_space = 0;
     readings_packet.data.photo_count = 0;
     readings_packet.data.status_time = 0;
+    readings_packet.data.next_wakeup = 0;
     readings_packet.data.error_values = 0;
 
     // start the module in active state
@@ -90,6 +91,10 @@ uint8_t MODULE_PIRA::send(uint8_t * data, size_t * size)
 #endif
 
     readings_packet.data.status_time = rtc_time_read(); 
+    readings_packet.data.next_wakeup = min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period); 
+    serial_debug.print("THIS IS NEXT WAKEUP: ");
+    serial_debug.println(readings_packet.data.next_wakeup);
+
     memcpy(data, &readings_packet.bytes[0], sizeof(module_readings_data_t));
     *size = sizeof(module_readings_data_t);
     flags = M_IDLE;
@@ -504,7 +509,7 @@ void MODULE_PIRA::pira_state_machine()
     serial_debug.print(stateTimeoutDuration);
     serial_debug.print(" ");
     serial_debug.print(flags);
-    serial_debug.println(")");;
+    serial_debug.println(")");
 #endif
 
     switch(status_pira_state_machine)

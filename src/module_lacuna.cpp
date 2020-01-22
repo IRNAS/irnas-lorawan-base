@@ -76,12 +76,6 @@ module_flags_e MODULE_LACUNA::scheduler(void)
     timeinfo->tm_sec =  0;
     time_t end_window_tx = mktime(timeinfo);
 
-    serial_debug.print("Window start: ");
-    serial_debug.println(ctime(&start_window_tx));
-
-    serial_debug.print("Window end: ");
-    serial_debug.println(ctime(&end_window_tx));
-
 #ifdef serial_debug
     serial_debug.print(NAME);
     serial_debug.print(":scheduler(");
@@ -207,7 +201,7 @@ void MODULE_LACUNA::setup_lacuna(void)
     Serial.println("Europe 862-870 Mhz");
 #elif REGION == R_US915
     Serial.println("US 902-928 Mhz");
-#elif REGION == R_AS923
+#elif REGION == R_AS923_changed
     Serial.println("Asia 923 Mhz");
 #elif REGION == R_IN865
     Serial.println("India 865-867 Mhz");

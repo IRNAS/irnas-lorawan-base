@@ -65,7 +65,8 @@ class MODULE_PIRA
         {
             uint16_t empty_space; // RPi disk space value
             uint16_t photo_count; // RPi photo count
-            uint64_t status_time; // system time
+            uint32_t status_time; // system time, only 4 bytes are needed, time_t is 4 bytes long
+            uint16_t next_wakeup; // When will next wake up happen in seconds
             uint16_t error_values;
         }__attribute__((packed));
 
