@@ -1,5 +1,6 @@
 #include "settings.h"
 
+#define NAME  "settings"
 #define serial_debug  Serial
 //#define FORCE_DEFAULT_SETTINGS // TODO: remove for production
 
@@ -53,8 +54,8 @@ uint8_t settings_set_settings(uint8_t * data, size_t * size)
     // Default packet value: 01 07 05 00 0F 00 00 00
 
 #ifdef serial_debug
-    serial_debug.print("basic");
-    serial_debug.print(":configure(");
+    serial_debug.print(NAME);
+    serial_debug.print(": configure(");
     serial_debug.print("dr:");
     serial_debug.print(settings_packet.data.lorawan_datarate);
     serial_debug.print(" adr:");
@@ -82,7 +83,8 @@ void settings_init(void)
 {
     // Array of type - global ids and associated lengths
 #ifdef serial_debug
-    serial_debug.print("settings_init(");
+    serial_debug.print(NAME);
+    serial_debug.print(": init(");
     serial_debug.println(")");
 #endif
 
@@ -93,7 +95,8 @@ void settings_init(void)
     settings_buffer_total_length += settings_buffer_tlv_length[0];
 
 #ifdef serial_debug
-    serial_debug.print("settings_init(basic length:");
+    serial_debug.print(NAME);
+    serial_debug.print(": init(basic length:");
     serial_debug.print(settings_buffer_total_length);
     serial_debug.println(")");
 #endif
@@ -112,7 +115,8 @@ void settings_init(void)
         settings_buffer_total_length += settings_buffer_tlv_length[count + 1];
 
 #ifdef serial_debug
-        serial_debug.print("settings_init(id:");
+        serial_debug.print(NAME);
+        serial_debug.print(": init(id:");
         serial_debug.print(modules[count]->get_global_id());
         serial_debug.print(" len:");
         serial_debug.print(modules[count]->get_settings_length());
@@ -121,7 +125,8 @@ void settings_init(void)
     }
 
 #ifdef serial_debug
-    serial_debug.print("settings_init(length:");
+    serial_debug.print(NAME);
+    serial_debug.print(": init(length:");
     serial_debug.print(settings_buffer_total_length);
     serial_debug.println(")");
 #endif
@@ -131,7 +136,8 @@ void settings_init(void)
         settings_buffer_total_length = sizeof(settings_buffer);
 
 #ifdef serial_debug
-        serial_debug.print("settings_init(buffer too small");
+        serial_debug.print(NAME);
+        serial_debug.print(": init(buffer too small");
         serial_debug.println(")");
 #endif
     }
@@ -160,7 +166,8 @@ void settings_init(void)
 #endif
 
 #ifdef serial_debug
-    serial_debug.println("lorawan_load_settings()");
+    serial_debug.print(NAME);
+    serial_debug.println(": lorawan_load_settings()");
 #endif
 }
 
@@ -179,7 +186,8 @@ void settings_from_downlink(uint8_t * data, size_t length)
         uint8_t in_length = data[buffer_processed_length + 1];
 
 #ifdef serial_debug
-        serial_debug.print("settings_from_downlink(id:");
+        serial_debug.print(NAME);
+        serial_debug.print(": settings_from_downlink(id:");
         serial_debug.print(in_global_id);
         serial_debug.print(" len:");
         serial_debug.print(in_length);
@@ -195,7 +203,8 @@ void settings_from_downlink(uint8_t * data, size_t length)
         for (size_t count = 0; count < sizeof(settings_buffer_tlv_type); count++)
         {
 #ifdef serial_debug
-            serial_debug.print("settings_received(mod:");
+            serial_debug.print(NAME);
+            serial_debug.print(": received(mod:");
             serial_debug.print(settings_buffer_tlv_type[count]);
             serial_debug.print(" len:");
             serial_debug.print(settings_buffer_tlv_length[count]);
@@ -222,7 +231,8 @@ void settings_from_downlink(uint8_t * data, size_t length)
                     {
                         settings_set_settings(settings_buffer_tlv_ptr[0], &settings_buffer_tlv_length[0]);
 #ifdef serial_debug
-                        serial_debug.print("settings_received(0");
+                        serial_debug.print(NAME);
+                        serial_debug.print(": received(0");
                         serial_debug.println(")");
 #endif 
                     }
@@ -233,7 +243,8 @@ void settings_from_downlink(uint8_t * data, size_t length)
                         modules[count-1]->configure(settings_buffer_tlv_ptr[count], &settings_buffer_tlv_length[count]);
                         modules[count-1]->get_settings_length();
 #ifdef serial_debug
-                        serial_debug.print("settings_received(");
+                        serial_debug.print(NAME);
+                        serial_debug.print(": received(");
                         serial_debug.print(modules[count-1]->get_global_id());
                         serial_debug.println(")");
 #endif
@@ -254,7 +265,8 @@ void settings_from_downlink(uint8_t * data, size_t length)
         EEPROM.write(eeprom_settings_address + 1 + i , settings_buffer[i]);
     }
 #ifdef serial_debug
-    serial_debug.print("settings_received(");
+    serial_debug.print(NAME);
+    serial_debug.print(": received(");
     serial_debug.println("eeprom stored)");
 #endif
 }
@@ -266,7 +278,8 @@ void settings_from_downlink(uint8_t * data, size_t length)
 bool settings_send(void)
 {
 #ifdef serial_debug
-    serial_debug.println("settings_send()");
+    serial_debug.print(NAME);
+    serial_debug.println(": send()");
 #endif
 
     uint16_t lenght = settings_buffer_total_length;
@@ -274,8 +287,8 @@ bool settings_send(void)
     {
         lenght = LoRaWAN.getMaxPayloadSize();
 #ifdef serial_debug
-        serial_debug.print("settings larger then packet size, truncating");
-        serial_debug.println("");
+        serial_debug.print(NAME);
+        serial_debug.print(": settings larger then packet size, truncating!");
 #endif
     }
     return lorawan_send(settings_packet_port, &settings_buffer[0], lenght);

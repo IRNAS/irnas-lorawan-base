@@ -18,7 +18,7 @@ uint8_t MODULE_SYSTEM::configure(uint8_t * data, size_t * size)
 
 #ifdef serial_debug
     serial_debug.print(NAME);
-    serial_debug.print(":configure(");
+    serial_debug.print(": configure(");
     serial_debug.print("s:");
     serial_debug.print(settings_packet.data.send_interval);
     serial_debug.print(" r:");
@@ -51,7 +51,7 @@ module_flags_e MODULE_SYSTEM::scheduler(void)
         }
 #ifdef serial_debug
         serial_debug.print(NAME);
-        serial_debug.print(":scheduler(");
+        serial_debug.print(": scheduler(");
         serial_debug.println("send)");
 #endif
         return flags;
@@ -67,8 +67,8 @@ module_flags_e MODULE_SYSTEM::scheduler(void)
         }
 #ifdef serial_debug
         serial_debug.print(NAME);
-        serial_debug.print(":scheduler(");
-        serial_debug.println("_read_values)");
+        serial_debug.print(": scheduler(");
+        serial_debug.println("read_values)");
 #endif
         return flags;
     }

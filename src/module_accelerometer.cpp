@@ -31,7 +31,7 @@ uint8_t MODULE_ACCELEROMETER::configure(uint8_t * data, size_t * size)
 
 #ifdef serial_debug
     serial_debug.print(NAME);
-    serial_debug.print(":configure(");
+    serial_debug.print(": configure(");
     serial_debug.print("s:");
     serial_debug.print(settings_packet.data.send_interval);
     serial_debug.print(" r:");
@@ -45,7 +45,7 @@ uint8_t MODULE_ACCELEROMETER::get_settings_length()
 {
 #ifdef serial_debug
     serial_debug.print(NAME);
-    serial_debug.print(":get_settings_length(");
+    serial_debug.print(": get_settings_length(");
     serial_debug.println(")");;
 #endif
     return sizeof(module_settings_data_t);
@@ -72,7 +72,7 @@ module_flags_e MODULE_ACCELEROMETER::scheduler(void)
 
 #ifdef serial_debug
         serial_debug.print(NAME);
-        serial_debug.print(":scheduler(");
+        serial_debug.print(": scheduler(");
         serial_debug.println("send_values)");
 #endif
 
@@ -90,7 +90,7 @@ module_flags_e MODULE_ACCELEROMETER::scheduler(void)
 
 #ifdef serial_debug
         serial_debug.print(NAME);
-        serial_debug.print(":scheduler(");
+        serial_debug.print(": scheduler(");
         serial_debug.println("read_values)");
 #endif
     }
@@ -109,8 +109,9 @@ uint8_t MODULE_ACCELEROMETER::initialize(void)
     if(lis.begin() == false)
     {
 #ifdef serial_debug
-        serial_debug.print("accelerometer_init(");
-        serial_debug.println("accel error)");
+        serial_debug.print(NAME);
+        serial_debug.print(": init(");
+        serial_debug.println("error)");
 #endif
         return 0;
     }

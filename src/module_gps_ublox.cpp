@@ -7,7 +7,7 @@ uint8_t MODULE_GPS_UBLOX::configure(uint8_t *data, size_t *size)
 {
 #ifdef serial_debug
     serial_debug.print(NAME);
-    serial_debug.print(":configure(");
+    serial_debug.print(": configure(");
     serial_debug.println(")");;
 #endif
 
@@ -264,9 +264,9 @@ void MODULE_GPS_UBLOX::gps_backup(bool enable)
 bool MODULE_GPS_UBLOX::gps_begin(void)
 {
 #ifdef serial_debug
-    serial_debug.print("gps_begin(");
-    serial_debug.println(")");
-    serial_debug.print("gps_settings(");
+    serial_debug.print("gps: begin(");
+    serial_debug.println("started)");
+    serial_debug.print("gps: settings(");
     serial_debug.print("per: ");
     serial_debug.print(settings_packet.data.periodic_interval);
     serial_debug.print(" trig: ");
@@ -363,7 +363,7 @@ bool MODULE_GPS_UBLOX::gps_begin(void)
     bitSet(readings_packet.data.status, 2);
 
 #ifdef serial_debug
-    serial_debug.print("gps_begin(");
+    serial_debug.print("gps: begin(");
     serial_debug.println("done)");
 #endif
 

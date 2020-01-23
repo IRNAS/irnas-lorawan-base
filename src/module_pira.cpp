@@ -8,7 +8,7 @@ uint8_t MODULE_PIRA::configure(uint8_t * data, size_t * size)
 {
 #ifdef serial_debug
     serial_debug.print(NAME);
-    serial_debug.print(":configure(");
+    serial_debug.print(": configure(");
     serial_debug.println(")");;
 #endif
 }
@@ -35,7 +35,7 @@ module_flags_e MODULE_PIRA::scheduler(void)
             flags = M_RUNNING;
 #ifdef serial_debug
         serial_debug.print(NAME);
-        serial_debug.print(":scheduler(");
+        serial_debug.print(": scheduler(");
         serial_debug.println("run)");
 #endif
         }
@@ -92,8 +92,6 @@ uint8_t MODULE_PIRA::send(uint8_t * data, size_t * size)
 
     readings_packet.data.status_time = rtc_time_read(); 
     readings_packet.data.next_wakeup = min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period); 
-    serial_debug.print("THIS IS NEXT WAKEUP: ");
-    serial_debug.println(readings_packet.data.next_wakeup);
 
     memcpy(data, &readings_packet.bytes[0], sizeof(module_readings_data_t));
     *size = sizeof(module_readings_data_t);
@@ -113,11 +111,11 @@ void MODULE_PIRA::print_data(void)
 
 uint8_t MODULE_PIRA::read(void)
 {
-    #ifdef serial_debug
-        serial_debug.print(NAME);
-        serial_debug.print(": read(");
-        serial_debug.println(")");
-    #endif
+#ifdef serial_debug
+    serial_debug.print(NAME);
+    serial_debug.print(": read(");
+    serial_debug.println(")");
+#endif
 
     flags = M_IDLE;
     return 1;
@@ -149,8 +147,8 @@ void MODULE_PIRA::uart_receive()
  */
 void MODULE_PIRA::uart_command_parse(uint8_t * rxBuffer)
 {
-    uint8_t firstChar = rxBuffer[0];
-    uint8_t secondChar = rxBuffer[1];
+    uint8_t first_char = rxBuffer[0];
+    uint8_t second_char = rxBuffer[1];
     uint32_t data = 0;
 
     data = (rxBuffer[2] << 24) | 
@@ -158,44 +156,50 @@ void MODULE_PIRA::uart_command_parse(uint8_t * rxBuffer)
            (rxBuffer[4] << 8) | 
            (rxBuffer[5]);
 
-    if (secondChar == ':')
+    if (second_char == ':')
     {
-        switch(firstChar)
+        switch(first_char)
         {
+#ifdef serial_debug
+            serial_debug.print(NAME);
+            serial_debug.print(": received( ");
+            serial_debug.print(first_char);
+            serial_debug.print(" )");
+#endif
+
             //TODO: constrain values
             case 't':
-                serial_debug.println("t: received");
                 rtc_time_sync((time_t)data,false);
             break;
+
             case 'p':
-                serial_debug.println("p: received");
                 settings_packet.data.safety_power_period = data;
             break;
+
             case 's':
-                serial_debug.println("s: received");
                 settings_packet.data.safety_sleep_period = data;
             break;
+            
             case 'c':
-                serial_debug.println("c: received");
-                //MODULE_PIRA_SERIAL.println("To be defined how to react on c: command");
+                //To be defined how to react on c command
             break;
+            
             case 'r':
-                serial_debug.println("r: received");
                 settings_packet.data.safety_reboot = data;
             break;
+            
             case 'w':
-                serial_debug.println("w: received");
                 settings_packet.data.operational_wakeup = data;
             break;
+            
             case 'f':
-                serial_debug.println("f: received");
                 readings_packet.data.empty_space = data;
             break;
+            
             case 'i':
-                serial_debug.println("i: received");
-                //serial_debug.println(data);
                 readings_packet.data.photo_count = data;
             break;
+            
             default:
                 break;
         }
@@ -359,6 +363,7 @@ void MODULE_PIRA::send_status_values(void)
  */
 void MODULE_PIRA::print_status_values(void)
 {
+#ifdef serial_debug
     serial_debug.print("Battery level in V = ");
     //TODO battery currently not implemented?
     serial_debug.println(0);
@@ -374,6 +379,7 @@ void MODULE_PIRA::print_status_values(void)
     serial_debug.println(digitalRead(MODULE_PIRA_STATUS));
     serial_debug.print("Overview = ");
     serial_debug.println(get_overview_value());
+#endif
 }
 
 /**
@@ -499,7 +505,7 @@ void MODULE_PIRA::pira_state_machine()
 #ifdef serial_debug
     pira_elapsed = millis() - stateTimeoutStart;
     serial_debug.print(NAME);
-    serial_debug.print(":fsm(");
+    serial_debug.print(": fsm(");
     serial_debug.print(return_state(state_prev));
     serial_debug.print(" -> ");
     serial_debug.print(return_state(status_pira_state_machine));
