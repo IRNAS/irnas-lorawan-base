@@ -29,6 +29,51 @@ enum state_e
     HIBERNATION
 };
 
+/**
+ * @brief Get reset cause
+ *
+ * @param enumrated reset cause
+ *  
+ * @returns reset cause in a string
+ */
+char * decode_reset_cause(uint8_t reset_cause)
+{
+    switch(reset_cause)
+    {
+        case 0:
+            return "POWERON";
+        break;
+
+        case 1:
+            return "EXTERNAL";
+        break;
+        
+        case 2:
+            return "SOFTWARE";
+        break;
+
+        case 3:
+            return "WATCHDOG";
+        break;
+        
+        case 4:
+            return "FIREWALL";
+        break;
+        
+        case 5:
+            return "OTHER";
+        break;
+        
+        case 6:
+            return "STANDBY";
+        break;
+        
+        default:
+            return "OTHER";
+        break;
+    }
+}
+
 // Variables dealing with FSM
 state_e state = INIT;
 state_e state_goto_timeout;
@@ -226,9 +271,11 @@ void setup()
     // Serial port debug setup
 #ifdef serial_debug
     serial_debug.begin(115200);
-    serial_debug.print("setup(serial debug begin): ");
-    serial_debug.print("resetCause: ");
-    serial_debug.println(STM32L0.resetCause(),HEX);
+    serial_debug.println(); //Empty line for clarity
+    serial_debug.println("START OF PROGRAM");
+    serial_debug.print("CAUSE OF RESET WAS: ");
+    serial_debug.println(decode_reset_cause(STM32L0.resetCause()));
+    serial_debug.println(); //Empty line for clarity
 #endif
 
     // Starting state
