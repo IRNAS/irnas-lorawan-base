@@ -89,7 +89,7 @@ module_flags_e MODULE_GPS_UBLOX::scheduler(void)
 #ifdef serial_debug
             serial_debug.print(NAME);
             serial_debug.print(":scheduler(");
-            serial_debug.println("_read_values)");
+            serial_debug.println("read_values)");
 #endif
         }
         return flags;
@@ -105,7 +105,7 @@ module_flags_e MODULE_GPS_UBLOX::scheduler(void)
 #ifdef serial_debug
             serial_debug.print(NAME);
             serial_debug.print("scheduler(");
-            serial_debug.println("send)");
+            serial_debug.println("send_values)");
 #endif
         }
         return flags;
