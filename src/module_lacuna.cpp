@@ -286,7 +286,7 @@ void MODULE_LACUNA::send_lacuna(void)
     int lora_result = lsSendLoraWAN(&loraWANParams, &txParams, (byte *)payload, sizeof mytext);
 
 #ifdef serial_debug
-    serial_debugserial_debug("LoraWan result: ");
+    serial_debug.print("LoraWan result: ");
     serial_debug.println(lsErrorToString(lora_result));
 #endif
 
