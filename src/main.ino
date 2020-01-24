@@ -263,7 +263,6 @@ void state_transition(state_e next)
 void setup() 
 {
     STM32L0.wdtEnable(18000);
-    analogReadResolution(12);
 
     //pinMode(BOARD_LED,OUTPUT);
     //digitalWrite(BOARD_LED,HIGH);

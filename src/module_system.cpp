@@ -139,25 +139,13 @@ uint8_t MODULE_SYSTEM::read(void)
     // temperature
     push_value(STM32L0.getTemperature(),&r_temperature);
 
-    // battery voltage
-    float voltage = 0;
 #ifdef MODULE_SYSTEM_BAN_MON_AN
     pinMode(MODULE_SYSTEM_BAN_MON_EN, OUTPUT);
     digitalWrite(MODULE_SYSTEM_BAN_MON_EN, HIGH);
     delay(10);
 
-    for (uint8_t i = 0; i < 16; i++)
-    {
-        voltage += analogRead(MODULE_SYSTEM_BAN_MON_AN);
-        delay(1);
-    }
-
-    voltage = voltage / 16; // TODO: calibrate
-    float v_ref = STM32L0.getVDDA();
-    voltage = (v_ref/4095.0f) * voltage;
-    voltage = ((219.4f + 99.4f)/99.4f) * voltage;
-    voltage = 1.064f * voltage; // Calibration value 
-    voltage = 1000 * voltage; // Move from V to mV
+    // get battery voltage in mV
+    uint16_t voltage = get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN);
 
     digitalWrite(MODULE_SYSTEM_BAN_MON_EN, LOW);
     pinMode(MODULE_SYSTEM_BAN_MON_EN, INPUT_PULLDOWN);

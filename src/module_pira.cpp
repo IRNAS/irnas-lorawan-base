@@ -478,7 +478,7 @@ char * MODULE_PIRA::return_state(state_pira_e status_pira_state_machine)
             return "WAKEUP";
         break;
 
-        case REBOOT_DETECTION
+        case REBOOT_DETECTION:
             return "REBOOT_DETECTION";
         break;
 

@@ -5,7 +5,7 @@
 #include <LibLacuna.h>
 #include "project.h"
 #include "project_utils.h"
-#include "STM32L0.h"
+#include <STM32L0.h>
 #include "module.h"
 
 class MODULE_LACUNA
