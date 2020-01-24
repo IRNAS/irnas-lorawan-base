@@ -11,6 +11,7 @@ uint8_t MODULE_PIRA::configure(uint8_t * data, size_t * size)
     serial_debug.print(": configure(");
     serial_debug.println(")");;
 #endif
+
 }
 
 uint8_t MODULE_PIRA::get_settings_length()
@@ -26,12 +27,14 @@ uint8_t MODULE_PIRA::set_downlink_data(uint8_t * data, size_t * size)
 module_flags_e MODULE_PIRA::scheduler(void)
 {
 
-    uint32_t elapsed = millis() - run_timestamp;
-    if (elapsed >= (min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period) * 1000 ||  0 == run_timestamp))
+    uint32_t elapsed = millis() - timestamp;
+
+    // Timestamp is 0 only at boot.
+    if (elapsed >= (min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period) * 1000 ||  0 == timestamp))
     {
         if (M_IDLE == flags)
         {
-            run_timestamp = millis();
+            timestamp = millis();
             flags = M_RUNNING;
 #ifdef serial_debug
         serial_debug.print(NAME);
@@ -65,6 +68,7 @@ uint8_t MODULE_PIRA::initialize(void)
     stateTimeoutDuration = 0;
     state_prev = IDLE_PIRA;
     flags = M_IDLE;
+    timestamp = 0; 
 
     // Initially enable RaspberryPi power
     

@@ -95,7 +95,7 @@ class MODULE_PIRA
         /**
          * @brief Variables concerning the state of the program
          * @detail
-         *      state
+         *      status_pira_state_machine
          *          It keeps the current state of state machine
          *      state_prev
          *          It keeps the previous state of state machine
@@ -114,7 +114,7 @@ class MODULE_PIRA
         state_pira_e state_prev;
         state_pira_e state_goto_timeout;
         uint32_t pira_elapsed;
-        uint32_t run_timestamp;
+        uint32_t timestamp; // Used to keep track of when pira module enters running state
         uint32_t stateTimeoutDuration;
         uint32_t stateTimeoutStart;
 
