@@ -32,14 +32,30 @@ module_flags_e MODULE_PIRA::scheduler(void)
     // Timestamp is 0 only at boot.
     if (elapsed >= (min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period) * 1000 ||  0 == timestamp))
     {
-        if (M_IDLE == flags)
+        // Do not turn on raspberry pi if voltage is too low
+        uint16_t voltage = get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN);
+        uint16_t threshold = 3500;
+        if(voltage > threshold)
         {
-            timestamp = millis();
-            flags = M_RUNNING;
+            if (M_IDLE == flags)
+            {
+                timestamp = millis();
+                flags = M_RUNNING;
 #ifdef serial_debug
-        serial_debug.print(NAME);
-        serial_debug.print(": scheduler(");
-        serial_debug.println("run)");
+                serial_debug.print(NAME);
+                serial_debug.print(": scheduler(");
+                serial_debug.println("run)");
+#endif
+            }
+        }
+        else
+        {
+#ifdef serial_debug
+                serial_debug.print(NAME);
+                serial_debug.print(": scheduler(");
+                serial_debug.print("undervoltage lockout!, voltage = ");
+                serial_debug.print(voltage);
+                serial_debug.println(" mV)");
 #endif
         }
     }
