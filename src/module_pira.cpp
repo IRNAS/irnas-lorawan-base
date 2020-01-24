@@ -418,7 +418,7 @@ uint32_t MODULE_PIRA::get_overview_value(void)
 void MODULE_PIRA::pira_state_transition(state_pira_e next)
 {
   stateTimeoutStart = millis();
-  state_prev=status_pira_state_machine;
+  state_prev = status_pira_state_machine;
   status_pira_state_machine = next;
 }
 
@@ -458,36 +458,38 @@ bool MODULE_PIRA::pira_state_check_timeout(void)
  *
  * @return char*
  */
-char* MODULE_PIRA::return_state(state_pira_e status_pira_state_machine)
+char * MODULE_PIRA::return_state(state_pira_e status_pira_state_machine)
 {
-    static char buffer[20];
+    switch (status_pira_state_machine)
+    {
+        case IDLE_PIRA:
+            return "IDLE_PIRA";
+        break;
 
-    if(status_pira_state_machine == IDLE_PIRA)
-    {
-        sprintf(buffer, "%s", "IDLE_PIRA");
-    }
-    if(status_pira_state_machine == START_PIRA)
-    {
-        sprintf(buffer, "%s", "START_PIRA");
-    }
-    if(status_pira_state_machine == WAIT_STATUS_ON)
-    {
-        sprintf(buffer, "%s", "WAIT_STATUS_ON");
-    }
-    if(status_pira_state_machine == WAKEUP)
-    {
-        sprintf(buffer, "%s", "WAKEUP");
-    }
-    if(status_pira_state_machine == REBOOT_DETECTION)
-    {
-        sprintf(buffer, "%s", "REBOOT_DETECTION");
-    }
-    if(status_pira_state_machine == STOP_PIRA)
-    {
-        sprintf(buffer, "%s", "STOP_PIRA");
-    }
+        case START_PIRA:
+            return "START_PIRA";
+        break;
 
-    return buffer;
+        case WAIT_STATUS_ON:
+            return "WAIT_STATUS_ON";
+        break;
+
+        case WAKEUP:
+            return "WAKEUP";
+        break;
+
+        case REBOOT_DETECTION
+            return "REBOOT_DETECTION";
+        break;
+
+        case STOP_PIRA:
+            return "STOP_PIRA";
+        break;
+
+        default:
+            return "ERROR";
+        break;
+    }
 }
 
 /**
