@@ -45,10 +45,8 @@ version_h += "/*** end of file ***\n"
 with open("../src/version.h", "w+") as f:
     f.write(version_h)
 
-# Get the project name into a variable
-project_name = os.path.basename(os.path.realpath("../"))
-repo = "IRNAS/" + project_name
 
+cmd.run("cd ../src && arduino-cli compile --fqbn TleraCorp:stm32l0:IRNAS-env-module-L072Z main.ino", check=True, shell=True)
 # Make a commit, to include new version.h in it
 # Go into root dir and add everything
 cmd.run("cd .. && git add .", check=True, shell=True)
@@ -58,6 +56,10 @@ command = 'git commit -m "{}"'.format(actual_version)
 cmd.run(command, check=True, shell=True)
 # Push
 cmd.run("git push", check=True, shell=True)
+
+# Get the project name into a variable
+project_name = os.path.basename(os.path.realpath("../"))
+repo = "IRNAS/" + project_name
 
 # Create a release, thats it, one command
 gh_release_create(repo, actual_version, publish=True, target_commitish=args.branch, name=actual_version, body=args.body)
