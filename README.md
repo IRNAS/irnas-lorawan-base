@@ -15,6 +15,7 @@ What things you need to use this code-base:
 * [St-link](https://www.st.com/en/development-tools/st-link-v2.html)
 * [Arduino IDE](https://www.arduino.cc/en/Main/Software)
 * [ArduinoCore for STM32L0](https://github.com/IRNAS/ArduinoCore-stm32l0)
+* Installed Arduino libraries: LibLacuna-0.96, [Adafruit BME280 library](https://github.com/adafruit/Adafruit_BME280_Library), [Adafruit Sensor library](https://github.com/adafruit/Adafruit_Sensor)
 
 ### Installing
 
