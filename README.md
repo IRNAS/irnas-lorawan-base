@@ -32,7 +32,7 @@ What things you need to use this code-base:
 
 ## Using release_build.py script
 
-'Release_build.py' will create a version.h file with provided tag and automatically create a build release on GitHub.
+'Release_build.py' will create a version.h file with provided tag, do a commmit and push and automatically create a build release on GitHub.
 
 ### Prerequisites
 

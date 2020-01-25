@@ -1,7 +1,6 @@
 """
-This python script will create a release on github,
-it will generate a version.h file in src folder with macro VERSION equal to
-the version provided.
+This python script will generate a version.h file in src folder with macro VERSION equal to
+the version provided. Then it will do commit and push. At the end it will create github release.
 """
 import json
 import os
