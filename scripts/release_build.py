@@ -51,10 +51,8 @@ project_name = os.path.basename(os.path.realpath("../"))
 repo = "IRNAS/" + project_name
 
 # Make a commit, to include new version.h in it
-# Go into root dir
-cmd.run("cd ..", check=True, shell=True)
-# Add everything
-cmd.run("git add .", check=True, shell=True)
+# Go into root dir and add everything
+cmd.run("cd .. && git add .", check=True, shell=True)
 # Commit with a version as message
 command = 'git commit -m "{}"'.format(actual_version)
 
