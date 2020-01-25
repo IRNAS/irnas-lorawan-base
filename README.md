@@ -30,6 +30,21 @@ What things you need to use this code-base:
 * In VS Code, bottom right click select board and from select board dropdown menu select `IRNAS-env-module-L072Z` and close configuration tab
 * Click Arduino: Upload button in top right, code will be compiled and flashed to the board.
 
+## Using release_build.py script
+
+'Release_build.py' will create a version.h file with provided tag and automatically create a build release on GitHub.
+
+### Prerequisites
+
+Github_release python module is needed, it can be installed by running:
+```
+pip install githubrelease
+```
+### Usage 
+Introductory message should be self explanatory, an example command should look something like this:
+```
+python release_build.py --version v.1.23.5 --body "Here is body of release message" --branch master
+```
 ## Authors
 
 * **Luka Mustafa** - *Initial work, ongoing work* - [SloMusti](https://github.com/SloMusti)
