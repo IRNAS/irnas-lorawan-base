@@ -56,7 +56,9 @@ cmd.run("cd ..", check=True, shell=True)
 # Add everything
 cmd.run("git add .", check=True, shell=True)
 # Commit with a version as message
-cmd.run('git commit -m "{}"'.format(actual_version), check=True, shell=True)
+command = 'git commit -m "{}"'.format(actual_version)
+
+cmd.run(command, check=True, shell=True)
 # Push
 cmd.run("git push", check=True, shell=True)
 
