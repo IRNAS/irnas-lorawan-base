@@ -9,7 +9,7 @@ import sys
 import argparse
 from argparse import RawTextHelpFormatter
 from github_release import gh_release_create
-
+import subprocess as cmd
 
 ### Command line argument parser
 
@@ -49,6 +49,16 @@ with open("../src/version.h", "w+") as f:
 # Get the project name into a variable
 project_name = os.path.basename(os.path.realpath("../"))
 repo = "IRNAS/" + project_name
+
+# Make a commit, to include new version.h in it
+# Go into root dir
+cmd.run("cd ..", check=True, shell=True)
+# Add everything
+cmd.run("git add .", check=True, shell=True)
+# Commit with a version as message
+cmd.run('git commit -m "{}"'.format(actual_version), check=True, shell=True)
+# Push
+cmd.run("git push", check=True, shell=True)
 
 # Create a release, thats it, one command
 gh_release_create(repo, actual_version, publish=True, target_commitish=args.branch, name=actual_version, body=args.body)
