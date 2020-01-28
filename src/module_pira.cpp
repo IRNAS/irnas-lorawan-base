@@ -34,8 +34,7 @@ module_flags_e MODULE_PIRA::scheduler(void)
     {
         // Do not turn on raspberry pi if voltage is too low
         uint16_t voltage = get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN);
-        uint16_t threshold = 3500;
-        if(voltage > threshold)
+        if(voltage > MODULE_PIRA_UNDERVOLTAGE_THRESHOLD)
         {
             if (M_IDLE == flags)
             {
