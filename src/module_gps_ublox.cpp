@@ -515,7 +515,6 @@ void MODULE_GPS_UBLOX::running(void)
 /**
  * @brief Reads the data from GPS and performs shutdown, called by either the timeout function or the acquiring callback upon fix
  * 
- * @param good_fix - to indicate stopping with good fix acquired
  */
 void MODULE_GPS_UBLOX::gps_stop(void)
 {

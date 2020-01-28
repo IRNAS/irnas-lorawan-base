@@ -24,7 +24,7 @@ class MODULE_SYSTEM
         void print_data(void);
 
         // variables
-        module_flags_e flags=M_ERROR;
+        module_flags_e flags = M_ERROR;
 
         // parameters
         uint8_t param_a = 0;

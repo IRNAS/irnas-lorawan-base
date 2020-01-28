@@ -104,7 +104,6 @@ uint8_t MODULE_ACCELEROMETER::initialize(void)
     settings_packet.data.triggered_threshold = 1;
     settings_packet.data.triggered_duration = 1;
     settings_packet.data.free_fall=1;
-    flags = M_ERROR;
 
     if(lis.begin() == false)
     {
@@ -113,6 +112,7 @@ uint8_t MODULE_ACCELEROMETER::initialize(void)
         serial_debug.print(": init(");
         serial_debug.println("error)");
 #endif
+        flags = M_ERROR;
         return 0;
     }
 
