@@ -15,6 +15,7 @@ What things you need to use this code-base:
 * [St-link](https://www.st.com/en/development-tools/st-link-v2.html)
 * [Arduino IDE](https://www.arduino.cc/en/Main/Software)
 * [ArduinoCore for STM32L0](https://github.com/IRNAS/ArduinoCore-stm32l0)
+* Installed Arduino libraries: LibLacuna-0.96, [Adafruit BME280 library](https://github.com/adafruit/Adafruit_BME280_Library), [Adafruit Sensor library](https://github.com/adafruit/Adafruit_Sensor)
 
 ### Installing
 
@@ -29,6 +30,21 @@ What things you need to use this code-base:
 * In VS Code, bottom right click select board and from select board dropdown menu select `IRNAS-env-module-L072Z` and close configuration tab
 * Click Arduino: Upload button in top right, code will be compiled and flashed to the board.
 
+## Using release_build.py script
+
+'Release_build.py' will create a version.h file with provided tag, do a commmit and push and automatically create a build release on GitHub.
+
+### Prerequisites
+
+Github_release python module is needed, it can be installed by running:
+```
+pip install githubrelease
+```
+### Usage 
+Introductory message should be self explanatory, an example command should look something like this:
+```
+python release_build.py --version v.1.23.5 --body "Here is body of release message" --branch master
+```
 ## Authors
 
 * **Luka Mustafa** - *Initial work, ongoing work* - [SloMusti](https://github.com/SloMusti)

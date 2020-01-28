@@ -1,7 +1,6 @@
 """
-This python script will create a release on github,
-it will generate a version.h file in src folder with macro VERSION equal to
-the version provided.
+This python script will generate a version.h file in src folder with macro VERSION equal to
+the version provided. Then it will do commit and push. At the end it will create github release.
 """
 import json
 import os
@@ -9,7 +8,7 @@ import sys
 import argparse
 from argparse import RawTextHelpFormatter
 from github_release import gh_release_create
-
+import subprocess as cmd
 
 ### Command line argument parser
 
@@ -21,7 +20,8 @@ intro += "https://help.github.com/en/github/authenticating-to-github/creating-a-
 # Parser setup
 parser = argparse.ArgumentParser(description=intro, formatter_class=RawTextHelpFormatter)
 parser.add_argument("--version", type=str,required=True, help="This is a version of release, something like v1.2.5")
-parser.add_argument("--body", type=str,required=False, help="This is the visible text in release body")
+parser.add_argument("--body", type=str,required=True, help="This is the visible text in release body")
+parser.add_argument("--branch", type=str,required=True, help="This is a branch that the release will be made from")
 
 # Display help message if no arguments are provided
 if len(sys.argv)==1:
@@ -30,6 +30,7 @@ if len(sys.argv)==1:
 args = parser.parse_args()
 
 # Remove dots and 'v' forversion.h file
+actual_version = args.version.encode().decode()
 version = args.version.replace(".","")
 version = version.replace("v","")
 
@@ -44,25 +45,21 @@ version_h += "/*** end of file ***\n"
 with open("../src/version.h", "w+") as f:
     f.write(version_h)
 
+
+cmd.run("cd ../src && arduino-cli compile --fqbn TleraCorp:stm32l0:IRNAS-env-module-L072Z main.ino", check=True, shell=True)
+# Make a commit, to include new version.h in it
+# Go into root dir and add everything
+cmd.run("cd .. && git add .", check=True, shell=True)
+# Commit with a version as message
+command = 'git commit -m "{}"'.format(actual_version)
+
+cmd.run(command, check=True, shell=True)
+# Push
+cmd.run("git push", check=True, shell=True)
+
+# Get the project name into a variable
 project_name = os.path.basename(os.path.realpath("../"))
+repo = "IRNAS/" + project_name
 
-url = "https://api.github.com/repos/IRNAS/" + project_name + "/releases"
-
-#Get last commit, you finished here
-
-
-
-payload ={ "tag_name": "v1.0.0",
-        "target_commitish": last_commit,
-        "name": "v1.0.0",
-        "body": "Hellooo from pyhton",
-        "draft": "false",
-        "prerelease": "false"
-}
-
-r = requests.post(url, payload)
-print(r.status_code)
-print(r.json())
-
-gh_release_create("jcfr/sandbox ", "2.0.0", publish=True, name="Awesome 2.0", asset_pattern="dist/*")
-"""
+# Create a release, thats it, one command
+gh_release_create(repo, actual_version, publish=True, target_commitish=args.branch, name=actual_version, body=args.body)
