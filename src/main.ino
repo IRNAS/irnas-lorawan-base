@@ -303,6 +303,7 @@ void setup()
 
     init_display();
     boot_screen();
+
     Wire.end();    // Needed to prevent clashes with rtc library
 }
 

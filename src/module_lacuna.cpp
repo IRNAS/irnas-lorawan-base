@@ -142,9 +142,16 @@ uint8_t MODULE_LACUNA::read(void)
  */
 void MODULE_LACUNA::running(void)
 {
+    // Turn on power
+    pinMode(PH0, OUTPUT);
+    digitalWrite(PH0, HIGH);
+    pinMode(MODULE_5V_EN, OUTPUT);
+    digitalWrite(MODULE_5V_EN, HIGH);
+
     setup_lacuna();
     send_lacuna(); 
-
+    // Turn off only 5V to Lacuna, leave general 5v on, as Rpi might be working.
+    digitalWrite(PH0, HIGH);
     flags = M_IDLE; 
 }
 
@@ -178,11 +185,6 @@ void MODULE_LACUNA::print_data(void)
  */
 void MODULE_LACUNA::setup_lacuna(void)
 {
-    // Turn on power
-    pinMode(PH0, OUTPUT);
-    digitalWrite(PH0, HIGH);
-    pinMode(MODULE_5V_EN, OUTPUT);
-    digitalWrite(MODULE_5V_EN, HIGH);
 
     // Keys and device address are MSB
     byte networkKey[] = {
