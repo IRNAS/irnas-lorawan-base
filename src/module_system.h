@@ -7,6 +7,7 @@
 #include <STM32L0.h>
 #include "module.h"
 #include "adc.h"
+#include "version.h"
 
 class MODULE_SYSTEM 
 {
@@ -62,6 +63,7 @@ class MODULE_SYSTEM
             uint8_t temperature_avg; // average of readings during a period, maximally once a day
             uint8_t temperature_min; // min of readings during a period, maximally once a day
             uint8_t temperature_max; // max of readings during a period, maximally once a day
+            char version[5];
             //uint8_t errors[10];
         }__attribute__((packed));
 

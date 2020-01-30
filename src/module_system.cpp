@@ -109,6 +109,9 @@ uint8_t MODULE_SYSTEM::send(uint8_t *data, size_t *size)
     readings_packet.data.temperature_max = (uint8_t) get_bits(r_temperature.r_max, -20, 80, 8);
     clear_value(&r_temperature);
 
+    String version = VERSION;
+    version.toCharArray(readings_packet.data.version, 5);
+
     memcpy(data, &readings_packet.bytes[0], sizeof(module_readings_data_t));
     *size = sizeof(module_readings_data_t);
     flags = M_IDLE;
