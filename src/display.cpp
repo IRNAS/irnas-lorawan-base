@@ -79,9 +79,9 @@ void boot_screen()
 void info_screen()
 {
     specific_public_data_t print_data = s_PIRA->getter();
-    time_t current_time = rtc_time_read();
+    time_t time_for_display = rtc_time_read();
 
-    struct tm *timeinfo = localtime(&current_time);
+    struct tm *timeinfo = localtime(&time_for_display);
 
     display.clearDisplay();
     display.setTextSize(1);
