@@ -654,3 +654,8 @@ void MODULE_GPS_UBLOX::gps_end(void)
     serial_debug.println(")");
 #endif
 }
+
+specific_public_data_t  MODULE_GPS_UBLOX::getter()
+{
+
+}

@@ -23,6 +23,7 @@ class MODULE_LACUNA
         void event(event_e event);
         void print_data(void);
 
+        specific_public_data_t getter();
         // variables
         module_flags_e flags = M_ERROR;
 
@@ -30,6 +31,7 @@ class MODULE_LACUNA
         uint8_t param_a = 0;
         uint8_t param_b = 0;
         uint8_t param_c = 0;
+
     private:
 
         // add
@@ -72,7 +74,7 @@ class MODULE_LACUNA
         lsLoraWANParams loraWANParams;
         lsLoraSatTxParams SattxParams;
         lsLoraTxParams txParams;
-//
+
         time_window_t start_tx;
         time_window_t end_tx;
         //char payload[255];

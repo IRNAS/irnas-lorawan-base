@@ -31,6 +31,8 @@ class MODULE_PIRA
         void event(event_e event);
         void print_data(void);
 
+        specific_public_data_t getter();
+
         // variables
         module_flags_e flags = M_ERROR;
 
@@ -78,6 +80,8 @@ class MODULE_PIRA
 
         module_settings_packet_t settings_packet;
         module_readings_packet_t readings_packet;
+        specific_public_data_t public_data;
+
         uint32_t read_timestamp;
         uint32_t send_timestamp;
 
@@ -130,6 +134,7 @@ class MODULE_PIRA
         bool pira_state_check_timeout(void);
         char * return_state(state_pira_e state);
         void pira_state_machine();
+
 };
 
 #endif /* MODULE_PIRA_h */

@@ -197,3 +197,8 @@ uint8_t MODULE_ACCELEROMETER::running(void)
 {
     return 0;
 }
+
+specific_public_data_t MODULE_ACCELEROMETER::getter()
+{
+
+}

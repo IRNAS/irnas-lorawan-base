@@ -23,6 +23,7 @@ class MODULE_ACCELEROMETER
         void event(event_e event);
         void print_data(void);
 
+        specific_public_data_t getter();
         // variables
         module_flags_e flags = M_ERROR;
 

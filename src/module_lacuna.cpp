@@ -103,8 +103,8 @@ module_flags_e MODULE_LACUNA::scheduler(void)
 uint8_t MODULE_LACUNA::initialize(void)
 {
     //Our timewindow in which we want Lacuna to operate
-    start_tx = { 20, 10 };
-    end_tx = { 20, 50 };
+    start_tx = { 8, 10 };
+    end_tx = { 13, 10 };
     
     // lora_init_done should be false at the start to ensure that setup_lacuna
     // is called first time 
@@ -302,4 +302,9 @@ void MODULE_LACUNA::send_lacuna(void)
     serial_debug.print("LoraSatWan result: ");
     serial_debug.println(lsErrorToString(sat_result));
 #endif
+}
+
+specific_public_data_t MODULE_LACUNA::getter()
+{
+
 }

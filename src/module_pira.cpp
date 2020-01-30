@@ -29,6 +29,9 @@ module_flags_e MODULE_PIRA::scheduler(void)
 
     uint32_t elapsed = millis() - timestamp;
 
+    // Get next wake up value for display purposes
+    public_data.data_2 = min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period);
+
     // Timestamp is 0 only at boot.
     if (elapsed >= (min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period) * 1000 ||  0 == timestamp))
     {
@@ -83,10 +86,12 @@ uint8_t MODULE_PIRA::initialize(void)
     stateTimeoutDuration = 0;
     state_prev = IDLE_PIRA;
     flags = M_IDLE;
-    timestamp = 0; 
+    timestamp = 0;
+
+    public_data.data_1 = 42;
+    public_data.data_2 = 52;
 
     // Initially enable RaspberryPi power
-    
     pinMode(MODULE_5V_EN, OUTPUT);
     digitalWrite(MODULE_5V_EN, LOW);
     pinMode(MODULE_PIRA_5V, OUTPUT);
@@ -217,7 +222,9 @@ void MODULE_PIRA::uart_command_parse(uint8_t * rxBuffer)
             
             case 'i':
                 readings_packet.data.photo_count = data;
-            break;
+                // Get photo count value for display purposes
+                public_data.data_1 = data;
+                break;
             
             default:
                 break;
@@ -621,4 +628,9 @@ void MODULE_PIRA::pira_state_machine()
     {
         pira_state_transition(state_goto_timeout);
     }
+}
+
+specific_public_data_t MODULE_PIRA::getter()
+{
+    return public_data;
 }

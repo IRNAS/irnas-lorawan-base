@@ -193,3 +193,8 @@ uint8_t MODULE_SYSTEM::read(void)
 uint8_t MODULE_SYSTEM::running(void)
 {
 }
+
+specific_public_data_t  MODULE_SYSTEM::getter()
+{
+
+}

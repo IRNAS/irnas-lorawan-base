@@ -5,12 +5,16 @@
 #include "project_utils.h"
 #include "settings.h"
 #include "LIS2DW12.h"
+#include "display.h"
+
 
 #define serial_debug  Serial
 
 // General system variables
 int8_t active_module = -1;
 
+// Constructor for oled display
+Adafruit_SSD1306 display(SCREEN_WIDTH , SCREEN_HEIGHT , &Wire, OLED_RESET);
 
 // All possible states in finite state machine
 enum state_e
@@ -105,6 +109,8 @@ size_t last_packet_size;
 uint8_t last_packet_port;
 uint32_t last_packet_time;
 
+bool turn_on = false;
+
 /**
  * @brief Callback ocurring periodically for triggering events and wdt
  * 
@@ -151,6 +157,16 @@ bool callback_periodic(void)
         }
     }
 
+    if(!digitalRead(PA5))
+    {
+        init_display();
+        info_screen();
+        delay(5000); // Pause for 2 seconds
+        display.clearDisplay();
+        display.display();
+        Wire.end();    // Needed to prevent clashes with rtc library
+    }
+
     // wake up the system if required
     if (wakeup_needed)
     {
@@ -182,6 +198,7 @@ void system_sleep(uint32_t sleep)
             STM32L0.stop(remaining_sleep);
             remaining_sleep = 0;
         }
+
         // wake-up if event generated
         if(callback_periodic())
         {
@@ -279,6 +296,14 @@ void setup()
 
     // Starting state
     state = INIT;
+
+    pinMode(PA5, INPUT);
+    pinMode(PH0, OUTPUT);
+    digitalWrite(PH0, LOW);
+
+    init_display();
+    boot_screen();
+    Wire.end();    // Needed to prevent clashes with rtc library
 }
 
 /**

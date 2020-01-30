@@ -14,6 +14,15 @@ enum module_flags_e
     M_ERROR
 };
 
+// This struct is here currently only for one purpose, 
+// to enable sharing private variables between modules and other parts of the code.
+// This struct will be expanded if needed.
+struct specific_public_data_t
+{
+    uint16_t data_1;
+    uint16_t data_2;
+} __attribute__((packed));
+
 // virtual module class
 class module 
 {
@@ -32,6 +41,7 @@ class module
         virtual void running(void){};
         virtual void event(event_e event){};
         virtual void print_data(void){};
+        virtual specific_public_data_t getter(void){ specific_public_data_t data; return data;}
 };
 
 //Tempalate module class
@@ -39,6 +49,8 @@ template <class myModuleType>
 class myModule : public module 
 {
     public:
+        specific_public_data_t public_data;
+
         myModuleType module;
         /**
          * @brief Construct a new Module object with 3 general purpose parameters
@@ -189,6 +201,10 @@ class myModule : public module
             module.print_data();
         }
 
+        specific_public_data_t getter()
+        {
+            return module.getter();
+        }
     private:
         uint8_t global_id = 0;
 };

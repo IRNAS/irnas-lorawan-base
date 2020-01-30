@@ -27,7 +27,7 @@ void rtc_init()
     Wire.write(0x10); //enable WRTC 
     Wire.endTransmission();
 
-    //Try to open the ISL1208,checks if the RTC is available on the I2C bus
+    //Try to open the ISL1208, checks if the RTC is available on the I2C bus
     if (rtc_present())
     {
 #ifdef serial_debug
