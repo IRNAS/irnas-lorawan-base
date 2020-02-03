@@ -12,6 +12,23 @@ uint8_t MODULE_PIRA::configure(uint8_t * data, size_t * size)
     serial_debug.println(")");;
 #endif
 
+    if (* size != sizeof(module_settings_data_t))
+    {
+        return 0;
+    }
+    // copy to buffer
+    module_settings_packet_t settings_packet_downlink;
+    memcpy(&settings_packet_downlink.bytes[0],data, sizeof(module_settings_data_t));
+    // validate settings value range 
+    settings_packet.data.global_id = settings_packet_downlink.data.global_id;
+    settings_packet.data.length = settings_packet_downlink.data.length;
+
+    settings_packet.data.read_interval = constrain(settings_packet_downlink.data.read_interval, 0, 0xff);
+    settings_packet.data.send_interval = constrain(settings_packet_downlink.data.send_interval, 0, 0xff);
+    settings_packet.data.safety_power_period = constrain(settings_packet_downlink.data.safety_power_period, 0, 0xff);
+    settings_packet.data.safety_sleep_period = constrain(settings_packet_downlink.data.safety_sleep_period, 0, 0xff);
+    settings_packet.data.safety_reboot = constrain(settings_packet_downlink.data.safety_reboot, 0, 0xff);
+    settings_packet.data.operational_wakeup = constrain(settings_packet_downlink.data.operational_wakeup, 0, 0xff);
 }
 
 uint8_t MODULE_PIRA::get_settings_length()
@@ -68,7 +85,6 @@ uint8_t MODULE_PIRA::initialize(void)
 {
     settings_packet.data.read_interval = 10;
     settings_packet.data.send_interval = 1;
-    settings_packet.data.status_battery = 10;
     settings_packet.data.safety_power_period = 600;
     settings_packet.data.safety_sleep_period = 600;
     settings_packet.data.safety_reboot = 120;
@@ -445,7 +461,7 @@ void MODULE_PIRA::pira_state_transition(state_pira_e next)
 }
 
 /**
- * @brief check if the state has timed out
+ * @brief Check if the state has timed out
  *
  * @return bool
  */

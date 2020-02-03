@@ -65,7 +65,12 @@ extern module *modules[];
 
 #define MODULE_ACCELEROMETER_INT1 -1
 
-#define BOARD_LED PH0
+#define MODULE_ULTRASONIC_OLED_3V PB7
+
+#define MODULE_LACUNA_5V PH0
+
+#define BOARD_LED PH0   //Do not use, as it is connected to lacuna power
+#define BOARD_BUTTON PA5 
 #endif
 
 

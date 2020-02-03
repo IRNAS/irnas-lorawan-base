@@ -103,13 +103,9 @@ module_flags_e MODULE_LACUNA::scheduler(void)
 uint8_t MODULE_LACUNA::initialize(void)
 {
     //Our timewindow in which we want Lacuna to operate
-    start_tx = { 8, 10 };
-    end_tx = { 13, 10 };
+    start_tx = { 9, 40 };
+    end_tx = { 10, 10 };
     
-    // lora_init_done should be false at the start to ensure that setup_lacuna
-    // is called first time 
-    lacuna_init_done = false;
-
     flags = M_IDLE; // Needed for normal running  of modules
 }
 
@@ -143,15 +139,15 @@ uint8_t MODULE_LACUNA::read(void)
 void MODULE_LACUNA::running(void)
 {
     // Turn on power
-    pinMode(PH0, OUTPUT);
-    digitalWrite(PH0, HIGH);
+    pinMode(MODULE_LACUNA_5V, OUTPUT);
+    digitalWrite(MODULE_LACUNA_5V, HIGH);
     pinMode(MODULE_5V_EN, OUTPUT);
     digitalWrite(MODULE_5V_EN, HIGH);
 
     setup_lacuna();
     send_lacuna(); 
     // Turn off only 5V to Lacuna, leave general 5v on, as Rpi might be working.
-    digitalWrite(PH0, HIGH);
+    digitalWrite(MODULE_LACUNA_5V, LOW);
     flags = M_IDLE; 
 }
 

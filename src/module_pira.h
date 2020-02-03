@@ -36,6 +36,7 @@ class MODULE_PIRA
         uint8_t param_a = 0;
         uint8_t param_b = 0;
         uint8_t param_c = 0;
+
     private:
 
         // add
@@ -45,7 +46,6 @@ class MODULE_PIRA
             uint8_t  length;
             uint16_t read_interval; // in seconds
             uint16_t send_interval; // in minutes
-            uint16_t status_battery;
             uint32_t safety_power_period;
             uint32_t safety_sleep_period;
             uint32_t safety_reboot;

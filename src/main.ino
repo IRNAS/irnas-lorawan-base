@@ -157,13 +157,15 @@ bool callback_periodic(void)
         }
     }
 
-    if(!digitalRead(PA5))
+    if(!digitalRead(BOARD_BUTTON))
     {
+        digitalWrite(MODULE_ULTRASONIC_OLED_3V, HIGH);
         init_display();
         info_screen();
         delay(5000); // Pause for 2 seconds
         display.clearDisplay();
         display.display();
+        digitalWrite(MODULE_ULTRASONIC_OLED_3V, LOW);
         Wire.end();    // Needed to prevent clashes with rtc library
     }
 
@@ -294,17 +296,25 @@ void setup()
     serial_debug.println(); //Empty line for clarity
 #endif
 
-    // Starting state
-    state = INIT;
+    // Prepare gpios, outputs and inputs
+    pinMode(BOARD_BUTTON, INPUT);
+    pinMode(MODULE_LACUNA_5V, OUTPUT);
+    digitalWrite(MODULE_LACUNA_5V, LOW);
+    pinMode(MODULE_ULTRASONIC_OLED_3V, OUTPUT);
+    digitalWrite(MODULE_ULTRASONIC_OLED_3V, HIGH);
 
-    pinMode(PA5, INPUT);
-    pinMode(PH0, OUTPUT);
-    digitalWrite(PH0, LOW);
-
+    // Show boot screen
     init_display();
     boot_screen();
 
-    Wire.end();    // Needed to prevent clashes with rtc library
+    // Turn off power for oled screen
+    digitalWrite(MODULE_ULTRASONIC_OLED_3V, LOW);
+
+    // Needed to prevent clashes with rtc library
+    Wire.end();    
+
+    // Starting state
+    state = INIT;
 }
 
 /**
