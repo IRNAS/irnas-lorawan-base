@@ -345,17 +345,17 @@ void loop()
             rtc_init();
             // load settings, currently can not return an error, thus proceed directly
 
-            digitalWrite(MODULE_ULTRASONIC_OLED_3V, HIGH);
+            //digitalWrite(MODULE_ULTRASONIC_OLED_3V, HIGH);
 
-            // Show boot screen
-            init_display();
-            boot_screen();
+            //// Show boot screen
+            //init_display();
+            //boot_screen();
 
-            // Turn off power for oled screen
-            digitalWrite(MODULE_ULTRASONIC_OLED_3V, LOW);
+            //// Turn off power for oled screen
+            //digitalWrite(MODULE_ULTRASONIC_OLED_3V, LOW);
 
-            // Needed to prevent clashes with rtc library
-            Wire.end();
+            //// Needed to prevent clashes with rtc library
+            //Wire.end();
 
             state_transition(LORAWAN_INIT);
         break;
