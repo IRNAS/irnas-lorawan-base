@@ -81,6 +81,11 @@ void info_screen()
     specific_public_data_t print_data = s_PIRA->getter();
     time_t time_for_display = rtc_time_read();
 
+#ifdef serial_debug
+    serial_debug.println("Inside info screen:");
+    serial_debug.println(ctime(&time_for_display));
+#endif
+
     struct tm *timeinfo = localtime(&time_for_display);
 
     display.clearDisplay();

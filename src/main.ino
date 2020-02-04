@@ -301,17 +301,6 @@ void setup()
     pinMode(MODULE_LACUNA_5V, OUTPUT);
     digitalWrite(MODULE_LACUNA_5V, LOW);
     pinMode(MODULE_ULTRASONIC_OLED_3V, OUTPUT);
-    digitalWrite(MODULE_ULTRASONIC_OLED_3V, HIGH);
-
-    // Show boot screen
-    init_display();
-    boot_screen();
-
-    // Turn off power for oled screen
-    digitalWrite(MODULE_ULTRASONIC_OLED_3V, LOW);
-
-    // Needed to prevent clashes with rtc library
-    Wire.end();    
 
     // Starting state
     state = INIT;
@@ -355,6 +344,19 @@ void loop()
             // setup RTC
             rtc_init();
             // load settings, currently can not return an error, thus proceed directly
+
+            digitalWrite(MODULE_ULTRASONIC_OLED_3V, HIGH);
+
+            // Show boot screen
+            init_display();
+            boot_screen();
+
+            // Turn off power for oled screen
+            digitalWrite(MODULE_ULTRASONIC_OLED_3V, LOW);
+
+            // Needed to prevent clashes with rtc library
+            Wire.end();
+
             state_transition(LORAWAN_INIT);
         break;
 
