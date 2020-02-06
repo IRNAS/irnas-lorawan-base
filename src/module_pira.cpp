@@ -87,8 +87,8 @@ uint8_t MODULE_PIRA::initialize(void)
     settings_packet.data.send_interval = 1;
     settings_packet.data.safety_power_period = 600;
     settings_packet.data.safety_sleep_period = 600;
-    settings_packet.data.safety_reboot = 120;
-    settings_packet.data.operational_wakeup = 300;
+    settings_packet.data.safety_reboot = 60;
+    settings_packet.data.operational_wakeup = 30;
 
     readings_packet.data.empty_space = 0;
     readings_packet.data.photo_count = 0;
@@ -198,18 +198,18 @@ void MODULE_PIRA::uart_command_parse(uint8_t * rxBuffer)
 
     if (second_char == ':')
     {
-        switch(first_char)
-        {
 #ifdef serial_debug
             serial_debug.print(NAME);
             serial_debug.print(": received( ");
-            serial_debug.print(first_char);
-            serial_debug.print(" )");
+            serial_debug.print((char) first_char);
+            serial_debug.println(" )");
 #endif
 
+        switch(first_char)
+        {
             //TODO: constrain values
             case 't':
-                rtc_time_sync((time_t)data,false);
+                rtc_time_sync((time_t) data, false);
             break;
 
             case 'p':
@@ -240,10 +240,10 @@ void MODULE_PIRA::uart_command_parse(uint8_t * rxBuffer)
                 readings_packet.data.photo_count = data;
                 // Get photo count value for display purposes
                 public_data.data_1 = data;
-                break;
+            break;
             
             default:
-                break;
+            break;
         }
     }
     else
@@ -292,7 +292,6 @@ void MODULE_PIRA::uart_command_receive(void)
         while (MODULE_PIRA_SERIAL.available() > 0)
         {
             rxBuffer[rxIndex] = MODULE_PIRA_SERIAL.read();
-
             if (rxIndex == 0)
             {
                 if (rxBuffer[rxIndex] != 't' &&
@@ -531,6 +530,43 @@ char * MODULE_PIRA::return_state(state_pira_e status_pira_state_machine)
 }
 
 /**
+ * @brief Returns module flag from given flag enum
+ *
+ * @param[in] flag
+ *
+ * @return char*
+ */
+char * MODULE_PIRA::decode_flag(module_flags_e flag)
+{
+    switch (flag)
+    {
+        case M_IDLE:
+            return "M_IDLE";
+        break;
+
+        case M_READ:
+            return "M_READ";
+        break;
+
+        case M_SEND:
+            return "M_SEND";
+        break;
+
+        case M_RUNNING:
+            return "M_RUNNING";
+        break;
+
+        case M_ERROR:
+            return "M_ERROR";
+        break;
+
+        default:
+            return "M_ERROR";
+        break;
+    }
+}
+
+/**
  * @brief Finite state machine loop for Raspberry Pi
  *
  * @param[in] safety_power_period
@@ -557,8 +593,8 @@ void MODULE_PIRA::pira_state_machine()
     serial_debug.print(pira_elapsed / 1000);
     serial_debug.print("/");
     serial_debug.print(stateTimeoutDuration);
-    serial_debug.print(" ");
-    serial_debug.print(flags);
+    serial_debug.print("s, ");
+    serial_debug.print(decode_flag(flags));
     serial_debug.println(")");
 #endif
 

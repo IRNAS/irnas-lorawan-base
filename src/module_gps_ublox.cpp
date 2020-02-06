@@ -456,7 +456,8 @@ void MODULE_GPS_UBLOX::running(void)
         gps_response_fail_count = 0;
 
 #ifdef serial_debug
-        serial_debug.print("gps( ehpe ");
+        serial_debug.print(NAME);
+        serial_debug.print(": info( ehpe ");
         serial_debug.print(ehpe);
         serial_debug.print(" sat ");
         serial_debug.print(gps_location.satellites());

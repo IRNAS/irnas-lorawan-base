@@ -132,6 +132,7 @@ class MODULE_PIRA
         bool pira_state_check_timeout(void);
         char * return_state(state_pira_e state);
         void pira_state_machine();
+        char * decode_flag(module_flags_e flag);
 };
 
 #endif /* MODULE_PIRA_h */

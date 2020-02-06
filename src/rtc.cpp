@@ -31,7 +31,7 @@ void rtc_init()
     if (rtc_present())
     {
 #ifdef serial_debug
-        serial_debug.println("RTC detected!");
+        serial_debug.println("rtc_init(RTC detected!)");
 #endif
         //Check if we need to reset the time
         uint8_t powerFailed = read8(ISL1208_ADDRESS, ISL1208_SR); 
@@ -39,15 +39,17 @@ void rtc_init()
         {
 #ifdef serial_debug
             //The time has been lost due to a power complete power failure
-            serial_debug.println("RTC has lost power! Resetting time...");
+            serial_debug.println("rtc_init(RTC has lost power! Resetting time...)");
 #endif
             //Set RTC time to Mon, 1 Jan 2018 00:00:00
             rtc_time_write(t);
         }
 #ifdef serial_debug
         time_t time = rtc_time_read();
-        Serial.println(ctime(&time));
-        Serial.println(time);
+        serial_debug.print("Time in string: ");
+        serial_debug.print(ctime(&time));
+        serial_debug.print("Time in epoch: ");
+        serial_debug.println(time);
 #endif
     }
     else

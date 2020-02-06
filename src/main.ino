@@ -7,7 +7,6 @@
 #include "LIS2DW12.h"
 #include "display.h"
 
-
 #define serial_debug  Serial
 
 // General system variables
@@ -33,6 +32,72 @@ enum state_e
     HIBERNATION
 };
 
+/**
+ * @brief Decode state from enum to string
+ *
+ * @param uint8_t state
+ * 
+ * @note typecast state_e to uint8_t 
+ *  
+ * @returns state in a string
+ */
+char * decode_state(uint8_t state)
+{
+    switch(state)
+    {
+        case 0:
+            return "INIT";
+        break;
+
+        case 1:
+            return "LORAWAN_INIT";
+        break;
+
+        case 2:
+            return "LORAWAN_JOIN_START";
+        break;
+
+        case 3:
+            return "LORAWAN_JOIN_DONE";
+        break;
+
+        case 4:
+            return "MODULE_INIT";
+        break;
+
+        case 5:
+            return "APPLY_SETTINGS";
+        break;
+
+        case 6:
+            return "IDLE";
+        break;
+
+        case 7:
+            return "SETTINGS_SEND";
+        break;
+
+        case 8:
+            return "MODULE_READ";
+        break;
+
+        case 9:
+            return "MODULE_SEND";
+        break;
+
+        case 10:
+            return "LORAWAN_TRANSMIT";
+        break;
+
+        case 11:
+            return "HIBERNATION";
+        break;
+
+        default:
+            return "NOT_CORRECT_STATE";
+        break;
+    }
+}
 /**
  * @brief Get reset cause
  *
@@ -282,9 +347,16 @@ void state_transition(state_e next)
 void setup() 
 {
     STM32L0.wdtEnable(18000);
-
-    //pinMode(BOARD_LED,OUTPUT);
-    //digitalWrite(BOARD_LED,HIGH);
+    //pinMode(PB9, OUTPUT);
+    //pinMode(PB8, OUTPUT);
+    //digitalWrite(PB9, HIGH);
+    //digitalWrite(PB8, HIGH);
+    //delay(1000);
+    //digitalWrite(PB9, LOW);
+    //digitalWrite(PB8, LOW);
+    //delay(1000);
+    //pinMode(PB9, INPUT);
+    //pinMode(PB8, INPUT);
 
     // Serial port debug setup
 #ifdef serial_debug
@@ -313,13 +385,27 @@ void setup()
 void loop() 
 {
 #ifdef serial_debug
-    serial_debug.print("fsm(");
-    serial_debug.print(state_prev);
-    serial_debug.print(">");
-    serial_debug.print(state);
-    serial_debug.print(",");
-    serial_debug.print(sleep);
-    serial_debug.print(",");
+    serial_debug.print("main: fsm(" );
+    serial_debug.print(decode_state(( uint8_t ) state_prev));
+    serial_debug.print(" > ");
+    serial_debug.print(decode_state(( uint8_t ) state));
+    serial_debug.print(", ");
+
+    if ( -1 == sleep )
+    {
+        serial_debug.print("NO SLEEP");
+    }
+    else if ( 0 == sleep)
+    {
+        serial_debug.print("MAX SLEEP");
+    }
+    else
+    {
+        serial_debug.print(sleep);
+        serial_debug.print("s");
+    }
+
+    serial_debug.print(", ");
     serial_debug.print(millis());
     serial_debug.println(")");
     serial_debug.flush();
