@@ -224,14 +224,15 @@ bool callback_periodic(void)
 
     if(!digitalRead(BOARD_BUTTON))
     {
-        digitalWrite(MODULE_ULTRASONIC_OLED_3V, HIGH);
+        //digitalWrite(MODULE_ULTRASONIC_OLED_3V, HIGH);
         init_display();
         info_screen();
         delay(5000); // Pause for 2 seconds
         display.clearDisplay();
         display.display();
-        digitalWrite(MODULE_ULTRASONIC_OLED_3V, LOW);
+        //digitalWrite(MODULE_ULTRASONIC_OLED_3V, LOW);
         Wire.end();    // Needed to prevent clashes with rtc library
+        Wire.begin();
     }
 
     // wake up the system if required
@@ -374,6 +375,18 @@ void setup()
     digitalWrite(MODULE_LACUNA_5V, LOW);
     pinMode(MODULE_ULTRASONIC_OLED_3V, OUTPUT);
 
+    //digitalWrite(MODULE_ULTRASONIC_OLED_3V, HIGH);
+
+    //// Show boot screen
+    init_display();
+    boot_screen();
+
+    //// Turn off power for oled screen
+    //digitalWrite(MODULE_ULTRASONIC_OLED_3V, LOW);
+
+    //// Needed to prevent clashes with rtc library
+    Wire.end();
+
     // Starting state
     state = INIT;
 }
@@ -430,18 +443,6 @@ void loop()
             // setup RTC
             rtc_init();
             // load settings, currently can not return an error, thus proceed directly
-
-            //digitalWrite(MODULE_ULTRASONIC_OLED_3V, HIGH);
-
-            //// Show boot screen
-            //init_display();
-            //boot_screen();
-
-            //// Turn off power for oled screen
-            //digitalWrite(MODULE_ULTRASONIC_OLED_3V, LOW);
-
-            //// Needed to prevent clashes with rtc library
-            //Wire.end();
 
             state_transition(LORAWAN_INIT);
         break;

@@ -44,13 +44,13 @@ uint8_t MODULE_PIRA::set_downlink_data(uint8_t * data, size_t * size)
 module_flags_e MODULE_PIRA::scheduler(void)
 {
 
-    uint32_t elapsed = millis() - timestamp;
+    uint32_t elapsed = millis() - rpi_turned_off_timestamp;
 
-    // Get next wake up value for display purposes
+    // Get next wakeup value for display purposes
     public_data.data_2 = min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period);
 
-    // Timestamp is 0 only at boot.
-    if (elapsed >= (min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period) * 1000 ||  0 == timestamp))
+    // rpi_turned_off_timestamp is 0 only at boot.
+    if ((elapsed >= min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period) * 1000) ||  0 == rpi_turned_off_timestamp)
     {
         // Do not turn on raspberry pi if voltage is too low
         uint16_t voltage = get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN);
@@ -58,7 +58,6 @@ module_flags_e MODULE_PIRA::scheduler(void)
         {
             if (M_IDLE == flags)
             {
-                timestamp = millis();
                 flags = M_RUNNING;
 #ifdef serial_debug
                 serial_debug.print(NAME);
@@ -102,10 +101,10 @@ uint8_t MODULE_PIRA::initialize(void)
     stateTimeoutDuration = 0;
     state_prev = IDLE_PIRA;
     flags = M_IDLE;
-    timestamp = 0;
+    rpi_turned_off_timestamp = 0;
 
-    public_data.data_1 = 42;
-    public_data.data_2 = 52;
+    public_data.data_1 = 0; 
+    public_data.data_2 = 0;
 
     // Initially enable RaspberryPi power
     pinMode(MODULE_5V_EN, OUTPUT);
@@ -204,11 +203,18 @@ void MODULE_PIRA::uart_command_parse(uint8_t * rxBuffer)
             serial_debug.print((char) first_char);
             serial_debug.println(" )");
 #endif
+        if('t' == first_char)
+        {
+                time_t rpi_time = data;
+                serial_debug.print("Time on RPI: ");
+                serial_debug.println(ctime(&rpi_time));
+        }
 
         switch(first_char)
         {
             //TODO: constrain values
             case 't':
+
                 rtc_time_sync((time_t) data, false);
             break;
 
@@ -663,7 +669,15 @@ void MODULE_PIRA::pira_state_machine()
         case STOP_PIRA:
             //We only get here if we timeout
             flags = M_SEND;
-
+            rpi_turned_off_timestamp = millis();
+            
+#ifdef serial_debug
+            serial_debug.print(NAME);
+            serial_debug.print(": fsm(");
+            serial_debug.print("RPI turned off, wake up in: ");
+            serial_debug.print(min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period));
+            serial_debug.println("s)");
+#endif
             digitalWrite(MODULE_5V_EN, LOW);
             digitalWrite(MODULE_PIRA_5V, LOW);
             pira_state_transition(IDLE_PIRA);

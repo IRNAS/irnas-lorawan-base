@@ -19,7 +19,7 @@ void rtc_init()
 #endif
     time_t t = TIME_INIT_VALUE;
     Wire.begin();
-    
+
     //set the WRTC (Write RTC Enable Bit) bit to 1 to enable the RTC
     //only then the RTC start counting
     Wire.beginTransmission(ISL1208_ADDRESS);

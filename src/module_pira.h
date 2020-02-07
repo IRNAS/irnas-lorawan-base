@@ -104,8 +104,8 @@ class MODULE_PIRA
          *          It is set everytime when we enter state.
          *      pira_elapsed
          *          It keeps how much time in ms pira_elapsed since we entered a state
-         *      timestamp
-         *          Used to keep track of when pira module enters running state
+         *      rpi_turned_off_timestamp
+         *          Used to keep track of when pira module turns off RPI, at beginning set to 0 to start pira fsm at boot
          *      stateTimeoutDuration
          *          If pira_elapsed is larger than stateTimeoutStart then state timeouted.
          *          It is set everytime when we enter state.
@@ -116,7 +116,7 @@ class MODULE_PIRA
         state_pira_e state_prev;
         state_pira_e state_goto_timeout;
         uint32_t pira_elapsed;
-        uint32_t timestamp;
+        uint32_t rpi_turned_off_timestamp;
         uint32_t stateTimeoutDuration;
         uint32_t stateTimeoutStart;
 
