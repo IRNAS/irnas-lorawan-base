@@ -372,3 +372,4 @@ float LIS2DW12CLASS::raw_to_mg_2g_range(int16_t x)
 {
     return (x >> 2) * 0.244; 
 }
+/*** end of file ***/

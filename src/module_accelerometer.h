@@ -1,5 +1,5 @@
-#ifndef MODULE_ACCLEROMETER_h
-#define MODULE_ACCLEROMETER_h
+#ifndef MODULE_ACCLEROMETER_H
+#define MODULE_ACCLEROMETER_H
 
 #include <Arduino.h>
 #include "project.h"
@@ -85,4 +85,5 @@ class MODULE_ACCELEROMETER
         LIS2DW12CLASS lis;
 };
 
-#endif /* MODULE_ACCLEROMETER_h */
+#endif /* MODULE_ACCLEROMETER_H */
+/*** end of file ***/

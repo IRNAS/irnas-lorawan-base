@@ -1,7 +1,10 @@
 #include "module_gps_ublox.h"
+#include "debug.h"
 
+#ifdef MODULE_GPS_UBLOX_DEBUG
 #define NAME  "gps"
-#define serial_debug Serial
+#define serial_debug  Serial
+#endif
 
 uint8_t MODULE_GPS_UBLOX::configure(uint8_t *data, size_t *size)
 {
@@ -385,6 +388,7 @@ bool MODULE_GPS_UBLOX::gps_start(void)
     {
         if (gps_begin() == false)
         {
+            flags = M_IDLE;
             return false;
         }
     }
@@ -395,6 +399,7 @@ bool MODULE_GPS_UBLOX::gps_start(void)
         // This does not work currently due to a bug
         if (gps_begin() == false)
         {
+            flags = M_IDLE;
             return false;
         }
     }
@@ -660,3 +665,4 @@ specific_public_data_t  MODULE_GPS_UBLOX::getter()
 {
 
 }
+/*** end of file ***/

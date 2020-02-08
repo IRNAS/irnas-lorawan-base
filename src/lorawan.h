@@ -1,5 +1,5 @@
-#ifndef LORAWAN_PROJECT_H_
-#define LORAWAN_PROJECT_H_
+#ifndef LORAWAN_PROJECT_H
+#define LORAWAN_PROJECT_H
 
 #include "Arduino.h"
 #include <LoRaWAN.h>
@@ -28,4 +28,6 @@ void lorawan_doneCallback(void);
 #endif
 
 #define EEPROM_OFFSET_COMMISSIONING    (EEPROM_OFFSET_START + 0)
-#endif
+
+#endif /* LORAWAN_PROJECT_H */
+/*** end of file ***/

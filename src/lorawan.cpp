@@ -1,7 +1,10 @@
 #include "lorawan.h"
 #include "avr/eeprom.h"
+#include "debug.h"
 
+#ifdef LORAWAN_DEBUG
 #define serial_debug  Serial
+#endif
 
 // This is FALLBACK only:
 // LoraWAN ABP configuration - Keys are stored in program memory - this is fallback
@@ -85,7 +88,9 @@ bool lorawan_init(void)
     // fallback to default ABP keys
     if (0 == join_success)
     {
+#ifdef serial_debug
         serial_debug.println("We are doing fallback!");
+#endif
         return LoRaWAN.joinABP(devAddr, nwkSKey, appSKey);
     }
 
@@ -289,3 +294,4 @@ void lorawan_doneCallback(void)
         lorawan_send_successful = true;
     }
 }
+/*** end of file ***/

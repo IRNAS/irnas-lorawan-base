@@ -10,4 +10,5 @@
 
 uint16_t get_voltage_in_mv(uint32_t analog_pin);
 
-#endif
+#endif /* ADC_H */
+/*** end of file ***/

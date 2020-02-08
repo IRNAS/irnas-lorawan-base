@@ -1,7 +1,10 @@
 #include "module_accelerometer.h"
+#include "debug.h"
 
-#define serial_debug Serial
+#ifdef MODULE_ACCELEROMETER_DEBUG
 #define NAME  "accelerometer"
+#define serial_debug  Serial
+#endif
 
 extern event_e system_event;
 
@@ -202,3 +205,4 @@ specific_public_data_t MODULE_ACCELEROMETER::getter()
 {
 
 }
+/*** end of file ***/

@@ -1,11 +1,9 @@
 #include "rtc.h"
+#include "debug.h"
 
-#define serial_debug Serial
-
-/**
- * @brief RTC object, used to read and write time to rtc chip 
- */
-//ISL1208_RTC rtc; 
+#ifdef  RTC_DEBUG
+#define serial_debug  Serial
+#endif
 
 /*
  * @brief Intializes rtc and sets init time value
@@ -227,3 +225,4 @@ void write8(char addr, char reg, char data)
     Wire.write(data);
     Wire.endTransmission();
 }
+/*** end of file ***/

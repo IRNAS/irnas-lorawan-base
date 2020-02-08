@@ -3,11 +3,14 @@
 #endif
 
 #include "module_lacuna.h"
+#include "debug.h"
 
-#define serial_debug Serial
-
+#ifdef MODULE_LACUNA_DEBUG
 #define NAME  "lacuna" 
- extern event_e system_event;
+#define serial_debug  Serial
+#endif
+
+extern event_e system_event;
 
 static char payload[255];
 const String mytext = "Hello Lacuna!";
@@ -103,8 +106,8 @@ module_flags_e MODULE_LACUNA::scheduler(void)
 uint8_t MODULE_LACUNA::initialize(void)
 {
     //Our timewindow in which we want Lacuna to operate
-    start_tx = { 1, 0 };
-    end_tx = { 1, 59 };
+    start_tx = { 0, 0 };
+    end_tx = { 0, 2 };
     
     flags = M_IDLE; // Needed for normal running  of modules
 }
@@ -147,7 +150,7 @@ void MODULE_LACUNA::running(void)
     setup_lacuna();
     send_lacuna(); 
     // Turn off only 5V to Lacuna, leave general 5v on, as Rpi might be working.
-    digitalWrite(MODULE_LACUNA_5V, LOW);
+    //digitalWrite(MODULE_LACUNA_5V, LOW);
     flags = M_IDLE; 
 }
 
@@ -306,3 +309,4 @@ specific_public_data_t MODULE_LACUNA::getter()
 {
 
 }
+/*** end of file ***/

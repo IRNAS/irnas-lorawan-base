@@ -1,5 +1,5 @@
-#ifndef MODULE_LACUNA_h
-#define MODULE_LACUNA_h
+#ifndef MODULE_LACUNA_H
+#define MODULE_LACUNA_H
 
 #include <Arduino.h>
 #include <LibLacuna.h>
@@ -86,4 +86,5 @@ class MODULE_LACUNA
         bool lacuna_init_done;
 };
 
-#endif /* MODULE_LACUNA_h */
+#endif /* MODULE_LACUNA_H */
+/*** end of file ***/

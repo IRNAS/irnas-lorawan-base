@@ -1,7 +1,11 @@
 #include "settings.h"
+#include "debug.h"
 
+#ifdef  SETTINGS_DEBUG
 #define NAME  "settings"
 #define serial_debug  Serial
+#endif
+
 //#define FORCE_DEFAULT_SETTINGS // TODO: remove for production
 
 static const uint8_t settings_packet_port = 100;
@@ -293,3 +297,4 @@ bool settings_send(void)
     }
     return lorawan_send(settings_packet_port, &settings_buffer[0], lenght);
 }
+/*** end of file ***/

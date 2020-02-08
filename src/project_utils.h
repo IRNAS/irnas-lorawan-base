@@ -33,4 +33,5 @@ void clear_value(reading_structure_t * values);
 uint16_t bcd2bin(unsigned char val);
 char bin2bcd(uint16_t val);
 
-#endif /* PROJECT_UTILS_H_ */
+#endif /* PROJECT_UTILS_H */
+/*** end of file ***/

@@ -1,7 +1,9 @@
 #include "project_utils.h"
+#include "debug.h"
 
-// Define debug if required
+#ifdef  PROJECT_UTILS_DEBUG
 #define serial_debug  Serial
+#endif
 
 /**
  * @brief Maps the variable with the given minimum and maximum value to the value with specified min, max
@@ -135,3 +137,4 @@ bool check_i2c()
     }
     return fail;
 }
+/*** end of file ***/

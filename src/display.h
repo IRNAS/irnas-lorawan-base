@@ -23,4 +23,5 @@ void init_display();
 void boot_screen();
 void info_screen();
 
-#endif
+#endif /* DISPLAY_H */
+/*** end of file ***/

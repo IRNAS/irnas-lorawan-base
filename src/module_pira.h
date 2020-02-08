@@ -1,5 +1,5 @@
-#ifndef MODULE_PIRA_h
-#define MODULE_PIRA_h
+#ifndef MODULE_PIRA_H
+#define MODULE_PIRA_H
 
 #include <Arduino.h>
 #include "project.h"
@@ -135,4 +135,5 @@ class MODULE_PIRA
         char * decode_flag(module_flags_e flag);
 };
 
-#endif /* MODULE_PIRA_h */
+#endif /* MODULE_PIRA_H */
+/*** end of file ***/

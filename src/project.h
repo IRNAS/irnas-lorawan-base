@@ -1,5 +1,5 @@
-#ifndef PROJECT_H_
-#define PROJECT_H_
+#ifndef PROJECT_H
+#define PROJECT_H
 
 /*
    The board definition is defined per project and per module. Thus the pin names must be in format MODULE_NAME
@@ -100,4 +100,5 @@ extern module *modules[];
 #define BOARD_CHG_DISABLE PA11
 #endif
 
-#endif //PROJECT_H_
+#endif /* PROJECT_H */
+/*** end of file ***/

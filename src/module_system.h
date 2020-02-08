@@ -1,5 +1,5 @@
-#ifndef MODULE_SYSTEM_h
-#define MODULE_SYSTEM_h
+#ifndef MODULE_SYSTEM_H
+#define MODULE_SYSTEM_H
 
 #include <Arduino.h>
 #include "project.h"
@@ -82,4 +82,5 @@ class MODULE_SYSTEM
         reading_structure_t r_temperature;
 };
 
-#endif /* MODULE_SYSTEM_h */
+#endif /* MODULE_SYSTEM_H */
+/*** end of file ***/

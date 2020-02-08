@@ -40,4 +40,5 @@ bool rtc_present();
 char read8(char addr, char reg);
 void write8(char addr, char reg, char data);
 
-#endif
+#endif /* RTC_PROJECT_H */
+/*** end of file ***/

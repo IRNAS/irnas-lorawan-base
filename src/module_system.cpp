@@ -1,7 +1,10 @@
 #include "module_system.h"
+#include "debug.h"
 
+#ifdef  MODULE_SYSTEM_DEBUG
 #define NAME  "system"
-#define serial_debug Serial
+#define serial_debug  Serial
+#endif
 
 uint8_t MODULE_SYSTEM::configure(uint8_t * data, size_t * size)
 {
@@ -201,3 +204,4 @@ specific_public_data_t  MODULE_SYSTEM::getter()
 {
 
 }
+/*** end of file ***/

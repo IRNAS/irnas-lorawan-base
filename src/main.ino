@@ -6,8 +6,11 @@
 #include "settings.h"
 #include "LIS2DW12.h"
 #include "display.h"
+#include "debug.h"
 
+#ifdef MAIN_DEBUG
 #define serial_debug  Serial
+#endif
 
 // General system variables
 int8_t active_module = -1;
@@ -725,3 +728,4 @@ void loop()
         sleep = -1;
     }
 }
+/*** end of file ***/

@@ -1,5 +1,5 @@
-#ifndef module_h
-#define module_h
+#ifndef MODULE_H
+#define MODULE_H
 
 // module includes
 #include <Arduino.h>
@@ -209,4 +209,5 @@ class myModule : public module
         uint8_t global_id = 0;
 };
 
-#endif
+#endif /* MODULE_H */
+/*** end of file ***/

@@ -1,5 +1,5 @@
-#ifndef MODULE_GPS_UBLOX_h
-#define MODULE_GPS_UBLOX_h
+#ifndef MODULE_GPS_UBLOX_H
+#define MODULE_GPS_UBLOX_H
 
 #include <Arduino.h>
 #include "project.h"
@@ -117,4 +117,5 @@ class MODULE_GPS_UBLOX
         void gps_end(void);
 };
 
-#endif /*  MODULE_GPS_UBLOX_h */
+#endif /*  MODULE_GPS_UBLOX_H */
+/*** end of file ***/

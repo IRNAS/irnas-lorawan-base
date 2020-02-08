@@ -1,5 +1,5 @@
-#ifndef SETTINGS_H_
-#define SETTINGS_H_
+#ifndef SETTINGS_H
+#define SETTINGS_H
 
 #include "Arduino.h"
 #include <STM32L0.h>
@@ -52,4 +52,5 @@ void settings_init(void);
 void settings_from_downlink(uint8_t * data, size_t length);
 bool settings_send(void);
 
-#endif
+#endif /* SETTINGS_H */
+/*** end of file ***/

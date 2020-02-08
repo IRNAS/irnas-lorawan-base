@@ -1,8 +1,10 @@
 #include "module_pira.h"
+#include "debug.h"
 
-// Before this was declared as Arduino String
+#ifdef MODULE_PIRA_DEBUG
 #define NAME "pira"
-#define serial_debug Serial
+#define serial_debug  Serial
+#endif
 
 uint8_t MODULE_PIRA::configure(uint8_t * data, size_t * size)
 {
@@ -203,13 +205,6 @@ void MODULE_PIRA::uart_command_parse(uint8_t * rxBuffer)
             serial_debug.print((char) first_char);
             serial_debug.println(" )");
 #endif
-        if('t' == first_char)
-        {
-                time_t rpi_time = data;
-                serial_debug.print("Time on RPI: ");
-                serial_debug.println(ctime(&rpi_time));
-        }
-
         switch(first_char)
         {
             //TODO: constrain values
@@ -620,6 +615,7 @@ void MODULE_PIRA::pira_state_machine()
         break;
 
         case START_PIRA:
+
             flags = M_RUNNING;
             pira_state_transition(WAIT_STATUS_ON);
         break;
@@ -636,6 +632,9 @@ void MODULE_PIRA::pira_state_machine()
             // If status pin is read as high go to WAKEUP state
             if(digitalRead(MODULE_PIRA_STATUS))
             {
+#ifdef serial_debug
+                serial_debug.println("PIN HIGH");
+#endif
                 pira_state_transition(WAKEUP);
             }
         break;
@@ -650,6 +649,9 @@ void MODULE_PIRA::pira_state_machine()
             //Check status pin, if low then turn off power supply.
             if(!digitalRead(MODULE_PIRA_STATUS))
             {
+#ifdef serial_debug
+                serial_debug.println("PIN LOW");
+#endif
                 pira_state_transition(REBOOT_DETECTION);
             }
         break;
@@ -662,6 +664,9 @@ void MODULE_PIRA::pira_state_machine()
             if(digitalRead(MODULE_PIRA_STATUS))
             {
                 // RPi rebooted, go back to wake up
+#ifdef serial_debug
+                serial_debug.println("PIN HIGH");
+#endif
                 pira_state_transition(WAIT_STATUS_ON);
             }
         break;
@@ -700,3 +705,4 @@ specific_public_data_t MODULE_PIRA::getter()
 {
     return public_data;
 }
+/*** end of file ***/
