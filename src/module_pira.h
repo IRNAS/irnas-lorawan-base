@@ -61,10 +61,11 @@ class MODULE_PIRA
         // we are sending 13 bytes anyhow as header, filling up the packet does not matter too much
         struct module_readings_data_t
         {
-            uint16_t empty_space; // RPi disk space value
-            uint16_t photo_count; // RPi photo count
-            uint32_t status_time; // system time, only 4 bytes are needed, time_t is 4 bytes long
-            uint16_t next_wakeup; // When will next wake up happen in seconds
+            uint16_t empty_space;       // RPi disk space value
+            uint16_t photo_count;       // RPi photo count
+            uint32_t status_time;       // system time, only 4 bytes are needed, time_t is 4 bytes long
+            uint16_t next_wakeup;       // When will next wake up happen in seconds
+            uint16_t cycle_duration;    // How long is rpi power pin held high in seconds
             uint16_t error_values;
         }__attribute__((packed));
 
@@ -111,6 +112,10 @@ class MODULE_PIRA
          *          It is set everytime when we enter state.
          *      stateTimeoutStart
          *          Set everytime we call pira_state_transition funtion.
+         *      rpi_power_pin_pulled_high
+         *          Used to calculate cycle_duration
+         *      rpi_power_pin_pulled_low
+         *          Used to calculate cycle_duration
          */
         state_pira_e status_pira_state_machine;
         state_pira_e state_prev;
@@ -119,6 +124,8 @@ class MODULE_PIRA
         uint32_t rpi_turned_off_timestamp;
         uint32_t stateTimeoutDuration;
         uint32_t stateTimeoutStart;
+        uint32_t rpi_power_pin_pulled_high;
+        uint32_t rpi_power_pin_pulled_low;
 
         // Uart related functions
         void uart_receive();

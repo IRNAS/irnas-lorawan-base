@@ -104,6 +104,8 @@ uint8_t MODULE_PIRA::initialize(void)
     state_prev = IDLE_PIRA;
     flags = M_IDLE;
     rpi_turned_off_timestamp = 0;
+    rpi_power_pin_pulled_high = 0;
+    rpi_power_pin_pulled_low = 0;
 
     public_data.data_1 = 0; 
     public_data.data_2 = 0;
@@ -132,7 +134,11 @@ uint8_t MODULE_PIRA::send(uint8_t * data, size_t * size)
 #endif
 
     readings_packet.data.status_time = rtc_time_read(); 
-    readings_packet.data.next_wakeup = min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period); 
+    readings_packet.data.next_wakeup = min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period);
+    readings_packet.data.cycle_duration = (uint16_t) (rpi_power_pin_pulled_high - rpi_power_pin_pulled_low) / 1000;
+
+    serial_debug.println("Cycle_duration is: ");
+    serial_debug.println(readings_packet.data.cycle_duration);
 
     memcpy(data, &readings_packet.bytes[0], sizeof(module_readings_data_t));
     *size = sizeof(module_readings_data_t);
@@ -628,13 +634,11 @@ void MODULE_PIRA::pira_state_machine()
             // WAIT_STATUS_ON state reached, turn on power for raspberry pi
             digitalWrite(MODULE_5V_EN, HIGH);
             digitalWrite(MODULE_PIRA_5V, HIGH);
+            rpi_power_pin_pulled_high = millis();
 
             // If status pin is read as high go to WAKEUP state
             if(digitalRead(MODULE_PIRA_STATUS))
             {
-#ifdef serial_debug
-                serial_debug.println("PIN HIGH");
-#endif
                 pira_state_transition(WAKEUP);
             }
         break;
@@ -649,9 +653,6 @@ void MODULE_PIRA::pira_state_machine()
             //Check status pin, if low then turn off power supply.
             if(!digitalRead(MODULE_PIRA_STATUS))
             {
-#ifdef serial_debug
-                serial_debug.println("PIN LOW");
-#endif
                 pira_state_transition(REBOOT_DETECTION);
             }
         break;
@@ -664,9 +665,6 @@ void MODULE_PIRA::pira_state_machine()
             if(digitalRead(MODULE_PIRA_STATUS))
             {
                 // RPi rebooted, go back to wake up
-#ifdef serial_debug
-                serial_debug.println("PIN HIGH");
-#endif
                 pira_state_transition(WAIT_STATUS_ON);
             }
         break;
@@ -685,6 +683,8 @@ void MODULE_PIRA::pira_state_machine()
 #endif
             digitalWrite(MODULE_5V_EN, LOW);
             digitalWrite(MODULE_PIRA_5V, LOW);
+            rpi_power_pin_pulled_low = millis();
+
             pira_state_transition(IDLE_PIRA);
         break;
 
