@@ -52,18 +52,19 @@ class MODULE_SYSTEM
         // we are sending 13 bytes anyhow as header, filling up the packet does not matter too much
         struct module_readings_data_t
         {
-            uint8_t reset_cause; // simple value expected to never change unless watchdog event occurs
-            uint8_t vbus; // should be always the same, we can drop it
-            uint8_t battery_avg; // average of readings during a period, maximally once a day
-            uint8_t battery_min; // min of readings during a period, maximally once a day
-            uint8_t battery_max; // max of readings during a period, maximally once a day
-            uint8_t input_analog_avg; // average of readings during a period, maximally once a day
-            uint8_t input_analog_min; // min of readings during a period, maximally once a day
-            uint8_t input_analog_max; // max of readings during a period, maximally once a day
-            uint8_t temperature_avg; // average of readings during a period, maximally once a day
-            uint8_t temperature_min; // min of readings during a period, maximally once a day
-            uint8_t temperature_max; // max of readings during a period, maximally once a day
-            char version[5];
+            uint8_t reset_cause;        // simple value expected to never change unless watchdog event occurs
+            uint8_t vbus;               // should be always the same, we can drop it
+            uint8_t battery_avg;        // average of readings during a period, maximally once a day
+            uint8_t battery_min;        // min of readings during a period, maximally once a day
+            uint8_t battery_max;        // max of readings during a period, maximally once a day
+            uint8_t input_analog_avg;   // average of readings during a period, maximally once a day
+            uint8_t input_analog_min;   // min of readings during a period, maximally once a day
+            uint8_t input_analog_max;   // max of readings during a period, maximally once a day
+            uint8_t temperature_avg;    // average of readings during a period, maximally once a day
+            uint8_t temperature_min;    // min of readings during a period, maximally once a day
+            uint8_t temperature_max;    // max of readings during a period, maximally once a day
+            uint32_t time_alive;        // how long was program running, in milliseconds
+            char version[5];            // reported version, generated with release_build.py script
             //uint8_t errors[10];
         }__attribute__((packed));
 

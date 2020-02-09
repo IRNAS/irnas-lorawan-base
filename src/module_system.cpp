@@ -82,6 +82,7 @@ uint8_t MODULE_SYSTEM::initialize(void)
 {
     settings_packet.data.read_interval = 10;
     settings_packet.data.send_interval = 1;
+    readings_packet.data.time_alive =  0;
     flags = M_IDLE;
 }
 
@@ -114,6 +115,7 @@ uint8_t MODULE_SYSTEM::send(uint8_t *data, size_t *size)
 
     String version = VERSION;
     version.toCharArray(readings_packet.data.version, 5);
+    readings_packet.data.time_alive = (uint32_t) micros() / 1000;
 
     memcpy(data, &readings_packet.bytes[0], sizeof(module_readings_data_t));
     *size = sizeof(module_readings_data_t);
