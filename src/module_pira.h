@@ -65,7 +65,7 @@ class MODULE_PIRA
             uint16_t photo_count;       // RPi photo count
             uint32_t status_time;       // system time, only 4 bytes are needed, time_t is 4 bytes long
             uint16_t next_wakeup;       // When will next wake up happen in seconds
-            uint16_t cycle_duration;    // How long is rpi power pin held high in seconds
+            uint16_t cycle_duration;    // How long is rpi power pin held high in milliseconds
             uint16_t error_values;
         }__attribute__((packed));
 
@@ -128,7 +128,6 @@ class MODULE_PIRA
         uint32_t rpi_power_pin_pulled_low;
 
         // Uart related functions
-        void uart_receive();
         void uart_command_parse(uint8_t * rxBuffer);
         void uart_command_send(char command, uint32_t data);
         void uart_command_receive(void);

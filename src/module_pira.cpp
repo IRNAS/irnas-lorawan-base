@@ -135,7 +135,11 @@ uint8_t MODULE_PIRA::send(uint8_t * data, size_t * size)
 
     readings_packet.data.status_time = rtc_time_read(); 
     readings_packet.data.next_wakeup = min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period);
-    readings_packet.data.cycle_duration = (uint16_t) (rpi_power_pin_pulled_high - rpi_power_pin_pulled_low) / 1000;
+    readings_packet.data.cycle_duration = (rpi_power_pin_pulled_high - rpi_power_pin_pulled_low);
+
+    //We need to reset timestamps to enable single reading
+    rpi_power_pin_pulled_low = 0;
+    rpi_power_pin_pulled_high = 0;
 
     serial_debug.println("Cycle_duration is: ");
     serial_debug.println(readings_packet.data.cycle_duration);
@@ -173,17 +177,6 @@ uint8_t MODULE_PIRA::running(void)
   // Receive any command from raspberry
   pira_state_machine();
 }
-
-void MODULE_PIRA::uart_receive()
-{
-  //uart_command_receive();
-    //while (MODULE_PIRA_SERIAL.available() > 0)
-    //{
-      //MODULE_PIRA_SERIAL.read();
-    //}
-}
-
-
 
 /**
  * @brief Function parses recived commands depending on starting character
@@ -634,7 +627,12 @@ void MODULE_PIRA::pira_state_machine()
             // WAIT_STATUS_ON state reached, turn on power for raspberry pi
             digitalWrite(MODULE_5V_EN, HIGH);
             digitalWrite(MODULE_PIRA_5V, HIGH);
-            rpi_power_pin_pulled_high = millis();
+
+            // This is reseted in send method, after it has been used to calculate cycle duration
+            if(0 == rpi_power_pin_pulled_high)
+            {
+                rpi_power_pin_pulled_high = millis();
+            }
 
             // If status pin is read as high go to WAKEUP state
             if(digitalRead(MODULE_PIRA_STATUS))
@@ -681,9 +679,15 @@ void MODULE_PIRA::pira_state_machine()
             serial_debug.print(min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period));
             serial_debug.println("s)");
 #endif
+            // Turn off Rpi
             digitalWrite(MODULE_5V_EN, LOW);
             digitalWrite(MODULE_PIRA_5V, LOW);
-            rpi_power_pin_pulled_low = millis();
+
+            // This is reseted in send method, after it has been used to calculate cycle duration
+            if(0 == rpi_power_pin_pulled_low)
+            {
+                rpi_power_pin_pulled_low = millis();
+            }
 
             pira_state_transition(IDLE_PIRA);
         break;
