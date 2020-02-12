@@ -88,7 +88,7 @@ class MODULE_GPS_UBLOX
 
         module_settings_packet_t settings_packet;
         module_readings_packet_t readings_packet;
-        uint32_t read_timestamp;
+        uint32_t read_timestamp = 0;
         uint32_t send_timestamp;
 
         bool gps_send_flag = false; // extern

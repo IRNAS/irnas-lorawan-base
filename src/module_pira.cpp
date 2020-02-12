@@ -48,9 +48,6 @@ module_flags_e MODULE_PIRA::scheduler(void)
 
     uint32_t elapsed = millis() - rpi_turned_off_timestamp;
 
-    // Get next wakeup value for display purposes
-    public_data.data_2 = min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period);
-
     // rpi_turned_off_timestamp is 0 only at boot.
     if ((elapsed >= min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period) * 1000) ||  0 == rpi_turned_off_timestamp)
     {
@@ -679,6 +676,10 @@ void MODULE_PIRA::pira_state_machine()
             serial_debug.print(min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period));
             serial_debug.println("s)");
 #endif
+
+            // Calculate when will next wake up occur, current time plus wakeup value and save it into public_data
+            public_data.data_2 = rtc_time_read() + min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period);
+
             // Turn off Rpi
             digitalWrite(MODULE_5V_EN, LOW);
             digitalWrite(MODULE_PIRA_5V, LOW);

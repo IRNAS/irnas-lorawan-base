@@ -83,7 +83,7 @@ module_flags_e MODULE_GPS_UBLOX::scheduler(void)
         interval = interval * (gps_fail_count + 1);
     }
 
-    if ((interval != 0) && ((millis() - read_timestamp >= interval * 60 * 1000) ||  0 == read_timestamp))
+    if ((interval != 0) && (((millis() - read_timestamp) >= (interval * 60 * 1000)) ||  (0 == read_timestamp)))
     {
         if (M_IDLE == flags)
         {
@@ -107,7 +107,7 @@ module_flags_e MODULE_GPS_UBLOX::scheduler(void)
             flags = M_SEND;
 #ifdef serial_debug
             serial_debug.print(NAME);
-            serial_debug.print("scheduler(");
+            serial_debug.print(" scheduler(");
             serial_debug.println("send_values)");
 #endif
         }
@@ -118,7 +118,7 @@ module_flags_e MODULE_GPS_UBLOX::scheduler(void)
 
 uint8_t MODULE_GPS_UBLOX::initialize(void)
 {
-    settings_packet.data.periodic_interval = 1;
+    settings_packet.data.periodic_interval = 24*60;
     settings_packet.data.triggered_interval = 0;
     settings_packet.data.send_interval = 0;
     settings_packet.data.gps_triggered_threshold = 0;
@@ -130,7 +130,8 @@ uint8_t MODULE_GPS_UBLOX::initialize(void)
     settings_packet.data.gps_hot_fix_retry = 3;
     settings_packet.data.gps_cold_fix_retry = 6;
     settings_packet.data.gps_fail_retry = 0;
-    settings_packet.data.gps_settings = 0xff;
+    //settings_packet.data.gps_settings = 0xff;
+    settings_packet.data.gps_settings = 0b11111011;
     flags = M_IDLE;
 }
 
@@ -388,7 +389,6 @@ bool MODULE_GPS_UBLOX::gps_start(void)
     {
         if (gps_begin() == false)
         {
-            flags = M_IDLE;
             return false;
         }
     }
@@ -399,7 +399,6 @@ bool MODULE_GPS_UBLOX::gps_start(void)
         // This does not work currently due to a bug
         if (gps_begin() == false)
         {
-            flags = M_IDLE;
             return false;
         }
     }

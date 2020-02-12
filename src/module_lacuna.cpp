@@ -106,8 +106,8 @@ module_flags_e MODULE_LACUNA::scheduler(void)
 uint8_t MODULE_LACUNA::initialize(void)
 {
     //Our timewindow in which we want Lacuna to operate
-    start_tx = { 0, 0 };
-    end_tx = { 0, 2 };
+    start_tx = { 7, 30 };
+    end_tx = { 7, 31 };
     
     flags = M_IDLE; // Needed for normal running  of modules
 }
