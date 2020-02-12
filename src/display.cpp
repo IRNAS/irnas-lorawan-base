@@ -114,17 +114,30 @@ void info_screen()
     display.setCursor(0, 21);
 
     display.println("Photo count:");
-    display.println(print_data.data_1);
+    if(0 == print_data.data_1)
+    {
+      display.println("Not available yet");
+    }
+    else
+    {
+      display.println(print_data.data_1);
+    }
+    
 
     display.drawFastHLine(0, 38, 128, 1);
     display.setCursor(0, 40);
 
     display.println("Next Rpi wakeup:");
-    display.print(print_data.data_2);
-    display.print(" seconds");
+    if(0 == print_data.data_2)
+    {
+      display.println("Not available yet");
+    }
+    else
+    {
+      display.print(print_data.data_2 - time_for_display);
+      display.print(" seconds");
+    }
+
     display.display();
-    //RTC time
-    //photo count
-    //next wakeup pira
 }
 /*** end of file ***/
