@@ -20,7 +20,7 @@ enum module_flags_e
 struct specific_public_data_t
 {
     uint16_t data_1;
-    uint16_t data_2;
+    time_t data_2;
 } __attribute__((packed));
 
 // virtual module class
