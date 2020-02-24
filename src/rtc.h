@@ -5,7 +5,7 @@
 #include <time.h>
 #include "project_utils.h"
 
-#define TIME_INIT_VALUE             (1514764800UL)  // Initial Time is Mon, 1 Jan 2018 00:00:00
+#define TIME_INIT_VALUE             (1577836800UL)  // Initial Time is Mon, 1 Jan 2020 00:00:00
 
 #define ISL1208_ADDRESS   0x6F  //I2C slave addess of RTC IC
 
