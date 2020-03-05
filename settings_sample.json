@@ -1,48 +1,8 @@
 {
-    "basic_settings": {
-        "lorawan_datarate": 0,
-        "lorawan_adr": 0,
-        "lorawan_txp": 0,
-        "lorawan_reg": 0,
-        "resend_delay": 0,
-        "resend_count": 0,
-        "version": 0
-    },
-    "module_system": {
-        "read_interval": 0,
-        "send_interval": 0
-    },
-    "module_gps_ublox": {
-        "send_interval": 0,
-        "periodic_interval": 0,
-        "triggered_interval": 0,
-        "gps_triggered_threshold": 0,
-        "gps_triggered_duration": 0,
-        "gps_cold_fix_timeout": 0,
-        "gps_hot_fix_timeout": 0,
-        "gps_min_fix_time": 0,
-        "gps_min_ehpe": 0,
-        "gps_hot_fix_retry": 0,
-        "gps_cold_fix_retry": 0,
-        "gps_fail_retry": 0,
-        "gps_settings": 0
-    },
-    "module_pira": {
-        "read_interval": 0,
-        "send_interval": 0,
-        "status_battery": 0,
-        "safety_power_period": 0,
-        "safety_sleep_period": 0,
-        "safety_reboot": 0,
-        "operational_wakeup": 0
-    },
-    "module_accelerometer": {
-        "read_interval": 0,
-        "send_interval": 0,
-        "triggered_threshold": 0,
-        "triggered_duration": 0,
-        "free_fall": 0,
-        "dummy": 0
-    },
-    "module_lacuna": {}
+    "module_lacuna": {
+        "start_hour": 20,
+        "start_min": 10,
+        "end_hour": 20,
+        "end_min": 30
+    }
 }

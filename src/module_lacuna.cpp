@@ -23,12 +23,28 @@ const String mytext = "Hello Lacuna!";
  */
 uint8_t MODULE_LACUNA::configure(uint8_t * data, size_t * size)
 {
+#ifdef serial_debug
+    serial_debug.print(NAME);
+    serial_debug.print(": configure(");
+    serial_debug.println(")");;
+#endif
+
+    // Do not accept settings if size does not match
+    if (*size != sizeof(module_settings_data_t))
+    {
+        return 0;
+    }
+
     // copy to buffer
     module_settings_packet_t settings_packet_downlink;
     memcpy(&settings_packet_downlink.bytes[0], data, sizeof(module_settings_data_t));
 
     // validate settings value range 
     settings_packet.data.global_id = settings_packet_downlink.data.global_id;
+    settings_packet.data.start_hour = settings_packet_downlink.data.start_hour;
+    settings_packet.data.start_min = settings_packet_downlink.data.start_min;
+    settings_packet.data.end_hour = settings_packet_downlink.data.end_hour;
+    settings_packet.data.end_min = settings_packet_downlink.data.end_min;
 
     return 0;
 }
@@ -72,13 +88,13 @@ module_flags_e MODULE_LACUNA::scheduler(void)
 
     struct tm *timeinfo = localtime(&current_time);
 
-    timeinfo->tm_hour = start_tx.hour;
-    timeinfo->tm_min = start_tx.min;
+    timeinfo->tm_hour = settings_packet.data.start_hour;
+    timeinfo->tm_min = settings_packet.data.start_min;
     timeinfo->tm_sec =  0;
     time_t start_window_tx = mktime(timeinfo);
 
-    timeinfo->tm_hour = end_tx.hour;
-    timeinfo->tm_min = end_tx.min;
+    timeinfo->tm_hour = settings_packet.data.end_hour;
+    timeinfo->tm_min = settings_packet.data.end_min;
     timeinfo->tm_sec =  0;
     time_t end_window_tx = mktime(timeinfo);
 
@@ -106,9 +122,11 @@ module_flags_e MODULE_LACUNA::scheduler(void)
 uint8_t MODULE_LACUNA::initialize(void)
 {
     //Our timewindow in which we want Lacuna to operate
-    start_tx = { 7, 30 };
-    end_tx = { 7, 31 };
-    
+    settings_packet.data.start_hour = 20;
+    settings_packet.data.start_min = 50;
+    settings_packet.data.end_hour = 21;
+    settings_packet.data.end_min = 10;
+
     flags = M_IDLE; // Needed for normal running  of modules
 }
 

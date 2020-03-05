@@ -292,7 +292,7 @@ bool settings_send(void)
         lenght = LoRaWAN.getMaxPayloadSize();
 #ifdef serial_debug
         serial_debug.print(NAME);
-        serial_debug.print(": settings larger then packet size, truncating!");
+        serial_debug.println(": settings larger then packet size, truncating!");
 #endif
     }
     return lorawan_send(settings_packet_port, &settings_buffer[0], lenght);

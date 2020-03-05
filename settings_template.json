@@ -35,14 +35,13 @@
     },
     "module_pira": {
         "global_id": {"value": 4, "size": 1, "order": 0},
-        "length": {"value": 24, "size": 1, "order": 1},
+        "length": {"value": 22, "size": 1, "order": 1},
         "read_interval": {"value": 0, "size": 2, "order": 2},
         "send_interval": {"value": 0, "size": 2, "order": 3},
-        "status_battery": {"value": 0, "size": 2, "order": 4},
-        "safety_power_period": {"value": 0, "size": 4, "order": 5},
-        "safety_sleep_period": {"value": 0, "size": 4, "order": 6},
-        "safety_reboot": {"value": 0, "size": 4, "order": 7},
-        "operational_wakeup": {"value": 0, "size": 4, "order": 8}
+        "safety_power_period": {"value": 0, "size": 4, "order": 4},
+        "safety_sleep_period": {"value": 0, "size": 4, "order": 5},
+        "safety_reboot": {"value": 0, "size": 4, "order": 6},
+        "operational_wakeup": {"value": 0, "size": 4, "order": 7}
     },
     "module_accelerometer": {
         "global_id": {"value": 5, "size": 1, "order": 0},
@@ -56,6 +55,10 @@
     },
     "module_lacuna": {
         "global_id": {"value": 6, "size": 1, "order": 0},
-        "length": {"value": 2, "size": 1, "order": 1}
+        "length": {"value": 6, "size": 1, "order": 1},
+        "start_hour": {"value": 0, "size": 1, "order": 2},
+        "start_min": {"value": 0, "size": 1, "order": 3},
+        "end_hour": {"value": 0, "size": 1, "order": 4},
+        "end_min": {"value": 0, "size": 1, "order": 5}
     }
 }

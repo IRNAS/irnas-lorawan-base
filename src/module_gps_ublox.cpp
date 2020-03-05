@@ -14,10 +14,12 @@ uint8_t MODULE_GPS_UBLOX::configure(uint8_t *data, size_t *size)
     serial_debug.println(")");;
 #endif
 
-    if (* size != sizeof(module_settings_data_t))
+    // Do not accept settings if size does not match
+    if (*size != sizeof(module_settings_data_t))
     {
         return 0;
     }
+
     // copy to buffer
     module_settings_packet_t settings_packet_downlink;
     memcpy(&settings_packet_downlink.bytes[0],data, sizeof(module_settings_data_t));

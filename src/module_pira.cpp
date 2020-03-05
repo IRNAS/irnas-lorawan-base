@@ -85,7 +85,7 @@ uint8_t MODULE_PIRA::initialize(void)
     settings_packet.data.send_interval = 1;
     settings_packet.data.safety_power_period = 600;
     settings_packet.data.safety_sleep_period = 600;
-    settings_packet.data.safety_reboot = 60;
+    settings_packet.data.safety_reboot = 600;
     settings_packet.data.operational_wakeup = 30;
 
     readings_packet.data.empty_space = 0;

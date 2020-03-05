@@ -39,7 +39,10 @@ class MODULE_LACUNA
         {
             uint8_t global_id;
             uint8_t length;
-
+            uint8_t start_hour;
+            uint8_t start_min;
+            uint8_t end_hour;
+            uint8_t end_min;
         }__attribute__((packed));
 
         union module_settings_packet_t
@@ -59,12 +62,6 @@ class MODULE_LACUNA
             uint8_t bytes[sizeof(module_readings_data_t)];
         };
 
-        typedef struct
-        {
-            uint8_t hour;
-            uint8_t min;
-        }time_window_t;
-        
         void setup_lacuna();
         void send_lacuna();
 
@@ -74,10 +71,6 @@ class MODULE_LACUNA
         lsLoraWANParams loraWANParams;
         lsLoraSatTxParams SattxParams;
         lsLoraTxParams txParams;
-
-        time_window_t start_tx;
-        time_window_t end_tx;
-        //char payload[255];
 
         static byte networkKeyLacuna[];
         static byte appKeyLacuna[];
