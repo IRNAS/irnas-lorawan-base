@@ -69,8 +69,10 @@ class MODULE_LACUNA
         module_readings_packet_t readings_packet;
 
         lsLoraWANParams loraWANParams;
+        lsLoraWANParams relay_loraWANParams;
         lsLoraSatTxParams SattxParams;
         lsLoraTxParams txParams;
+        lsLoraTxParams relayParams;
 
         static byte networkKeyLacuna[];
         static byte appKeyLacuna[];
