@@ -237,10 +237,10 @@ void MODULE_LACUNA::setup_lacuna(void)
     lsCreateDefaultSX126xConfig(&cfg);
 
     cfg.nssPin = PB12;
-    cfg.resetPin = PA3;             //Not needed
+    cfg.resetPin = -1;           // Not needed
     cfg.antennaSwitchPin = PB2;
     cfg.busyPin = PH1;             
-    cfg.dio1Pin = PA2;             
+    cfg.dio1Pin = PB7;             
     cfg.osc = lsSX126xOscTCXO;      // for Xtal: lsSX126xOscXtal
     cfg.type = lsSX126xTypeSX1262;  // for SX1261: lsSX126xTypeSX1261
 
@@ -282,16 +282,8 @@ void MODULE_LACUNA::setup_lacuna(void)
     lsCreateDefaultLoraTxParams(&txParams);
     
     // Override defult LoRa parameters
-//    txParams.power = 21;
-//    txParams.codingRate = lsLoraCodingRate_4_5;
-//    txParams.bandwidth = lsLoraBandwidth_125_khz;
-//    txParams.spreadingFactor = lsLoraSpreadingFactor_11;
-//    txParams.invertIq = false;
-//    txParams.syncWord = LS_LORA_SYNCWORD_PUBLIC;
-//    txParams.preambleLength = 8;
-
-    txParams.power = 14;
-    txParams.spreadingFactor = lsLoraSpreadingFactor_7;
+    txParams.spreadingFactor = lsLoraSpreadingFactor_11;
+    txParams.power = 21;
     txParams.codingRate = lsLoraCodingRate_4_5;
     txParams.invertIq = false;
     txParams.frequency = 867300000;
@@ -299,7 +291,7 @@ void MODULE_LACUNA::setup_lacuna(void)
     txParams.syncWord = LS_LORA_SYNCWORD_PUBLIC;
     txParams.preambleLength = 8;
 
-    /* LoRa parameters for relay (receive) */
+    // LoRa parameters for relay (receive) 
     lsCreateDefaultLoraTxParams(&relayParams);
 
     // Make sure that SF and bandwith match with device that we will relay.
@@ -353,40 +345,45 @@ void MODULE_LACUNA::send_lacuna(void)
 
 
 */
-    serial_debug.print("Waiting for receiveeeeeeeeeeeeeeeeeeee");
-    uint32_t rxlength = lsReceiveLora(&relay_loraWANParams, &relayParams, relay_payload);
-    Serial.print("Rxlength: ");
-    Serial.println(rxlength);
+    int32_t rxlength = lsReceiveLora(&relay_loraWANParams, 
+                                     &relayParams, 
+                                     relay_payload);
+
+#ifdef serial_debug
+    serial_debug.print("Rxlength: ");
+    serial_debug.println(rxlength);
+#endif
 
     if (rxlength) 
-    {
-        /* valid relay data received */
-        Serial.println("Valid uplink received.");
-        Serial.print("  SNR: ");
-        Serial.println(relayParams.snr);
-        Serial.print("  RSSI: ");
-        Serial.println(relayParams.rssi);
-        Serial.print("  SignalRSSI: ");
-        Serial.println(relayParams.signalrssi);
+    { 
+       /* valid relay data received */
+#ifdef serial_debug
+       serial_debug.println("Valid uplink received.");
+       serial_debug.print("  SNR: ");
+       serial_debug.println(relayParams.snr);
+       serial_debug.print("  RSSI: ");
+       serial_debug.println(relayParams.rssi);
+       serial_debug.print("  SignalRSSI: ");
+       serial_debug.println(relayParams.signalrssi);
+       serial_debug.print("  Payload in hex: ");
 
-        Serial.print("  Payload in hex: ");
-        for (uint8_t n = 0; n < rxlength; n++)
-        {
-            Serial.print (relay_payload[n],HEX);
-            Serial.write (" ");
-        }
-        Serial.println();
-
-        int lora_result = lsSendLoraWAN(&loraWANParams, &txParams, (byte *)relay_payload, rxlength);
-        Serial.print("Result: ");
-        Serial.println(lsErrorToString(lora_result));
+       for (uint8_t n = 0; n < rxlength; n++)
+       {
+           serial_debug.print (relay_payload[n],HEX);
+           serial_debug.write (" ");
+       }
+       serial_debug.println();
+#endif
+       int lora_result = lsSendLoraWAN(&loraWANParams, 
+                                       &txParams, 
+                                       (byte *)relay_payload, 
+                                       rxlength);
+#ifdef serial_debug
+       serial_debug.print("Result: ");
+       serial_debug.println(lsErrorToString(lora_result));
+#endif
     }
-
-
-
-
-
-
+    
 }
 
 specific_public_data_t MODULE_LACUNA::getter()

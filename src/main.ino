@@ -376,7 +376,7 @@ void setup()
     pinMode(BOARD_BUTTON, INPUT);
     pinMode(MODULE_LACUNA_5V, OUTPUT);
     digitalWrite(MODULE_LACUNA_5V, LOW);
-    pinMode(MODULE_ULTRASONIC_OLED_3V, OUTPUT);
+    //pinMode(MODULE_ULTRASONIC_OLED_3V, OUTPUT);
 
     //digitalWrite(MODULE_ULTRASONIC_OLED_3V, HIGH);
 
