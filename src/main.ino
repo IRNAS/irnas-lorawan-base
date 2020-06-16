@@ -12,6 +12,14 @@
 #define serial_debug  Serial
 #endif
 
+
+
+// Global variables
+
+// Declared externaly in project.h, 
+// only modules pira and lacuna can access it.
+uint16_t global_activate_pira = 0;  
+
 // General system variables
 int8_t active_module = -1;
 

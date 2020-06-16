@@ -382,12 +382,12 @@ void MODULE_LACUNA::send_lacuna(void)
        serial_debug.print("Result: ");
        serial_debug.println(lsErrorToString(lora_result));
 #endif
+    global_activate_pira += 1;
     }
     
 }
 
 specific_public_data_t MODULE_LACUNA::getter()
 {
-
 }
 /*** end of file ***/

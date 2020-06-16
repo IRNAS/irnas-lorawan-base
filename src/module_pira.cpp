@@ -49,8 +49,13 @@ module_flags_e MODULE_PIRA::scheduler(void)
     uint32_t elapsed = millis() - rpi_turned_off_timestamp;
 
     // rpi_turned_off_timestamp is 0 only at boot.
-    if ((elapsed >= min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period) * 1000) ||  0 == rpi_turned_off_timestamp)
+    //if ((elapsed >= min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period) * 1000) ||  0 == rpi_turned_off_timestamp)
+    
+    //Different way of checking if we have to run pira
+    //
+    if (global_activate_pira > 0)
     {
+        serial_debug.print("Time to ACTIVATE PIRAAAAAAAAA");
         // Do not turn on raspberry pi if voltage is too low
         uint16_t voltage = get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN);
         if(voltage > MODULE_PIRA_UNDERVOLTAGE_THRESHOLD)
@@ -75,6 +80,10 @@ module_flags_e MODULE_PIRA::scheduler(void)
                 serial_debug.println(" mV)");
 #endif
         }
+    }
+    else
+    {
+        serial_debug.print("NOT THE TIME to ACTIVATE PIRAAAAAAAAA");
     }
     return flags;
 }
@@ -689,7 +698,8 @@ void MODULE_PIRA::pira_state_machine()
             {
                 rpi_power_pin_pulled_low = millis();
             }
-
+            global_activate_pira = 0;
+            serial_debug.print("Time to DEACTIVATE PIRAAAAAAAAA");
             pira_state_transition(IDLE_PIRA);
         break;
 
