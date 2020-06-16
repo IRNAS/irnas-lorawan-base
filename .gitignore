@@ -8,3 +8,5 @@ scatter-mode.html
 build
 *.swp
 tags
+*.dfu
+*.elf

@@ -225,7 +225,7 @@ bool callback_periodic(void)
         }
     }
 
-    if(!digitalRead(BOARD_BUTTON))
+    if (!digitalRead(BOARD_BUTTON))
     {
         //digitalWrite(MODULE_ULTRASONIC_OLED_3V, HIGH);
         init_display();
