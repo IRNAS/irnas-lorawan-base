@@ -1,8 +1,10 @@
 {
-    "module_lacuna": {
-        "start_hour": 20,
-        "start_min": 10,
-        "end_hour": 20,
-        "end_min": 30
+    "module_pira": {
+        "read_interval": 10,
+        "send_interval": 1,
+        "safety_power_period": 60,
+        "safety_sleep_period": 60,
+        "safety_reboot": 60,
+        "operational_wakeup": 30
     }
 }
