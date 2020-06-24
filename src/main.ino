@@ -370,6 +370,9 @@ void setup()
     //pinMode(PB9, INPUT);
     //pinMode(PB8, INPUT);
 
+    pinMode(BOARD_LED, OUTPUT);
+    digitalWrite(BOARD_LED, LOW);
+
     // Serial port debug setup
 #ifdef serial_debug
     serial_debug.begin(115200);

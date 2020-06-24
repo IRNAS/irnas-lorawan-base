@@ -55,7 +55,7 @@ module_flags_e MODULE_PIRA::scheduler(void)
     //
     if (global_activate_pira > 0)
     {
-        serial_debug.print("Time to ACTIVATE PIRAAAAAAAAA");
+        serial_debug.println("TIME TO ACTIVATE PIRA");
         // Do not turn on raspberry pi if voltage is too low
         uint16_t voltage = get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN);
         if(voltage > MODULE_PIRA_UNDERVOLTAGE_THRESHOLD)
@@ -83,7 +83,7 @@ module_flags_e MODULE_PIRA::scheduler(void)
     }
     else
     {
-        serial_debug.print("NOT THE TIME to ACTIVATE PIRAAAAAAAAA");
+        serial_debug.println("NOT THE TIME to ACTIVATE PIRA");
     }
     return flags;
 }
@@ -92,9 +92,9 @@ uint8_t MODULE_PIRA::initialize(void)
 {
     settings_packet.data.read_interval = 10;
     settings_packet.data.send_interval = 1;
-    settings_packet.data.safety_power_period = 600;
-    settings_packet.data.safety_sleep_period = 600;
-    settings_packet.data.safety_reboot = 600;
+    settings_packet.data.safety_power_period = 60;
+    settings_packet.data.safety_sleep_period = 60;
+    settings_packet.data.safety_reboot = 60;
     settings_packet.data.operational_wakeup = 30;
 
     readings_packet.data.empty_space = 0;
@@ -634,6 +634,9 @@ void MODULE_PIRA::pira_state_machine()
             digitalWrite(MODULE_5V_EN, HIGH);
             digitalWrite(MODULE_PIRA_5V, HIGH);
 
+            //Added for hack the poacher for easier debugging
+            digitalWrite(BOARD_LED, HIGH);
+
             // This is reseted in send method, after it has been used to calculate cycle duration
             if(0 == rpi_power_pin_pulled_high)
             {
@@ -693,13 +696,16 @@ void MODULE_PIRA::pira_state_machine()
             digitalWrite(MODULE_5V_EN, LOW);
             digitalWrite(MODULE_PIRA_5V, LOW);
 
+            //Added for hack the poacher for easier debugging
+            digitalWrite(BOARD_LED, LOW);
+
             // This is reseted in send method, after it has been used to calculate cycle duration
             if(0 == rpi_power_pin_pulled_low)
             {
                 rpi_power_pin_pulled_low = millis();
             }
             global_activate_pira = 0;
-            serial_debug.print("Time to DEACTIVATE PIRAAAAAAAAA");
+            serial_debug.print("Time to DEACTIVATE PIRA");
             pira_state_transition(IDLE_PIRA);
         break;
 
