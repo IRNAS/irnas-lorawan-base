@@ -20,6 +20,15 @@
 // only modules pira and lacuna can access it.
 uint16_t global_activate_pira = 0;  
 
+// Declared externaly in project.h, 
+// It is used in main.ino, module_lacuna.cpp, module_pira.cpp
+// Explanation of values:
+// 0: default value, no wakeup detected
+// 1: woken up by lora packet
+// 2: woken up by push button
+uint8_t global_pira_wakeup_reason = 0;
+
+
 // General system variables
 int8_t active_module = -1;
 
@@ -236,6 +245,8 @@ bool callback_periodic(void)
     if (!digitalRead(BOARD_BUTTON))
     {
         //digitalWrite(MODULE_ULTRASONIC_OLED_3V, HIGH);
+        global_activate_pira = 1;   // For hack the poacher setup
+        global_pira_wakeup_reason = 2; // For hack the poacher setup
         init_display();
         info_screen();
         delay(5000); // Pause for 2 seconds
@@ -358,7 +369,7 @@ void state_transition(state_e next)
  */
 void setup() 
 {
-    STM32L0.wdtEnable(18000);
+    STM32L0.wdtEnable(22000);
     //pinMode(PB9, OUTPUT);
     //pinMode(PB8, OUTPUT);
     //digitalWrite(PB9, HIGH);
@@ -393,7 +404,7 @@ void setup()
 
     //// Show boot screen
     init_display();
-    boot_screen();
+    //boot_screen();
 
     //// Turn off power for oled screen
     //digitalWrite(MODULE_ULTRASONIC_OLED_3V, LOW);
@@ -412,7 +423,7 @@ void setup()
 void loop() 
 {
 #ifdef serial_debug
-    serial_debug.print("main: fsm(" );
+    serial_debug.print("\nmain: fsm(" );
     serial_debug.print(decode_state(( uint8_t ) state_prev));
     serial_debug.print(" > ");
     serial_debug.print(decode_state(( uint8_t ) state));
@@ -547,7 +558,6 @@ void loop()
 
             //LED status 
             //digitalWrite(BOARD_LED, HIGH);
-
             if (true == lorawan_settings_new )
             {
                 lorawan_settings_new = false;
@@ -719,11 +729,10 @@ void loop()
         {
             system_sleep(sleep);
         }
-        sleep = 0;
+        sleep = -1; // No sleep
     }
     else if (sleep == 0)
     {
-        sleep = -1;
         module_flags_e flag = modules[2]->get_flags(); //Get flag of Pira module
         if(flag == M_RUNNING)
         {
@@ -733,10 +742,11 @@ void loop()
         {
             system_sleep(25 * 3600 * 1000); // max 25h
         }
+        sleep = -1; // No sleep
     }
     else
     {
-        sleep = -1;
+        sleep = -1; // No sleep
     }
 }
 /*** end of file ***/

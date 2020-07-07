@@ -1,10 +1,14 @@
 #include "module_pira.h"
 #include "debug.h"
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BME280.h>
 
 #ifdef MODULE_PIRA_DEBUG
 #define NAME "pira"
 #define serial_debug  Serial
 #endif
+
+Adafruit_BME280 bme; // comm over I2C
 
 uint8_t MODULE_PIRA::configure(uint8_t * data, size_t * size)
 {
@@ -52,10 +56,13 @@ module_flags_e MODULE_PIRA::scheduler(void)
     //if ((elapsed >= min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period) * 1000) ||  0 == rpi_turned_off_timestamp)
     
     //Different way of checking if we have to run pira
-    //
     if (global_activate_pira > 0)
     {
-        serial_debug.println("TIME TO ACTIVATE PIRA");
+#ifdef serial_debug
+        serial_debug.print(NAME);
+        serial_debug.print(": scheduler(");
+        serial_debug.println("ACTIVATED)");
+#endif
         // Do not turn on raspberry pi if voltage is too low
         uint16_t voltage = get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN);
         if(voltage > MODULE_PIRA_UNDERVOLTAGE_THRESHOLD)
@@ -83,7 +90,11 @@ module_flags_e MODULE_PIRA::scheduler(void)
     }
     else
     {
-        serial_debug.println("NOT THE TIME to ACTIVATE PIRA");
+#ifdef serial_debug
+        serial_debug.print(NAME);
+        serial_debug.print(": scheduler(");
+        serial_debug.println("DEACTIVATED)");
+#endif
     }
     return flags;
 }
@@ -127,6 +138,21 @@ uint8_t MODULE_PIRA::initialize(void)
 
     // Start Uart communication
     MODULE_PIRA_SERIAL.begin(115200);
+
+    // Enable bme sensor
+    uint8_t status = bme.begin();  
+    // You can also pass in a Wire library object like &Wire2
+    // status = bme.begin(0x76, &Wire2)
+    if (!status) {
+        Serial.println("Could not find a valid BME280 sensor, check wiring, address, sensor ID!");
+        Serial.print("SensorID was: 0x"); Serial.println(bme.sensorID(),16);
+        Serial.print("        ID of 0xFF probably means a bad address, a BMP 180 or BMP 085\n");
+        Serial.print("   ID of 0x56-0x58 represents a BMP 280,\n");
+        Serial.print("        ID of 0x60 represents a BME 280.\n");
+        Serial.print("        ID of 0x61 represents a BME 680.\n");
+        while (1) delay(10);
+    }
+
 }
 
 uint8_t MODULE_PIRA::send(uint8_t * data, size_t * size)
@@ -401,6 +427,24 @@ void MODULE_PIRA::send_status_values(void)
     uart_command_send('w', settings_packet.data.operational_wakeup);
     uart_command_send('a', (uint32_t)digitalRead(MODULE_PIRA_STATUS));
     uart_command_send('m', status_pira_state_machine);
+
+    // Readings from bme
+    uart_command_send('c', bme.readTemperature());
+    uart_command_send('d', bme.readPressure() / 100.0F);
+    uart_command_send('h', bme.readHumidity());
+
+    uint8_t * p_device_id = getDeviceId();
+
+    uint32_t device_id = 0;
+    device_id |= ((uint32_t) p_device_id[0]) << 24;
+    device_id |= ((uint32_t) p_device_id[1]) << 16;
+    device_id |= ((uint32_t) p_device_id[2]) << 8;
+    device_id |= ((uint32_t) p_device_id[3]);
+
+    uart_command_send('i', device_id);
+    uart_command_send('z', global_pira_wakeup_reason);
+    MODULE_PIRA_SERIAL.print("Device:");
+    MODULE_PIRA_SERIAL.println(global_pira_wakeup_reason);
 }
 
 /**
@@ -655,6 +699,7 @@ void MODULE_PIRA::pira_state_machine()
             stateTimeoutDuration = settings_packet.data.safety_power_period;
             state_goto_timeout = STOP_PIRA;
             uart_command_receive();
+            serial_debug.println("SENDING STATUS VALUES");
             send_status_values();
 
             //Check status pin, if low then turn off power supply.
@@ -685,12 +730,16 @@ void MODULE_PIRA::pira_state_machine()
             serial_debug.print(NAME);
             serial_debug.print(": fsm(");
             serial_debug.print("RPI turned off, wake up in: ");
-            serial_debug.print(min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period));
+            serial_debug.print(min(settings_packet.data.operational_wakeup, 
+                                   settings_packet.data.safety_sleep_period));
             serial_debug.println("s)");
 #endif
 
-            // Calculate when will next wake up occur, current time plus wakeup value and save it into public_data
-            public_data.data_2 = rtc_time_read() + min(settings_packet.data.operational_wakeup, settings_packet.data.safety_sleep_period);
+            // Calculate when will next wake up occur, 
+            // current time plus wakeup value and save it into public_data
+            public_data.data_2 = rtc_time_read() + 
+                                 min(settings_packet.data.operational_wakeup,
+                                     settings_packet.data.safety_sleep_period);
 
             // Turn off Rpi
             digitalWrite(MODULE_5V_EN, LOW);
@@ -699,12 +748,17 @@ void MODULE_PIRA::pira_state_machine()
             //Added for hack the poacher for easier debugging
             digitalWrite(BOARD_LED, LOW);
 
-            // This is reseted in send method, after it has been used to calculate cycle duration
+            // This is reseted in send method, 
+            // after it has been used to calculate cycle duration
             if(0 == rpi_power_pin_pulled_low)
             {
                 rpi_power_pin_pulled_low = millis();
             }
+
+            // Reset global variables connected with 
+            // HackThePoacher functionality
             global_activate_pira = 0;
+            global_pira_wakeup_reason = 0;
             serial_debug.print("Time to DEACTIVATE PIRA");
             pira_state_transition(IDLE_PIRA);
         break;

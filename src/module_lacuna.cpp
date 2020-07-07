@@ -28,7 +28,7 @@ uint8_t MODULE_LACUNA::configure(uint8_t * data, size_t * size)
 #ifdef serial_debug
     serial_debug.print(NAME);
     serial_debug.print(": configure(");
-    serial_debug.println(")");;
+    serial_debug.println(")");
 #endif
 
     // Do not accept settings if size does not match
@@ -102,17 +102,24 @@ module_flags_e MODULE_LACUNA::scheduler(void)
 
     if(current_time >= start_window_tx && current_time < end_window_tx)
     {
-
 #ifdef serial_debug
-    serial_debug.print(NAME);
-    serial_debug.print(":scheduler(");
-    serial_debug.println("send_values)");
+        serial_debug.print(NAME);
+        serial_debug.print(": scheduler(");
+        serial_debug.println("active)");
 #endif
         flags = M_RUNNING;
         return flags;
     }
-    flags = M_IDLE;
-    return flags;
+    else
+    {
+#ifdef serial_debug
+        serial_debug.print(NAME);
+        serial_debug.print(": scheduler(");
+        serial_debug.println("not active)");
+#endif
+        flags = M_IDLE;
+        return flags;
+    }
 }
 
 /*!
@@ -169,7 +176,7 @@ void MODULE_LACUNA::running(void)
     //digitalWrite(MODULE_LACUNA_5V, HIGH);
     //pinMode(MODULE_5V_EN, OUTPUT);
     //digitalWrite(MODULE_5V_EN, HIGH);
-
+    
     setup_lacuna();
     send_lacuna(); 
     // Turn off only 5V to Lacuna, leave general 5v on, as Rpi might be working.
@@ -213,9 +220,14 @@ void MODULE_LACUNA::setup_lacuna(void)
     uint8_t lacuna_deviceAddress[] =  { 0x26, 0x01, 0x19, 0x7C };
 
     // Device to be relayed (receive)
-    uint8_t relay_networkKey[] = { 0xB9, 0xDC, 0x31, 0x02, 0x26, 0x20, 0x2E, 0xD5, 0x4C, 0xB0, 0xFD, 0x2F, 0xFC, 0x71, 0xC5, 0xA9 };
-    uint8_t relay_appKey[] = { 0xC9, 0xE3, 0xBB, 0x9E, 0x98, 0x99, 0x7F, 0xE0, 0x92, 0x6F, 0x96, 0x3C, 0x6B, 0x78, 0x4E, 0x03 };
-    uint8_t relay_deviceAddress[] = { 0x26, 0x01, 0x1D, 0xDF };
+    //uint8_t relay_networkKey[] = { 0xB9, 0xDC, 0x31, 0x02, 0x26, 0x20, 0x2E, 0xD5, 0x4C, 0xB0, 0xFD, 0x2F, 0xFC, 0x71, 0xC5, 0xA9 };
+    //uint8_t relay_appKey[] = { 0xC9, 0xE3, 0xBB, 0x9E, 0x98, 0x99, 0x7F, 0xE0, 0x92, 0x6F, 0x96, 0x3C, 0x6B, 0x78, 0x4E, 0x03 };
+    //uint8_t relay_deviceAddress[] = { 0x26, 0x01, 0x1D, 0xDF };
+    
+    uint8_t relay_networkKey[] = { 0x0A, 0x7E, 0x92, 0xD4, 0x4B, 0x36, 0x48, 0xE7, 0x62, 0xF2, 0x54, 0x57, 0xA0, 0x39, 0x7E, 0x8E };
+    uint8_t relay_appKey[] = { 0x9C, 0xD0, 0xF7, 0x34, 0x4C, 0x2A, 0x55, 0x18, 0x82, 0x20, 0x8D, 0x66, 0xE0, 0x78, 0xF6, 0xC2 };
+    uint8_t relay_deviceAddress[] = { 0x26, 0x01, 0x19, 0x20 };
+
 
 
     // SX1262 configuration for lacuna LS200 board
@@ -332,42 +344,52 @@ void MODULE_LACUNA::send_lacuna(void)
                                      &relayParams, 
                                      relay_payload);
 
-#ifdef serial_debug
-    serial_debug.print("Rxlength: ");
-    serial_debug.println(rxlength);
-#endif
-
     if (rxlength) 
     { 
-       /* valid relay data received */
+        /* valid relay data received */
 #ifdef serial_debug
-       serial_debug.println("Valid uplink received.");
-       serial_debug.print("  SNR: ");
-       serial_debug.println(relayParams.snr);
-       serial_debug.print("  RSSI: ");
-       serial_debug.println(relayParams.rssi);
-       serial_debug.print("  SignalRSSI: ");
-       serial_debug.println(relayParams.signalrssi);
-       serial_debug.print("  Payload in hex: ");
+        serial_debug.print(NAME);
+        serial_debug.print(": message(");
+        serial_debug.println("Valid uplink received!)");
+        serial_debug.print("        SNR: ");
+        serial_debug.println(relayParams.snr);
+        serial_debug.print("        RSSI: ");
+        serial_debug.println(relayParams.rssi);
+        serial_debug.print("        SignalRSSI: ");
+        serial_debug.println(relayParams.signalrssi);
+        serial_debug.print("        Payload in hex: ");
 
-       for (uint8_t n = 0; n < rxlength; n++)
-       {
-           serial_debug.print (relay_payload[n],HEX);
-           serial_debug.write (" ");
-       }
-       serial_debug.println();
+        for (uint8_t n = 0; n < rxlength; n++)
+        {
+            serial_debug.print (relay_payload[n], HEX);
+            serial_debug.write (" ");
+        }
+
+        uint8_t * device_id = getDeviceId();
+
+        serial_debug.print("\n        Device ID in hex: ");
+        for (uint8_t n = 0; n < 4; n++)
+        {
+            serial_debug.print (device_id[n], HEX);
+            serial_debug.write (" ");
+        }
+        serial_debug.println();
 #endif
-       int lora_result = lsSendLoraWAN(&loraWANParams, 
-                                       &txParams, 
-                                       (byte *)relay_payload, 
-                                       rxlength);
+        int lora_result = lsSendLoraWAN(&loraWANParams, 
+                &txParams, 
+                (byte *)relay_payload, 
+                rxlength);
 #ifdef serial_debug
-       serial_debug.print("Result: ");
-       serial_debug.println(lsErrorToString(lora_result));
+        if( LS_OK != lora_result)
+        {
+            serial_debug.print("Result: ");
+            serial_debug.println(lsErrorToString(lora_result));
+        }
 #endif
-    global_activate_pira += 1;
+        global_activate_pira += 1;
+        global_pira_wakeup_reason = 1;
     }
-    
+
 }
 
 specific_public_data_t MODULE_LACUNA::getter()
