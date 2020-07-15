@@ -140,18 +140,18 @@ uint8_t MODULE_PIRA::initialize(void)
     MODULE_PIRA_SERIAL.begin(115200);
 
     // Enable bme sensor
-    uint8_t status = bme.begin();  
+    //uint8_t status = bme.begin();  
     // You can also pass in a Wire library object like &Wire2
     // status = bme.begin(0x76, &Wire2)
-    if (!status) {
-        Serial.println("Could not find a valid BME280 sensor, check wiring, address, sensor ID!");
-        Serial.print("SensorID was: 0x"); Serial.println(bme.sensorID(),16);
-        Serial.print("        ID of 0xFF probably means a bad address, a BMP 180 or BMP 085\n");
-        Serial.print("   ID of 0x56-0x58 represents a BMP 280,\n");
-        Serial.print("        ID of 0x60 represents a BME 280.\n");
-        Serial.print("        ID of 0x61 represents a BME 680.\n");
-        while (1) delay(10);
-    }
+    //if (!status) {
+    //    Serial.println("Could not find a valid BME280 sensor, check wiring, address, sensor ID!");
+    //    Serial.print("SensorID was: 0x"); Serial.println(bme.sensorID(),16);
+    //    Serial.print("        ID of 0xFF probably means a bad address, a BMP 180 or BMP 085\n");
+    //    Serial.print("   ID of 0x56-0x58 represents a BMP 280,\n");
+    //    Serial.print("        ID of 0x60 represents a BME 280.\n");
+    //    Serial.print("        ID of 0x61 represents a BME 680.\n");
+    //    while (1) delay(10);
+    //}
 
 }
 
@@ -429,9 +429,9 @@ void MODULE_PIRA::send_status_values(void)
     uart_command_send('m', status_pira_state_machine);
 
     // Readings from bme
-    uart_command_send('c', bme.readTemperature());
-    uart_command_send('d', bme.readPressure() / 100.0F);
-    uart_command_send('h', bme.readHumidity());
+    //uart_command_send('c', bme.readTemperature());
+    //uart_command_send('d', bme.readPressure() / 100.0F);
+    //uart_command_send('h', bme.readHumidity());
 
     uint8_t * p_device_id = getDeviceId();
 
