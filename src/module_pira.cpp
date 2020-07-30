@@ -31,10 +31,10 @@ uint8_t MODULE_PIRA::configure(uint8_t * data, size_t * size)
 
     settings_packet.data.read_interval = constrain(settings_packet_downlink.data.read_interval, 0, 0xff);
     settings_packet.data.send_interval = constrain(settings_packet_downlink.data.send_interval, 0, 0xff);
-    settings_packet.data.safety_power_period = constrain(settings_packet_downlink.data.safety_power_period, 0, 0xff);
-    settings_packet.data.safety_sleep_period = constrain(settings_packet_downlink.data.safety_sleep_period, 0, 0xff);
-    settings_packet.data.safety_reboot = constrain(settings_packet_downlink.data.safety_reboot, 0, 0xff);
-    settings_packet.data.operational_wakeup = constrain(settings_packet_downlink.data.operational_wakeup, 0, 0xff);
+    settings_packet.data.safety_power_period = constrain(settings_packet_downlink.data.safety_power_period, 0, 0xffffffff);
+    settings_packet.data.safety_sleep_period = constrain(settings_packet_downlink.data.safety_sleep_period, 0, 0xffffffff);
+    settings_packet.data.safety_reboot = constrain(settings_packet_downlink.data.safety_reboot, 0, 0xffffffff);
+    settings_packet.data.operational_wakeup = constrain(settings_packet_downlink.data.operational_wakeup, 0, 0xffffffff);
 }
 
 uint8_t MODULE_PIRA::get_settings_length()
@@ -702,7 +702,7 @@ void MODULE_PIRA::pira_state_machine()
             serial_debug.println("SENDING STATUS VALUES");
             send_status_values();
 
-            //Check status pin, if low then turn off power supply.
+            //Check status pin, if low then go to reboot detection
             if(!digitalRead(MODULE_PIRA_STATUS))
             {
                 pira_state_transition(REBOOT_DETECTION);
