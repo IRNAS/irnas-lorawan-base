@@ -103,7 +103,7 @@ uint8_t MODULE_PIRA::initialize(void)
 {
     settings_packet.data.read_interval = 10;
     settings_packet.data.send_interval = 1;
-    settings_packet.data.safety_power_period = 60;
+    settings_packet.data.safety_power_period = 600;
     settings_packet.data.safety_sleep_period = 60;
     settings_packet.data.safety_reboot = 60;
     settings_packet.data.operational_wakeup = 60;
@@ -419,8 +419,8 @@ void MODULE_PIRA::send_status_values(void)
 {
     uart_command_send('t', (uint32_t)rtc_time_read());
     uart_command_send('o', get_overview_value());
-    //TODO battery currently not implemented?
-    uart_command_send('b', (uint32_t) 0);
+    uint16_t voltage = get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN);
+    uart_command_send('b', voltage);
     uart_command_send('p', settings_packet.data.safety_power_period);
     uart_command_send('s', settings_packet.data.safety_sleep_period);
     uart_command_send('r', settings_packet.data.safety_reboot);

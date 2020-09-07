@@ -244,17 +244,8 @@ bool callback_periodic(void)
 
     if (!digitalRead(BOARD_BUTTON))
     {
-        //digitalWrite(MODULE_ULTRASONIC_OLED_3V, HIGH);
         global_activate_pira = 1;   // For hack the poacher setup
         global_pira_wakeup_reason = 2; // For hack the poacher setup
-        init_display();
-        info_screen();
-        delay(5000); // Pause for 2 seconds
-        display.clearDisplay();
-        display.display();
-        //digitalWrite(MODULE_ULTRASONIC_OLED_3V, LOW);
-        Wire.end();    // Needed to prevent clashes with rtc library
-        Wire.begin();
     }
 
     // wake up the system if required
@@ -403,7 +394,7 @@ void setup()
     //digitalWrite(MODULE_ULTRASONIC_OLED_3V, HIGH);
 
     //// Show boot screen
-    init_display();
+    // init_display();
     //boot_screen();
 
     //// Turn off power for oled screen
