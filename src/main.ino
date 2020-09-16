@@ -431,7 +431,7 @@ void loop()
     else
     {
         serial_debug.print(sleep);
-        serial_debug.print("s");
+        serial_debug.print(" ms");
     }
 
     serial_debug.print(", ");
@@ -566,8 +566,6 @@ void loop()
                 {
                     //run the module
                     modules[count]->running();
-                    sleep = 500; // keep iterating every 500s
-                    // break; // Do not break and process running modules in parallel
                 }
             }
             for (size_t count = 0; count < N_MODULES; count++)
@@ -591,10 +589,8 @@ void loop()
                     //do nothing for now
                     //state_transition(MODULE_READ);
                     active_module = count;
-                    //break; // must not break here as it otherwise blocks the modules with higher counter value indefinitely
                 }
-                //digitalWrite(BOARD_LED, LOW);
-                //TODO handle other flags
+                // Here we can handle other flags
             }
 
             if (-1 == active_module)
@@ -720,7 +716,6 @@ void loop()
         {
             system_sleep(sleep);
         }
-        sleep = -1; // No sleep
     }
     else if (sleep == 0)
     {
@@ -733,11 +728,9 @@ void loop()
         {
             system_sleep(25 * 3600 * 1000); // max 25h
         }
-        sleep = -1; // No sleep
     }
     else
     {
-        sleep = -1; // No sleep
     }
 }
 /*** end of file ***/
