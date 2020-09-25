@@ -421,6 +421,7 @@ void MODULE_PIRA::send_status_values(void)
     uart_command_send('o', get_overview_value());
     uint16_t voltage = get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN);
     uart_command_send('b', voltage);
+    uart_command_send('g', STM32L0.getTemperature());
     uart_command_send('p', settings_packet.data.safety_power_period);
     uart_command_send('s', settings_packet.data.safety_sleep_period);
     uart_command_send('r', settings_packet.data.safety_reboot);
