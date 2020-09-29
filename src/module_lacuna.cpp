@@ -373,17 +373,18 @@ void MODULE_LACUNA::send_lacuna(void)
         }
         serial_debug.println();
 #endif
-        int lora_result = lsSendLoraWAN(&loraWANParams, 
-                &txParams, 
-                (byte *)relay_payload, 
-                rxlength);
-#ifdef serial_debug
-        if( LS_OK != lora_result)
-        {
-            serial_debug.print("Result: ");
-            serial_debug.println(lsErrorToString(lora_result));
-        }
-#endif
+//         // This is just for debugging purposes, relays the message from the camera trap to TTN
+//         int lora_result = lsSendLoraWAN(&loraWANParams, 
+//                 &txParams, 
+//                 (byte *)relay_payload, 
+//                 rxlength);
+// #ifdef serial_debug
+//         if( LS_OK != lora_result)
+//         {
+//             serial_debug.print("Result: ");
+//             serial_debug.println(lsErrorToString(lora_result));
+//         }
+// #endif
         global_activate_pira += 1;
         global_pira_wakeup_reason = 1;
     }

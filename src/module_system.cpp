@@ -45,20 +45,21 @@ uint8_t MODULE_SYSTEM::set_downlink_data(uint8_t *data, size_t *size)
 module_flags_e MODULE_SYSTEM::scheduler(void)
 {
     uint32_t elapsed = millis() - send_timestamp;
-    if ((settings_packet.data.send_interval != 0)  &&  (elapsed >= (settings_packet.data.send_interval * 60 * 1000)))
-    {
-        if (M_IDLE == flags)
-        {
-            send_timestamp = millis();
-            flags = M_SEND;
-        }
-#ifdef serial_debug
-        serial_debug.print(NAME);
-        serial_debug.print(": scheduler(");
-        serial_debug.println("send)");
-#endif
-        return flags;
-    }
+    // Disable sending data
+//     if ((settings_packet.data.send_interval != 0)  &&  (elapsed >= (settings_packet.data.send_interval * 60 * 1000)))
+//     {
+//         if (M_IDLE == flags)
+//         {
+//             send_timestamp = millis();
+//             flags = M_SEND;
+//         }
+// #ifdef serial_debug
+//         serial_debug.print(NAME);
+//         serial_debug.print(": scheduler(");
+//         serial_debug.println("send)");
+// #endif
+//         return flags;
+//     }
     elapsed = millis() - read_timestamp;
     if ((settings_packet.data.read_interval != 0)
             &&  (elapsed >= (settings_packet.data.read_interval * 1000)))

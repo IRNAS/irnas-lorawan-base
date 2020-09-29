@@ -12,7 +12,7 @@
 #include "module_accelerometer.h"
 #include "module_lacuna.h"
 
-#define N_MODULES 4
+#define N_MODULES 3
 #define N_MODULES_TOTAL N_MODULES+1
 
 extern module *s_SYSTEM;

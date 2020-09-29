@@ -724,7 +724,7 @@ void MODULE_PIRA::pira_state_machine()
 
         case STOP_PIRA:
             //We only get here if we timeout
-            flags = M_SEND;
+            flags = M_IDLE;
             rpi_turned_off_timestamp = millis();
             
 #ifdef serial_debug

@@ -11,7 +11,7 @@ module *s_LACUNA = new myModule<MODULE_LACUNA>(6);          // global id 6
 
 #ifdef PMP_v1
 // Array of modules to be loaded - project specific
-module *modules[] = {s_SYSTEM, s_GPS, s_PIRA, s_LACUNA};
+module *modules[] = {s_SYSTEM, s_PIRA, s_LACUNA};
 #endif
 
 #ifdef RHINO_v2_4
