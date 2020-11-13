@@ -417,11 +417,16 @@ void MODULE_PIRA::uart_command_receive(void)
  */
 void MODULE_PIRA::send_status_values(void)
 {
+    
+    // uint32_t camera_trap_voltage = (relay_payload[15] << 8) | relay_payload[14]
+    // First start with the values read by the RPi
+    uart_command_send('g', STM32L0.getTemperature());
+    uart_command_send('v', (global_relay_payload[15] << 8) | global_relay_payload[14]);
+    uart_command_send('b', get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN));
+    uart_command_send('h', global_relay_payload[27]);
+
     uart_command_send('t', (uint32_t)rtc_time_read());
     uart_command_send('o', get_overview_value());
-    uint16_t voltage = get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN);
-    uart_command_send('b', voltage);
-    uart_command_send('g', STM32L0.getTemperature());
     uart_command_send('p', settings_packet.data.safety_power_period);
     uart_command_send('s', settings_packet.data.safety_sleep_period);
     uart_command_send('r', settings_packet.data.safety_reboot);

@@ -28,6 +28,8 @@ uint16_t global_activate_pira = 0;
 // 2: woken up by push button
 uint8_t global_pira_wakeup_reason = 0;
 
+// Declared externaly in project.h, 
+byte global_relay_payload[255];
 
 // General system variables
 int8_t active_module = -1;

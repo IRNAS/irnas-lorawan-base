@@ -71,6 +71,7 @@ extern module *modules[];
 
 #define BOARD_LED PH0   //Do not use, as it is connected to lacuna power
 #define BOARD_BUTTON PA5 
+extern byte global_relay_payload[255];
 extern uint16_t global_activate_pira;
 extern uint8_t global_pira_wakeup_reason;
 #endif
