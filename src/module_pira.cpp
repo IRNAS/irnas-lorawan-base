@@ -103,9 +103,9 @@ uint8_t MODULE_PIRA::initialize(void)
 {
     settings_packet.data.read_interval = 10;
     settings_packet.data.send_interval = 1;
-    settings_packet.data.safety_power_period = 600;
+    settings_packet.data.safety_power_period = 900;
     settings_packet.data.safety_sleep_period = 60;
-    settings_packet.data.safety_reboot = 60;
+    settings_packet.data.safety_reboot = 45;
     settings_packet.data.operational_wakeup = 60;
 
     readings_packet.data.empty_space = 0;
@@ -302,6 +302,21 @@ void MODULE_PIRA::uart_command_send(char command, uint32_t data)
     MODULE_PIRA_SERIAL.write('\n');
 }
 
+void MODULE_PIRA::uart_command_send_uint64(char command, uint64_t data)
+{
+    MODULE_PIRA_SERIAL.write((int) command);
+    MODULE_PIRA_SERIAL.write(':');
+    MODULE_PIRA_SERIAL.write((int) ((data & 0xFF00000000000000) >> 56));
+    MODULE_PIRA_SERIAL.write((int) ((data & 0x00FF000000000000) >> 48));
+    MODULE_PIRA_SERIAL.write((int) ((data & 0x0000FF0000000000) >> 40));
+    MODULE_PIRA_SERIAL.write((int) ((data & 0x000000FF00000000) >> 32));
+    MODULE_PIRA_SERIAL.write((int) ((data & 0x00000000FF000000) >> 24));
+    MODULE_PIRA_SERIAL.write((int) ((data & 0x0000000000FF0000) >> 16));
+    MODULE_PIRA_SERIAL.write((int) ((data & 0x000000000000FF00) >> 8));
+    MODULE_PIRA_SERIAL.write((int) ( data & 0x00000000000000FF));
+    MODULE_PIRA_SERIAL.write('\n');
+}
+
 /**
  * @brief Receives uart data
  *
@@ -410,6 +425,16 @@ void MODULE_PIRA::uart_command_receive(void)
     }
 }
 
+uint64_t read_uint64(byte buffer[], int start) {
+  uint64_t result = 0;
+  for( int i=start + 7; i>=start; i--)
+  {
+    result <<= 8;
+    result |= buffer[i];
+  }
+  return result;
+}
+
 /**
  * @brief Sends status values over uart
  *
@@ -420,10 +445,13 @@ void MODULE_PIRA::send_status_values(void)
     
     // uint32_t camera_trap_voltage = (relay_payload[15] << 8) | relay_payload[14]
     // First start with the values read by the RPi
+
+    uint64_t cam_serial_id = read_uint64(global_relay_payload, 27);
+
     uart_command_send('g', STM32L0.getTemperature());
     uart_command_send('v', (global_relay_payload[15] << 8) | global_relay_payload[14]);
     uart_command_send('b', get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN));
-    uart_command_send('h', global_relay_payload[27]);
+    uart_command_send_uint64('h', cam_serial_id);
 
     uart_command_send('t', (uint32_t)rtc_time_read());
     uart_command_send('o', get_overview_value());

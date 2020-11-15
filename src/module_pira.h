@@ -132,6 +132,7 @@ class MODULE_PIRA
         // Uart related functions
         void uart_command_parse(uint8_t * rxBuffer);
         void uart_command_send(char command, uint32_t data);
+        void uart_command_send_uint64(char command, uint64_t data);
         void uart_command_receive(void);
         void send_status_values(void);
         void print_status_values(void);
