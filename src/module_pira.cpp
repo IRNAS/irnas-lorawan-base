@@ -448,7 +448,7 @@ void MODULE_PIRA::send_status_values(void)
 
     uint64_t cam_serial_id = read_uint64(global_relay_payload, 27);
 
-    uart_command_send('g', STM32L0.getTemperature());
+    uart_command_send('g', (uint32_t) ((STM32L0.getTemperature() + 100) * 100));
     uart_command_send('v', (global_relay_payload[15] << 8) | global_relay_payload[14]);
     uart_command_send('b', get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN));
     uart_command_send_uint64('h', cam_serial_id);
