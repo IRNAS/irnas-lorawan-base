@@ -43,6 +43,7 @@ class MODULE_LACUNA
             uint8_t start_min;
             uint8_t end_hour;
             uint8_t end_min;
+            uint8_t min_rssi; // The RSSI threshold needed to process the LoRa message, this way we can limit the range of incoming messages
         }__attribute__((packed));
 
         union module_settings_packet_t

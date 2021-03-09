@@ -46,6 +46,7 @@ uint8_t MODULE_LACUNA::configure(uint8_t * data, size_t * size)
     settings_packet.data.start_min = settings_packet_downlink.data.start_min;
     settings_packet.data.end_hour = settings_packet_downlink.data.end_hour;
     settings_packet.data.end_min = settings_packet_downlink.data.end_min;  
+    settings_packet.data.min_rssi = settings_packet_downlink.data.min_rssi;  
     return 0;
 }
 
@@ -134,6 +135,7 @@ uint8_t MODULE_LACUNA::initialize(void)
     settings_packet.data.start_min = 0;
     settings_packet.data.end_hour = 23;
     settings_packet.data.end_min = 59;
+    settings_packet.data.min_rssi = 0;
 
     flags = M_IDLE; // Needed for normal running  of modules
 }
@@ -219,7 +221,7 @@ void MODULE_LACUNA::setup_lacuna(void)
     uint8_t lacuna_deviceAddress[] =  { 0x26, 0x01, 0x19, 0x7C };
 
      //Device to be relayed (receive)
-     // Cam Tim 
+     // Cam Q42
     // uint8_t relay_networkKey[] = { 0xB9, 0xDC, 0x31, 0x02, 0x26, 0x20, 0x2E, 0xD5, 0x4C, 0xB0, 0xFD, 0x2F, 0xFC, 0x71, 0xC5, 0xA9 };
     // uint8_t relay_appKey[] = { 0xC9, 0xE3, 0xBB, 0x9E, 0x98, 0x99, 0x7F, 0xE0, 0x92, 0x6F, 0x96, 0x3C, 0x6B, 0x78, 0x4E, 0x03 };
     // uint8_t relay_deviceAddress[] = { 0x26, 0x01, 0x1D, 0xDF };
@@ -387,8 +389,10 @@ void MODULE_LACUNA::send_lacuna(void)
 //             serial_debug.println(lsErrorToString(lora_result));
 //         }
 // #endif
-        global_activate_pira += 1;
-        global_pira_wakeup_reason = 1;
+        if (settings_packet.data.min_rssi == 0 || relayParams.rssi > -settings_packet.data.min_rssi) {
+            global_activate_pira += 1;
+            global_pira_wakeup_reason = 1;
+        }
     }
 
 }
