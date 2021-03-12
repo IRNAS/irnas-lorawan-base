@@ -2,6 +2,14 @@
     "C_Cpp.errorSquiggles": "Disabled",
     "files.associations": {
         "ostream": "cpp",
-        "ratio": "cpp"
+        "ratio": "cpp",
+        "*.tcc": "cpp",
+        "bitset": "cpp",
+        "string_view": "cpp",
+        "array": "cpp",
+        "iterator": "cpp",
+        "string": "cpp",
+        "vector": "cpp",
+        "ranges": "cpp"
     }
 }

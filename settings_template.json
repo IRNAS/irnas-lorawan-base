@@ -60,6 +60,6 @@
         "start_min": {"value": 0, "size": 1, "order": 3},
         "end_hour": {"value": 0, "size": 1, "order": 4},
         "end_min": {"value": 0, "size": 1, "order": 5},
-        "min_rssi": {"value": 0, "size": 1, "order": 5}
+        "min_rssi": {"value": 0, "size": 1, "order": 6}
     }
 }

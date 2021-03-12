@@ -1,5 +1,6 @@
 #include "module_pira.h"
 #include "debug.h"
+#include "Int64String.h"
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 
@@ -293,28 +294,9 @@ void MODULE_PIRA::uart_command_parse(uint8_t * rxBuffer)
  */
 void MODULE_PIRA::uart_command_send(char command, uint32_t data)
 {
-    MODULE_PIRA_SERIAL.write((int) command);
-    MODULE_PIRA_SERIAL.write(':');
-    MODULE_PIRA_SERIAL.write((int) ((data & 0xFF000000) >> 24));
-    MODULE_PIRA_SERIAL.write((int) ((data & 0x00FF0000) >> 16));
-    MODULE_PIRA_SERIAL.write((int) ((data & 0x0000FF00) >> 8));
-    MODULE_PIRA_SERIAL.write((int) ( data & 0x000000FF));
-    MODULE_PIRA_SERIAL.write('\n');
-}
-
-void MODULE_PIRA::uart_command_send_uint64(char command, uint64_t data)
-{
-    MODULE_PIRA_SERIAL.write((int) command);
-    MODULE_PIRA_SERIAL.write(':');
-    MODULE_PIRA_SERIAL.write((int) ((data & 0xFF00000000000000) >> 56));
-    MODULE_PIRA_SERIAL.write((int) ((data & 0x00FF000000000000) >> 48));
-    MODULE_PIRA_SERIAL.write((int) ((data & 0x0000FF0000000000) >> 40));
-    MODULE_PIRA_SERIAL.write((int) ((data & 0x000000FF00000000) >> 32));
-    MODULE_PIRA_SERIAL.write((int) ((data & 0x00000000FF000000) >> 24));
-    MODULE_PIRA_SERIAL.write((int) ((data & 0x0000000000FF0000) >> 16));
-    MODULE_PIRA_SERIAL.write((int) ((data & 0x000000000000FF00) >> 8));
-    MODULE_PIRA_SERIAL.write((int) ( data & 0x00000000000000FF));
-    MODULE_PIRA_SERIAL.write('\n');
+    MODULE_PIRA_SERIAL.print(command);
+    MODULE_PIRA_SERIAL.print(':');
+    MODULE_PIRA_SERIAL.println(data);
 }
 
 /**
@@ -441,44 +423,25 @@ uint64_t read_uint64(byte buffer[], int start) {
  * @return none (void)
  */
 void MODULE_PIRA::send_status_values(void)
-{
-    
-    // uint32_t camera_trap_voltage = (relay_payload[15] << 8) | relay_payload[14]
-    // First start with the values read by the RPi
-
+{   
     uint64_t cam_serial_id = read_uint64(global_relay_payload, 27);
+    uint32_t camera_voltage = (global_relay_payload[15] << 8) | global_relay_payload[14];
 
-    uart_command_send('g', (uint32_t) ((STM32L0.getTemperature() + 100) * 100));
-    uart_command_send('v', (global_relay_payload[15] << 8) | global_relay_payload[14]);
+    MODULE_PIRA_SERIAL.println("START VALUES");
+    MODULE_PIRA_SERIAL.print("g:");
+    MODULE_PIRA_SERIAL.println(STM32L0.getTemperature());
+
+    uart_command_send('v', camera_voltage);
     uart_command_send('b', get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN));
-    uart_command_send_uint64('h', cam_serial_id);
 
-    uart_command_send('t', (uint32_t)rtc_time_read());
-    uart_command_send('o', get_overview_value());
+    
+    MODULE_PIRA_SERIAL.print("h:");
+    MODULE_PIRA_SERIAL.println(int64String(cam_serial_id));
+
     uart_command_send('p', settings_packet.data.safety_power_period);
-    uart_command_send('s', settings_packet.data.safety_sleep_period);
     uart_command_send('r', settings_packet.data.safety_reboot);
-    uart_command_send('w', settings_packet.data.operational_wakeup);
-    uart_command_send('a', (uint32_t)digitalRead(MODULE_PIRA_STATUS));
-    uart_command_send('m', status_pira_state_machine);
-
-    // Readings from bme
-    //uart_command_send('c', bme.readTemperature());
-    //uart_command_send('d', bme.readPressure() / 100.0F);
-    //uart_command_send('h', bme.readHumidity());
-
-    uint8_t * p_device_id = getDeviceId();
-
-    uint32_t device_id = 0;
-    device_id |= ((uint32_t) p_device_id[0]) << 24;
-    device_id |= ((uint32_t) p_device_id[1]) << 16;
-    device_id |= ((uint32_t) p_device_id[2]) << 8;
-    device_id |= ((uint32_t) p_device_id[3]);
-
-    uart_command_send('i', device_id);
-    uart_command_send('z', global_pira_wakeup_reason);
-    MODULE_PIRA_SERIAL.print("Device:");
-    MODULE_PIRA_SERIAL.println(global_pira_wakeup_reason);
+    
+    MODULE_PIRA_SERIAL.println("END VALUES");
 }
 
 /**
