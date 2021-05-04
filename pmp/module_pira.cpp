@@ -675,9 +675,6 @@ void MODULE_PIRA::pira_state_machine()
             digitalWrite(MODULE_5V_EN, HIGH);
             digitalWrite(MODULE_PIRA_5V, HIGH);
 
-            //Added for hack the poacher for easier debugging
-            digitalWrite(BOARD_LED, HIGH);
-
             // This is reseted in send method, after it has been used to calculate cycle duration
             if(0 == rpi_power_pin_pulled_high)
             {
@@ -741,9 +738,6 @@ void MODULE_PIRA::pira_state_machine()
             // Turn off Rpi
             digitalWrite(MODULE_5V_EN, LOW);
             digitalWrite(MODULE_PIRA_5V, LOW);
-
-            //Added for hack the poacher for easier debugging
-            digitalWrite(BOARD_LED, LOW);
 
             // This is reseted in send method, 
             // after it has been used to calculate cycle duration

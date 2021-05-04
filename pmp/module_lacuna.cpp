@@ -169,19 +169,15 @@ uint8_t MODULE_LACUNA::read(void)
  */
 void MODULE_LACUNA::running(void)
 {
-    // Turn on power
-    // Not needed here as for hack the poacher we got power for lacuna modem 
-    // directly by tapping 3v3 line
-    
-    //pinMode(MODULE_LACUNA_5V, OUTPUT);
-    //digitalWrite(MODULE_LACUNA_5V, HIGH);
-    //pinMode(MODULE_5V_EN, OUTPUT);
-    //digitalWrite(MODULE_5V_EN, HIGH);
+    // Turn on power for lacuna modem
+    pinMode(MODULE_LACUNA_5V, OUTPUT);
+    digitalWrite(MODULE_LACUNA_5V, HIGH);
     
     setup_lacuna();
     send_lacuna(); 
-    // Turn off only 5V to Lacuna, leave general 5v on, as Rpi might be working.
-    //digitalWrite(MODULE_LACUNA_5V, LOW);
+
+    // Turn off power for lacuna modem
+    digitalWrite(MODULE_LACUNA_5V, LOW);
     flags = M_IDLE; 
 }
 
