@@ -10,6 +10,8 @@
         "iterator": "cpp",
         "string": "cpp",
         "vector": "cpp",
-        "ranges": "cpp"
+        "ranges": "cpp",
+        "algorithm": "cpp",
+        "random": "cpp"
     }
 }

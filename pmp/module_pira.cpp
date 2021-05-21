@@ -140,20 +140,17 @@ uint8_t MODULE_PIRA::initialize(void)
     // Start Uart communication
     MODULE_PIRA_SERIAL.begin(115200);
 
-    // Enable bme sensor
-    //uint8_t status = bme.begin();  
-    // You can also pass in a Wire library object like &Wire2
-    // status = bme.begin(0x76, &Wire2)
-    //if (!status) {
+    // // Enable bme sensor
+    // uint8_t status = bme.begin(0x76);  
+    // // You can also pass in a Wire library object like &Wire2
+    // if (!status) {
     //    Serial.println("Could not find a valid BME280 sensor, check wiring, address, sensor ID!");
     //    Serial.print("SensorID was: 0x"); Serial.println(bme.sensorID(),16);
     //    Serial.print("        ID of 0xFF probably means a bad address, a BMP 180 or BMP 085\n");
     //    Serial.print("   ID of 0x56-0x58 represents a BMP 280,\n");
     //    Serial.print("        ID of 0x60 represents a BME 280.\n");
     //    Serial.print("        ID of 0x61 represents a BME 680.\n");
-    //    while (1) delay(10);
-    //}
-
+    // }
 }
 
 uint8_t MODULE_PIRA::send(uint8_t * data, size_t * size)
@@ -284,20 +281,6 @@ void MODULE_PIRA::uart_command_parse(uint8_t * rxBuffer)
         MODULE_PIRA_SERIAL.print("Incorrect format, this shouldn't happen!");
 }
 
-/**
- * @brief Encodes and sends data over uart
- *
- * @param[in] command
- * @param[in] data
- *
- * @return none (void)
- */
-void MODULE_PIRA::uart_command_send(char command, uint32_t data)
-{
-    MODULE_PIRA_SERIAL.print(command);
-    MODULE_PIRA_SERIAL.print(':');
-    MODULE_PIRA_SERIAL.println(data);
-}
 
 /**
  * @brief Receives uart data
@@ -428,19 +411,28 @@ void MODULE_PIRA::send_status_values(void)
     uint32_t camera_voltage = (global_relay_payload[15] << 8) | global_relay_payload[14];
 
     MODULE_PIRA_SERIAL.println("START VALUES");
-    MODULE_PIRA_SERIAL.print("g:");
+
+    MODULE_PIRA_SERIAL.print("pmp_temp:");
     MODULE_PIRA_SERIAL.println(STM32L0.getTemperature());
 
-    uart_command_send('v', camera_voltage);
-    uart_command_send('b', get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN));
+    MODULE_PIRA_SERIAL.print("pmp_volt:");
+    MODULE_PIRA_SERIAL.println(get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN));
 
+    MODULE_PIRA_SERIAL.print("cam_volt:");
+    MODULE_PIRA_SERIAL.println(camera_voltage);
     
-    MODULE_PIRA_SERIAL.print("h:");
+    MODULE_PIRA_SERIAL.print("cam_serial:");
     MODULE_PIRA_SERIAL.println(int64String(cam_serial_id));
 
-    uart_command_send('p', settings_packet.data.safety_power_period);
-    uart_command_send('r', settings_packet.data.safety_reboot);
-    
+    MODULE_PIRA_SERIAL.print("wakeup_reason:");
+    if (global_pira_wakeup_reason == 1) {
+        MODULE_PIRA_SERIAL.println("lora");
+    } else if (global_pira_wakeup_reason == 2) {
+        MODULE_PIRA_SERIAL.println("button");
+    } else {
+        MODULE_PIRA_SERIAL.println("unknown");
+    }
+
     MODULE_PIRA_SERIAL.println("END VALUES");
 }
 
@@ -689,15 +681,16 @@ void MODULE_PIRA::pira_state_machine()
         break;
 
         case WAKEUP:
-
-            stateTimeoutDuration = settings_packet.data.safety_power_period;
+            // When woken up by button press, disable timeout
+            stateTimeoutDuration = global_pira_wakeup_reason == 2 ? 0 : settings_packet.data.safety_power_period;
+            
             state_goto_timeout = STOP_PIRA;
             uart_command_receive();
             serial_debug.println("SENDING STATUS VALUES");
             send_status_values();
 
-            //Check status pin, if low then go to reboot detection
-            if(!digitalRead(MODULE_PIRA_STATUS))
+            // Check status pin, if low then go to reboot detection (except when woken up by button press)
+            if(!digitalRead(MODULE_PIRA_STATUS) && global_pira_wakeup_reason != 2)
             {
                 pira_state_transition(REBOOT_DETECTION);
             }
