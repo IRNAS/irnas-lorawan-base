@@ -141,7 +141,7 @@ uint8_t MODULE_PIRA::initialize(void)
     MODULE_PIRA_SERIAL.begin(115200);
 
     // // Enable bme sensor
-    // uint8_t status = bme.begin(0x76);  
+    // uint8_t status = bme.begin();  
     // // You can also pass in a Wire library object like &Wire2
     // if (!status) {
     //    Serial.println("Could not find a valid BME280 sensor, check wiring, address, sensor ID!");
@@ -407,15 +407,15 @@ uint64_t read_uint64(byte buffer[], int start) {
  */
 void MODULE_PIRA::send_status_values(void)
 {   
-    uint64_t cam_serial_id = read_uint64(global_relay_payload, 27);
-    uint32_t camera_voltage = (global_relay_payload[15] << 8) | global_relay_payload[14];
+    uint64_t cam_serial_id = read_uint64(global_relay_payload, 10);
+    uint32_t camera_voltage = (global_relay_payload[5] << 8) | global_relay_payload[4];
 
     MODULE_PIRA_SERIAL.println("START VALUES");
 
-    MODULE_PIRA_SERIAL.print("pmp_temp:");
+    MODULE_PIRA_SERIAL.print("bridge_temp:");
     MODULE_PIRA_SERIAL.println(STM32L0.getTemperature());
 
-    MODULE_PIRA_SERIAL.print("pmp_volt:");
+    MODULE_PIRA_SERIAL.print("bridge_volt:");
     MODULE_PIRA_SERIAL.println(get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN));
 
     MODULE_PIRA_SERIAL.print("cam_volt:");
@@ -689,8 +689,8 @@ void MODULE_PIRA::pira_state_machine()
             serial_debug.println("SENDING STATUS VALUES");
             send_status_values();
 
-            // Check status pin, if low then go to reboot detection (except when woken up by button press)
-            if(!digitalRead(MODULE_PIRA_STATUS) && global_pira_wakeup_reason != 2)
+            // Check status pin, if low then go to reboot detection
+            if(!digitalRead(MODULE_PIRA_STATUS))
             {
                 pira_state_transition(REBOOT_DETECTION);
             }

@@ -224,6 +224,12 @@ bool callback_periodic(void)
         wakeup_needed = true;
     }
 
+    if (!digitalRead(BOARD_BUTTON))
+    {
+        global_activate_pira = 1;   // For hack the poacher setup
+        global_pira_wakeup_reason = 2; // For hack the poacher setup
+    }
+    
     if (EVENT_NONE != system_event )
     {
         // iterate through modules on event
@@ -242,12 +248,6 @@ bool callback_periodic(void)
         {
             wakeup_needed= true;
         }
-    }
-
-    if (!digitalRead(BOARD_BUTTON))
-    {
-        global_activate_pira = 1;   // For hack the poacher setup
-        global_pira_wakeup_reason = 2; // For hack the poacher setup
     }
 
     // wake up the system if required
