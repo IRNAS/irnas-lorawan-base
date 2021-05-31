@@ -23,7 +23,15 @@ What things you need to use this code-base:
 * Install ArduinoCore for STM32L0, follow installation rules [here](https://github.com/IRNAS/ArduinoCore-stm32l0)
 * Install Visual Studio Code and Arduino plugin 
 * clone our repository with `git clone https://github.com/IRNAS/irnas-lorawan-base` and open main directory in VS Code
- 
+
+## Secrets
+Put the LoRa keys in `secrets.h` file
+
+    #define RELAY_NETWORKKEY[] = {...};
+    #define RELAY_APPKEY[] = {...};
+    #define RELAY_DEVICEADDRESS[] = {...};
+
+
 ## Build and flash 
 
 * Connect St-link to LoRa module and PC
