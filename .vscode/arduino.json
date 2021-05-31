@@ -1,0 +1,7 @@
+{
+    "board": "IRNAS:stm32l0:IRNAS-env-module-L072Z",
+    "configuration": "speed=32,opt=os",
+    "sketch": "pmp/pmp.ino",
+    "port": "/dev/tty.usbmodem141403",
+    "prebuild": "python3 prebuild.py"
+}
