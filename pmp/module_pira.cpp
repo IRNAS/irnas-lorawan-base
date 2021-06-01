@@ -140,17 +140,16 @@ uint8_t MODULE_PIRA::initialize(void)
     // Start Uart communication
     MODULE_PIRA_SERIAL.begin(115200);
 
-    // // Enable bme sensor
-    // uint8_t status = bme.begin();  
-    // // You can also pass in a Wire library object like &Wire2
-    // if (!status) {
-    //    Serial.println("Could not find a valid BME280 sensor, check wiring, address, sensor ID!");
-    //    Serial.print("SensorID was: 0x"); Serial.println(bme.sensorID(),16);
-    //    Serial.print("        ID of 0xFF probably means a bad address, a BMP 180 or BMP 085\n");
-    //    Serial.print("   ID of 0x56-0x58 represents a BMP 280,\n");
-    //    Serial.print("        ID of 0x60 represents a BME 280.\n");
-    //    Serial.print("        ID of 0x61 represents a BME 680.\n");
-    // }
+    // Enable bme sensor
+    uint8_t status = bme.begin();  
+    if (!status) {
+       Serial.println("Could not find a valid BME280 sensor, check wiring, address, sensor ID!");
+       Serial.print("SensorID was: 0x"); Serial.println(bme.sensorID(),16);
+       Serial.print("        ID of 0xFF probably means a bad address, a BMP 180 or BMP 085\n");
+       Serial.print("   ID of 0x56-0x58 represents a BMP 280,\n");
+       Serial.print("        ID of 0x60 represents a BME 280.\n");
+       Serial.print("        ID of 0x61 represents a BME 680.\n");
+    }
 }
 
 uint8_t MODULE_PIRA::send(uint8_t * data, size_t * size)
@@ -412,11 +411,20 @@ void MODULE_PIRA::send_status_values(void)
 
     MODULE_PIRA_SERIAL.println("START VALUES");
 
-    MODULE_PIRA_SERIAL.print("bridge_temp:");
+    MODULE_PIRA_SERIAL.print("stm32_temp:");
     MODULE_PIRA_SERIAL.println(STM32L0.getTemperature());
 
     MODULE_PIRA_SERIAL.print("bridge_volt:");
     MODULE_PIRA_SERIAL.println(get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN));
+
+    MODULE_PIRA_SERIAL.print("bridge_temp:");
+    MODULE_PIRA_SERIAL.println(bme.readTemperature());
+
+    MODULE_PIRA_SERIAL.print("bridge_hum:");
+    MODULE_PIRA_SERIAL.println(bme.readHumidity());
+
+    MODULE_PIRA_SERIAL.print("bridge_hpa:");
+    MODULE_PIRA_SERIAL.println((int) (bme.readPressure() / 100.0F));
 
     MODULE_PIRA_SERIAL.print("cam_volt:");
     MODULE_PIRA_SERIAL.println(camera_voltage);

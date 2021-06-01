@@ -235,8 +235,6 @@ void MODULE_LACUNA::setup_lacuna(void)
     if (!result)
     {
 #ifdef serial_debug
-        serial_debug.print(VERSION);
-        serial_debug.print(THIJS);
         serial_debug.print("E22/SX1262: ");
         serial_debug.println(lsErrorToString(result));
 #endif
@@ -250,11 +248,15 @@ void MODULE_LACUNA::setup_lacuna(void)
     loraWANParams.txPort = 1;
     loraWANParams.rxEnable = true;
 
+    uint8_t relay_networkKey[] = RELAY_NETWORKKEY;
+    uint8_t relay_appKey[] = RELAY_APPKEY;
+    uint8_t relay_deviceAddress[] = RELAY_DEVICEADDRESS;
+
     // LoRaWAN parameters for relay
     lsCreateDefaultLoraWANParams(&relay_loraWANParams, 
-                                 RELAY_NETWORKKEY, 
-                                 RELAY_APPKEY, 
-                                 RELAY_DEVICEADDRESS);
+                                 relay_networkKey, 
+                                 relay_appKey, 
+                                 relay_deviceAddress);
 
     // transmission parameters for Lacuna satellites
     lsCreateDefaultLoraSatTxParams(&SattxParams);
