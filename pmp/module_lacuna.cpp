@@ -136,7 +136,7 @@ uint8_t MODULE_LACUNA::initialize(void)
     settings_packet.data.start_min = 0;
     settings_packet.data.end_hour = 23;
     settings_packet.data.end_min = 59;
-    settings_packet.data.min_rssi = 0;
+    settings_packet.data.min_rssi = 98;
 
     flags = M_IDLE; // Needed for normal running  of modules
 }
