@@ -74,11 +74,11 @@ bool rtc_time_sync(time_t time_received, bool force)
     rtc_time_write(time_received);
 #ifdef serial_debug
     time_t time = rtc_time_read();
-    Serial.print("rtc_time_updated(");
-    Serial.print(ctime(&time));
-    Serial.print(" ");
-    Serial.print(time);
-    Serial.println(")");
+    serial_debug.print("rtc_time_updated(");
+    serial_debug.print(ctime(&time));
+    serial_debug.print(" ");
+    serial_debug.print(time);
+    serial_debug.println(")");
 #endif
     return true;
 }

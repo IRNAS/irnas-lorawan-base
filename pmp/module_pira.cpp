@@ -142,14 +142,16 @@ uint8_t MODULE_PIRA::initialize(void)
 
     // Enable bme sensor
     uint8_t status = bme.begin();  
+#ifdef serial_debug
     if (!status) {
-       Serial.println("Could not find a valid BME280 sensor, check wiring, address, sensor ID!");
-       Serial.print("SensorID was: 0x"); Serial.println(bme.sensorID(),16);
-       Serial.print("        ID of 0xFF probably means a bad address, a BMP 180 or BMP 085\n");
-       Serial.print("   ID of 0x56-0x58 represents a BMP 280,\n");
-       Serial.print("        ID of 0x60 represents a BME 280.\n");
-       Serial.print("        ID of 0x61 represents a BME 680.\n");
+       serial_debug.println("Could not find a valid BME280 sensor, check wiring, address, sensor ID!");
+       serial_debug.print("SensorID was: 0x"); serial_debug.println(bme.sensorID(),16);
+       serial_debug.print("        ID of 0xFF probably means a bad address, a BMP 180 or BMP 085\n");
+       serial_debug.print("   ID of 0x56-0x58 represents a BMP 280,\n");
+       serial_debug.print("        ID of 0x60 represents a BME 280.\n");
+       serial_debug.print("        ID of 0x61 represents a BME 680.\n");
     }
+#endif
 }
 
 uint8_t MODULE_PIRA::send(uint8_t * data, size_t * size)
@@ -170,8 +172,10 @@ uint8_t MODULE_PIRA::send(uint8_t * data, size_t * size)
     rpi_power_pin_pulled_low = 0;
     rpi_power_pin_pulled_high = 0;
 
+#ifdef serial_debug
     serial_debug.println("Cycle_duration is: ");
     serial_debug.println(readings_packet.data.cycle_duration);
+#endif
 
     memcpy(data, &readings_packet.bytes[0], sizeof(module_readings_data_t));
     *size = sizeof(module_readings_data_t);
@@ -694,7 +698,9 @@ void MODULE_PIRA::pira_state_machine()
             
             state_goto_timeout = STOP_PIRA;
             uart_command_receive();
+#ifdef serial_debug
             serial_debug.println("SENDING STATUS VALUES");
+#endif
             send_status_values();
 
             // Check status pin, if low then go to reboot detection
@@ -751,7 +757,9 @@ void MODULE_PIRA::pira_state_machine()
             // HackThePoacher functionality
             global_activate_pira = 0;
             global_pira_wakeup_reason = 0;
+#ifdef serial_debug
             serial_debug.print("Time to DEACTIVATE PIRA");
+#endif
             pira_state_transition(IDLE_PIRA);
         break;
 
