@@ -40,6 +40,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH , SCREEN_HEIGHT , &Wire, OLED_RESET);
 // All possible states in finite state machine
 enum state_e
 {
+    ALWAYS_ON,
     INIT,
     LORAWAN_INIT,
     LORAWAN_JOIN_START,
@@ -362,7 +363,33 @@ void state_transition(state_e next)
  */
 void setup() 
 {
+    // Serial port debug setup
+#ifdef serial_debug
+    serial_debug.begin(115200);
+    serial_debug.println(); //Empty line for clarity
+    serial_debug.println("START OF PROGRAM");
+    serial_debug.print("CAUSE OF RESET WAS: ");
+    serial_debug.println(decode_reset_cause(STM32L0.resetCause()));
+    serial_debug.println(); //Empty line for clarity
+#endif
+
+    pinMode(BOARD_BUTTON, INPUT);
+
+    if (!digitalRead(BOARD_BUTTON))
+    {
+#ifdef serial_debug
+    serial_debug.println("TURN_PI_ON");
+#endif
+        pinMode(MODULE_5V_EN, OUTPUT);
+        digitalWrite(MODULE_5V_EN, HIGH);
+        pinMode(MODULE_PIRA_5V, OUTPUT);
+        digitalWrite(MODULE_PIRA_5V, HIGH);
+        state = ALWAYS_ON;
+        return;
+    }
+
     STM32L0.wdtEnable(22000);
+
     //pinMode(PB9, OUTPUT);
     //pinMode(PB8, OUTPUT);
     //digitalWrite(PB9, HIGH);
@@ -377,20 +404,11 @@ void setup()
     pinMode(BOARD_LED, OUTPUT);
     digitalWrite(BOARD_LED, LOW);
 
-    // Serial port debug setup
-#ifdef serial_debug
-    serial_debug.begin(115200);
-    serial_debug.println(); //Empty line for clarity
-    serial_debug.println("START OF PROGRAM");
-    serial_debug.print("CAUSE OF RESET WAS: ");
-    serial_debug.println(decode_reset_cause(STM32L0.resetCause()));
-    serial_debug.println(); //Empty line for clarity
-#endif
 
     // Prepare gpios, outputs and inputs
-    pinMode(BOARD_BUTTON, INPUT);
     pinMode(MODULE_LACUNA_5V, OUTPUT);
     digitalWrite(MODULE_LACUNA_5V, LOW);
+
     //pinMode(MODULE_ULTRASONIC_OLED_3V, OUTPUT);
 
     //digitalWrite(MODULE_ULTRASONIC_OLED_3V, HIGH);
@@ -683,6 +701,14 @@ void loop()
             state_goto_timeout = INIT;
             // action
             sleep = 60000; // until an event
+        break;
+
+        case ALWAYS_ON:
+            delay(500);
+#ifdef serial_debug
+            serial_debug.println("ALWAYS_ON");
+#endif
+            return;
         break;
 
         default:
