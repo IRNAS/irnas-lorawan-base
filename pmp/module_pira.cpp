@@ -432,7 +432,7 @@ void MODULE_PIRA::send_status_values(void)
     MODULE_PIRA_SERIAL.print("cam_serial:");
     MODULE_PIRA_SERIAL.println(int64String(cam_serial_id));
 
-    MODULE_PIRA_SERIAL.print("wakeup_reason:");
+    MODULE_PIRA_SERIAL.print("wakeup:");
     if (global_pira_wakeup_reason == 1) {
         MODULE_PIRA_SERIAL.println("lora");
     } else if (global_pira_wakeup_reason == 2) {
