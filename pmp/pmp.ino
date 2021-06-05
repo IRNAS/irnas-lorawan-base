@@ -40,7 +40,6 @@ Adafruit_SSD1306 display(SCREEN_WIDTH , SCREEN_HEIGHT , &Wire, OLED_RESET);
 // All possible states in finite state machine
 enum state_e
 {
-    ALWAYS_ON,
     INIT,
     LORAWAN_INIT,
     LORAWAN_JOIN_START,
@@ -52,7 +51,8 @@ enum state_e
     MODULE_READ,
     MODULE_SEND,
     LORAWAN_TRANSMIT,
-    HIBERNATION
+    HIBERNATION,
+    ALWAYS_ON
 };
 
 /**
@@ -114,6 +114,10 @@ char * decode_state(uint8_t state)
 
         case 11:
             return "HIBERNATION";
+        break;
+
+        case 12:
+            return "ALWAYS_ON";
         break;
 
         default:
