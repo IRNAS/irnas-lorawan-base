@@ -410,31 +410,36 @@ uint64_t read_uint64(byte buffer[], int start) {
  */
 void MODULE_PIRA::send_status_values(void)
 {   
-    uint64_t cam_serial_id = read_uint64(global_relay_payload, 10);
+    String cam_serial_id = int64String(read_uint64(global_relay_payload, 10));
     uint32_t camera_voltage = (global_relay_payload[5] << 8) | global_relay_payload[4];
+    float stm32_temp = STM32L0.getTemperature();
+    uint16_t bridge_volt = get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN);
+    uint16_t bridge_temp = bme.readTemperature();
+    float bridge_hum = bme.readHumidity();
+    uint16_t bridge_hpa = (int) (bme.readPressure() / 100.0F);
 
     MODULE_PIRA_SERIAL.println("START VALUES");
 
     MODULE_PIRA_SERIAL.print("stm32_temp:");
-    MODULE_PIRA_SERIAL.println(STM32L0.getTemperature());
+    MODULE_PIRA_SERIAL.println(stm32_temp);
 
     MODULE_PIRA_SERIAL.print("bridge_volt:");
-    MODULE_PIRA_SERIAL.println(get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN));
+    MODULE_PIRA_SERIAL.println(bridge_volt);
 
     MODULE_PIRA_SERIAL.print("bridge_temp:");
-    MODULE_PIRA_SERIAL.println(bme.readTemperature());
+    MODULE_PIRA_SERIAL.println(bridge_temp);
 
     MODULE_PIRA_SERIAL.print("bridge_hum:");
-    MODULE_PIRA_SERIAL.println(bme.readHumidity());
+    MODULE_PIRA_SERIAL.println(bridge_hum);
 
     MODULE_PIRA_SERIAL.print("bridge_hpa:");
-    MODULE_PIRA_SERIAL.println((int) (bme.readPressure() / 100.0F));
+    MODULE_PIRA_SERIAL.println(bridge_hpa);
 
     MODULE_PIRA_SERIAL.print("cam_volt:");
     MODULE_PIRA_SERIAL.println(camera_voltage);
     
     MODULE_PIRA_SERIAL.print("cam_serial:");
-    MODULE_PIRA_SERIAL.println(int64String(cam_serial_id));
+    MODULE_PIRA_SERIAL.println(cam_serial_id);
 
     MODULE_PIRA_SERIAL.print("wakeup:");
     if (global_pira_wakeup_reason == 1) {
@@ -446,6 +451,42 @@ void MODULE_PIRA::send_status_values(void)
     }
 
     MODULE_PIRA_SERIAL.println("END VALUES");
+
+#ifdef serial_debug
+    serial_debug.println("START VALUES");
+
+    serial_debug.print("stm32_temp:");
+    serial_debug.println(stm32_temp);
+
+    serial_debug.print("bridge_volt:");
+    serial_debug.println(bridge_volt);
+
+    serial_debug.print("bridge_temp:");
+    serial_debug.println(bridge_temp);
+
+    serial_debug.print("bridge_hum:");
+    serial_debug.println(bridge_hum);
+
+    serial_debug.print("bridge_hpa:");
+    serial_debug.println(bridge_hpa);
+
+    serial_debug.print("cam_volt:");
+    serial_debug.println(camera_voltage);
+    
+    serial_debug.print("cam_serial:");
+    serial_debug.println(cam_serial_id);
+
+    serial_debug.print("wakeup:");
+    if (global_pira_wakeup_reason == 1) {
+        serial_debug.println("lora");
+    } else if (global_pira_wakeup_reason == 2) {
+        serial_debug.println("button");
+    } else {
+        serial_debug.println("unknown");
+    }
+
+    serial_debug.println("END VALUES");
+#endif
 }
 
 /**
