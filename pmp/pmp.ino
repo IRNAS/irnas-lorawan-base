@@ -749,7 +749,8 @@ void loop()
 
         case HIBERNATION:
             if (button_time > 100) {
-                state_transition(INIT);
+                power_led_animation();
+                state_transition(IDLE);
                 break;
             }
 
@@ -759,9 +760,8 @@ void loop()
 
             // defaults for timing out
             state_timeout_duration = 24 * 60 * 60 * 1000; // 24h maximum
-            // state_timeout_duration = 15000; // 24h maximum
 
-            state_goto_timeout = INIT;
+            state_goto_timeout = IDLE;
 
             // action
             sleep = 60000; // until an event
