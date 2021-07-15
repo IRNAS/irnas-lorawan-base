@@ -13,12 +13,20 @@
 #endif
 
 
-
+enum button_state_e
+{
+    NONE,
+    PRESSED,
+    RELEASED,
+};
 // Global variables
 
 // Declared externaly in project.h, 
 // only modules pira and lacuna can access it.
 uint16_t global_activate_pira = 0;  
+uint32_t button_pressed_time = 0;  
+uint32_t button_released_time = 0;
+button_state_e button_state = NONE;
 
 // Declared externaly in project.h, 
 // It is used in main.ino, module_lacuna.cpp, module_pira.cpp
@@ -52,7 +60,9 @@ enum state_e
     MODULE_SEND,
     LORAWAN_TRANSMIT,
     HIBERNATION,
-    ALWAYS_ON
+    ALWAYS_ON,
+    SHOW_POWER_STATE,
+    
 };
 
 /**
@@ -118,6 +128,10 @@ char * decode_state(uint8_t state)
 
         case 12:
             return "ALWAYS_ON";
+        break;
+
+        case 13:
+            return "SHOW_POWER_STATE";
         break;
 
         default:
@@ -249,12 +263,6 @@ bool callback_periodic(void)
         }
     }
 
-    if (!digitalRead(BOARD_BUTTON))
-    {
-        global_activate_pira = 1;   // For hack the poacher setup
-        global_pira_wakeup_reason = 2; // For hack the poacher setup
-    }
-
     // wake up the system if required
     if (wakeup_needed)
     {
@@ -361,6 +369,38 @@ void state_transition(state_e next)
     state = next;
 }
 
+void button_triggered() {
+    // Ignore button events if button already released in last second or if last button event has not been consumed
+    if (button_state == RELEASED || millis() - button_released_time < 1000) {
+        return;
+    }
+
+    bool button_pressed = !digitalRead(BOARD_BUTTON);
+    if (button_pressed && button_state != PRESSED) {
+#ifdef serial_debug
+        serial_debug.println("BUTTON PRESS");
+#endif
+        button_state = PRESSED;
+        button_pressed_time = millis();
+    } else if (!button_pressed && button_state == PRESSED) {
+        button_released_time = millis();
+        button_state = RELEASED;
+#ifdef serial_debug
+        serial_debug.print("BUTTON RELEASE: ");
+        serial_debug.println(button_released_time - button_pressed_time);
+#endif
+    }
+}
+
+uint32_t get_button_time() {
+    if (button_state == RELEASED) {
+        button_state = NONE;
+        return button_released_time - button_pressed_time;
+    } else {
+        return 0;
+    }
+}
+
 /**
  * @brief Setup function called on boot
  * 
@@ -377,9 +417,9 @@ void setup()
     serial_debug.println(); //Empty line for clarity
 #endif
 
-    pinMode(BOARD_BUTTON, INPUT);
+    pinMode(BOARD_BUTTON, INPUT_PULLUP);
 
-    if (!digitalRead(BOARD_BUTTON))
+    if (!digitalRead(BOARD_BUTTON) && STM32L0.resetCause() == 1)
     {
 #ifdef serial_debug
     serial_debug.println("TURN_PI_ON");
@@ -392,37 +432,16 @@ void setup()
         return;
     }
 
-    STM32L0.wdtEnable(22000);
+    attachInterrupt(digitalPinToInterrupt(BOARD_BUTTON), button_triggered, CHANGE);
 
-    //pinMode(PB9, OUTPUT);
-    //pinMode(PB8, OUTPUT);
-    //digitalWrite(PB9, HIGH);
-    //digitalWrite(PB8, HIGH);
-    //delay(1000);
-    //digitalWrite(PB9, LOW);
-    //digitalWrite(PB8, LOW);
-    //delay(1000);
-    //pinMode(PB9, INPUT);
-    //pinMode(PB8, INPUT);
+    STM32L0.wdtEnable(22000);
 
     pinMode(BOARD_LED, OUTPUT);
     digitalWrite(BOARD_LED, LOW);
 
-
     // Prepare gpios, outputs and inputs
     pinMode(MODULE_LACUNA_5V, OUTPUT);
     digitalWrite(MODULE_LACUNA_5V, LOW);
-
-    //pinMode(MODULE_ULTRASONIC_OLED_3V, OUTPUT);
-
-    //digitalWrite(MODULE_ULTRASONIC_OLED_3V, HIGH);
-
-    //// Show boot screen
-    // init_display();
-    //boot_screen();
-
-    //// Turn off power for oled screen
-    //digitalWrite(MODULE_ULTRASONIC_OLED_3V, LOW);
 
     //// Needed to prevent clashes with rtc library
     Wire.end();
@@ -431,12 +450,27 @@ void setup()
     state = INIT;
 }
 
+void power_led_animation() {
+    // Show hibernation LED sequence
+    digitalWrite(BOARD_LED, HIGH);
+    delay(1000);
+    digitalWrite(BOARD_LED, LOW);
+    delay(100);
+    for (int x = 1; x <= 10; x++) {
+        digitalWrite(BOARD_LED, HIGH);
+        delay(20);
+        digitalWrite(BOARD_LED, LOW);
+        delay(100);
+    }
+}
+
 /**
  * @brief Main system loop running the FSM
  * 
  */
 void loop() 
 {
+    uint32_t button_time = get_button_time();
 #ifdef serial_debug
     serial_debug.print("\nmain: fsm(" );
     serial_debug.print(decode_state(( uint8_t ) state_prev));
@@ -460,10 +494,11 @@ void loop()
 
     serial_debug.print(", ");
     serial_debug.print(millis());
+    serial_debug.print(", button: ");
+    serial_debug.print(button_time);
     serial_debug.println(")");
     serial_debug.flush();
 #endif
-
     sleep = -1; // reset the sleep after loop, set in every state if required
     event_loop_start = millis(); // start the timer of the loop
     // update prevous state
@@ -476,6 +511,10 @@ void loop()
             // defaults for timing out
             state_timeout_duration = 0;
             state_goto_timeout = INIT;
+
+            // Show boot LED sequence
+            power_led_animation();
+
             // check i2c
             check_i2c();
             // setup default settings
@@ -571,8 +610,17 @@ void loop()
             state_goto_timeout = INIT;
             sleep = -1;
 
-            //LED status 
-            //digitalWrite(BOARD_LED, HIGH);
+            if (button_time > 5000) {
+                // Show hibernation LED sequence
+                power_led_animation();
+
+                state_transition(HIBERNATION);
+                break;
+            } else if (button_time > 100) {
+                state_transition(SHOW_POWER_STATE);
+                break;
+            }
+
             if (true == lorawan_settings_new )
             {
                 lorawan_settings_new = false;
@@ -700,15 +748,53 @@ void loop()
         break;
 
         case HIBERNATION:
+            if (button_time > 100) {
+                state_transition(INIT);
+                break;
+            }
+
+            digitalWrite(BOARD_LED, HIGH);
+            delay(250);
+            digitalWrite(BOARD_LED, LOW);
+
             // defaults for timing out
             state_timeout_duration = 24 * 60 * 60 * 1000; // 24h maximum
+            // state_timeout_duration = 15000; // 24h maximum
+
             state_goto_timeout = INIT;
+
             // action
             sleep = 60000; // until an event
         break;
 
+        case SHOW_POWER_STATE: {
+            state_timeout_duration = 0;
+            state_goto_timeout = IDLE;
+
+            uint16_t voltage = get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN);
+            uint16_t charge = 0;
+            if (voltage > MODULE_PIRA_UNDERVOLTAGE_THRESHOLD) {
+                charge = voltage - MODULE_PIRA_UNDERVOLTAGE_THRESHOLD;
+            }
+
+            uint16_t blink_count = charge / 100 + 1;
+
+            for (int x = 0; x < blink_count; x++) {
+                digitalWrite(BOARD_LED, HIGH);
+                delay(600);
+                digitalWrite(BOARD_LED, LOW);
+                delay(400);
+            }
+
+            delay(1000);
+            STM32L0.wdtReset();
+
+            state_transition(IDLE);
+        }
+        break;
+
         case ALWAYS_ON:
-            delay(500);
+            delay(5000);
 #ifdef serial_debug
             serial_debug.println("ALWAYS_ON");
 #endif
