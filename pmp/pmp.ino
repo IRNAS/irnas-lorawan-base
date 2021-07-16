@@ -779,17 +779,22 @@ void loop()
 
             uint16_t voltage = get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN);
 
-#ifdef serial_debug
-            serial_debug.print("voltage: ");
-            serial_debug.println(voltage);
-#endif
 
             uint16_t charge = 0;
             if (voltage > MODULE_PIRA_UNDERVOLTAGE_THRESHOLD) {
                 charge = voltage - MODULE_PIRA_UNDERVOLTAGE_THRESHOLD;
             }
 
-            uint16_t blink_count = charge / 100 + 1;
+            uint16_t blink_count = round(charge / 100.0) + 1;
+
+#ifdef serial_debug
+            serial_debug.print("voltage: ");
+            serial_debug.print(voltage);
+            serial_debug.print(", charge: ");
+            serial_debug.print(charge);
+            serial_debug.print(", blink: ");
+            serial_debug.println(blink_count);
+#endif
 
             for (int x = 0; x < blink_count; x++) {
                 digitalWrite(BOARD_LED, HIGH);
