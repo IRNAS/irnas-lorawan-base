@@ -384,11 +384,16 @@ void button_triggered() {
         button_pressed_time = millis();
     } else if (!button_pressed && button_state == PRESSED) {
         button_released_time = millis();
-        button_state = RELEASED;
+        if (button_released_time - button_pressed_time >= 100) {
 #ifdef serial_debug
-        serial_debug.print("BUTTON RELEASE: ");
-        serial_debug.println(button_released_time - button_pressed_time);
+            serial_debug.print("BUTTON RELEASE: ");
+            serial_debug.println(button_released_time - button_pressed_time);
 #endif
+            button_state = RELEASED;
+            STM32L0.wakeup();
+        } else {
+            button_state = NONE;
+        }
     }
 }
 
@@ -447,7 +452,7 @@ void setup()
     Wire.end();
 
     // Starting state
-    state = INIT;
+    state_transition(INIT);
 }
 
 void power_led_animation() {
@@ -520,10 +525,11 @@ void loop()
             // setup default settings
             settings_init();
             // setup RTC
-            rtc_init();
+            // rtc_init(); // We are not using this right now
+
             // load settings, currently can not return an error, thus proceed directly
 
-            state_transition(LORAWAN_INIT);
+            state_transition(MODULE_INIT);
         break;
 
         case LORAWAN_INIT:
@@ -749,8 +755,8 @@ void loop()
 
         case HIBERNATION:
             if (button_time > 100) {
-                power_led_animation();
-                state_transition(IDLE);
+                // Reset the system to prevent old relayed Lora Messages to be processed
+                STM32L0.reset();
                 break;
             }
 
@@ -772,6 +778,12 @@ void loop()
             state_goto_timeout = IDLE;
 
             uint16_t voltage = get_voltage_in_mv(MODULE_SYSTEM_BAN_MON_AN);
+
+#ifdef serial_debug
+            serial_debug.print("voltage: ");
+            serial_debug.println(voltage);
+#endif
+
             uint16_t charge = 0;
             if (voltage > MODULE_PIRA_UNDERVOLTAGE_THRESHOLD) {
                 charge = voltage - MODULE_PIRA_UNDERVOLTAGE_THRESHOLD;
@@ -815,6 +827,12 @@ void loop()
         serial_debug.print(state);
         serial_debug.println(")");
 #endif
+        if (state == HIBERNATION) {
+            // Reset the system to prevent old relayed Lora Messages to be processed
+            STM32L0.reset();
+            return;
+        }
+
         state_transition(state_goto_timeout);
     }
 

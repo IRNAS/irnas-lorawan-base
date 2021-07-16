@@ -78,9 +78,7 @@ class MODULE_SYSTEM
         module_readings_packet_t readings_packet;
         uint32_t read_timestamp;
         uint32_t send_timestamp;
-        reading_structure_t r_battery;
-        reading_structure_t r_analog_input;
-        reading_structure_t r_temperature;
+
 };
 
 #endif /* MODULE_SYSTEM_H */

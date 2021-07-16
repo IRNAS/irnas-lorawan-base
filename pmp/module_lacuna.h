@@ -64,12 +64,11 @@ class MODULE_LACUNA
         };
 
         void setup_lacuna();
-        void send_lacuna();
+        void receive_lacuna();
 
         module_settings_packet_t settings_packet;
         module_readings_packet_t readings_packet;
 
-        lsLoraWANParams loraWANParams;
         lsLoraWANParams relay_loraWANParams;
         lsLoraSatTxParams SattxParams;
         lsLoraTxParams txParams;

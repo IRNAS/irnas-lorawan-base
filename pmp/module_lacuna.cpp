@@ -15,8 +15,6 @@ extern event_e system_event;
 
 static char payload[255];
 
-const String mytext = "Hello Lacuna!";
-
 /*!
  * @brief 
  * @param[in] 
@@ -79,48 +77,14 @@ uint8_t MODULE_LACUNA::set_downlink_data(uint8_t * data, size_t * size)
  * @param[in]
  * @return 
  */
-module_flags_e MODULE_LACUNA::scheduler(void)
-{
-    time_t current_time = rtc_time_read();
-
+module_flags_e MODULE_LACUNA::scheduler(void) {
 #ifdef serial_debug
-    serial_debug.print(NAME);
-    serial_debug.print(": ");
-    serial_debug.print(ctime(&current_time));
+  serial_debug.print(NAME);
+  serial_debug.print(": scheduler(");
+  serial_debug.println("active)");
 #endif
-
-    struct tm *timeinfo = localtime(&current_time);
-
-    timeinfo->tm_hour = settings_packet.data.start_hour;
-    timeinfo->tm_min = settings_packet.data.start_min;
-    timeinfo->tm_sec =  0;
-    time_t start_window_tx = mktime(timeinfo);
-
-    timeinfo->tm_hour = settings_packet.data.end_hour;
-    timeinfo->tm_min = settings_packet.data.end_min;
-    timeinfo->tm_sec =  0;
-    time_t end_window_tx = mktime(timeinfo);
-
-    if(current_time >= start_window_tx && current_time < end_window_tx)
-    {
-#ifdef serial_debug
-        serial_debug.print(NAME);
-        serial_debug.print(": scheduler(");
-        serial_debug.println("active)");
-#endif
-        flags = M_RUNNING;
-        return flags;
-    }
-    else
-    {
-#ifdef serial_debug
-        serial_debug.print(NAME);
-        serial_debug.print(": scheduler(");
-        serial_debug.println("not active)");
-#endif
-        flags = M_IDLE;
-        return flags;
-    }
+  flags = M_RUNNING;
+  return flags;
 }
 
 /*!
@@ -175,7 +139,7 @@ void MODULE_LACUNA::running(void)
     digitalWrite(MODULE_LACUNA_5V, HIGH);
     
     setup_lacuna();
-    send_lacuna(); 
+    receive_lacuna(); 
 
     // Turn off power for lacuna modem
     digitalWrite(MODULE_LACUNA_5V, LOW);
@@ -211,12 +175,7 @@ void MODULE_LACUNA::print_data(void)
  * @return 
  */
 void MODULE_LACUNA::setup_lacuna(void)
-{
-    // Keys where we will be transmiting (not used)
-    uint8_t lacuna_networkKey[] = {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
-    uint8_t lacuna_appKey[] = {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
-    uint8_t lacuna_deviceAddress[] = {0x00,0x00,0x00,0x00};
-    
+{    
     // SX1262 configuration for lacuna LS200 board
     lsSX126xConfig cfg;
     lsCreateDefaultSX126xConfig(&cfg);
@@ -239,14 +198,6 @@ void MODULE_LACUNA::setup_lacuna(void)
         serial_debug.println(lsErrorToString(result));
 #endif
     }
-
-    // LoRaWAN session parameters
-    lsCreateDefaultLoraWANParams(&loraWANParams, 
-                                 lacuna_networkKey, 
-                                 lacuna_appKey, 
-                                 lacuna_deviceAddress);
-    loraWANParams.txPort = 1;
-    loraWANParams.rxEnable = true;
 
     uint8_t relay_networkKey[] = RELAY_NETWORKKEY;
     uint8_t relay_appKey[] = RELAY_APPKEY;
@@ -300,37 +251,8 @@ void MODULE_LACUNA::setup_lacuna(void)
  * @param[in]
  * @return 
  */
-void MODULE_LACUNA::send_lacuna(void)
+void MODULE_LACUNA::receive_lacuna(void)
 {
-    /*
-    // Sent LoRa message
-#ifdef serial_debug
-    serial_debug.println("Sending LoRa message");
-#endif
-
-    mytext.toCharArray(payload, 255);
-    int lora_result = lsSendLoraWAN(&loraWANParams, &txParams, (byte *)payload, sizeof mytext);
-
-#ifdef serial_debug
-    serial_debug.print("LoraWan result: ");
-    serial_debug.println(lsErrorToString(lora_result));
-#endif
-
-
-    // Sent LoRaSat message
-#ifdef serial_debug
-    serial_debug.println("Sending LoraSat message");
-#endif
-    mytext.toCharArray(payload, 255);
-    int sat_result = lsSendLoraSatWAN(&loraWANParams, &SattxParams, (byte *)payload, sizeof mytext);
-
-#ifdef serial_debug
-    serial_debug.print("LoraSatWan result: ");
-    serial_debug.println(lsErrorToString(sat_result));
-#endif
-
-
-*/
     int32_t rxlength = lsReceiveLora(&relay_loraWANParams, 
                                      &relayParams, 
                                      global_relay_payload);
@@ -366,18 +288,7 @@ void MODULE_LACUNA::send_lacuna(void)
         }
         serial_debug.println();
 #endif
-//         // This is just for debugging purposes, relays the message from the camera trap to TTN
-//         int lora_result = lsSendLoraWAN(&loraWANParams, 
-//                 &txParams, 
-//                 (byte *)relay_payload, 
-//                 rxlength);
-// #ifdef serial_debug
-//         if( LS_OK != lora_result)
-//         {
-//             serial_debug.print("Result: ");
-//             serial_debug.println(lsErrorToString(lora_result));
-//         }
-// #endif
+
         if (settings_packet.data.min_rssi == 0 || relayParams.rssi > -settings_packet.data.min_rssi) {
             global_activate_pira += 1;
             global_pira_wakeup_reason = 1;
